@@ -1,0 +1,18 @@
+.checkboxes{
+    display: flex;
+    flex-wrap: wrap;
+    .checkbox {
+        display: flex;
+        min-width: fit-content;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 8px;
+        input { 
+            align-self: center;
+            margin-left: 8px;
+        }
+    }
+}
+.dropdown {
+    display: block;
+}

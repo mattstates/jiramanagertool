@@ -2,3 +2,5 @@
 /dist
 .ds_store
 requirements.md
+secrets.ts
+/enums/assignees.ts

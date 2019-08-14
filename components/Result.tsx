@@ -5,6 +5,7 @@ interface ResultProps {
 }
 
 // TESTING JIRA RESPONSES
+// TODO: Break each result into its own view and control it with the criteria checkboxes.
 export const Result: React.FC<ResultProps> = ({ data }) => {
     console.log(data);
     // customfield_13380
@@ -25,6 +26,7 @@ export const Result: React.FC<ResultProps> = ({ data }) => {
         }
     });
     return (
+        data.length > 0 ?
         <div>
             <p>Percent Failed Code Review: {((tasksFailedCodeReview / data.length) * 100).toFixed(2)}%</p>
             <p>Total Times Failed Code Review: {numFailedCodeReview}</p>
@@ -34,5 +36,6 @@ export const Result: React.FC<ResultProps> = ({ data }) => {
 
             <p>total tasks: {data.length}</p>
         </div>
+        : <React.Fragment />
     );
 };

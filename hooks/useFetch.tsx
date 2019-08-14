@@ -28,7 +28,7 @@ export function useFetch(fetchUrl: string): any {
         return () => {
             abortController.abort();
         };
-    }, []);
-    console.log(fetchData, 'FETCH DATA');
+    }, [fetchUrl]);
+
     return fetchData;
 }

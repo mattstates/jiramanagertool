@@ -1,14 +1,14 @@
 enum Criterias {
-    EstimationAccuracy = 'Estimation Accuracy',
+    // EstimationAccuracy = 'Estimation Accuracy',
     TaskCountFailedCodeReview = 'Task Count Failed Code Review',
-    TaskCountFailedDeployment = 'Task Count Failed Deployment',
+    // TaskCountFailedDeployment = 'Task Count Failed Deployment',
     TaskCountFailedQA = 'Task Count Failed QA',
     TasksCompleted = 'Tasks Completed',
-    TimeLogged = 'Time Logged',
+    // TimeLogged = 'Time Logged',
     TotalFailedCodeReview = 'Total Failed Code Review',
-    TotalFailedDeployment = 'Total Failed Deployment',
+    // TotalFailedDeployment = 'Total Failed Deployment',
     TotalFailedQA = 'Total Failed QA',
-    Velocity = 'Velocity'
+    // Velocity = 'Velocity'
 }
 
 export { Criterias }

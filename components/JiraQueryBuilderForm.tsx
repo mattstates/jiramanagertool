@@ -1,16 +1,18 @@
-import React, { Dispatch, SetStateAction, useEffect, useReducer } from 'react';
+import { addMonths } from 'date-fns';
+import React, { Dispatch, SetStateAction, useReducer } from 'react';
 import { FormAction } from '../actions/FormAction.ts';
 import { Criterias } from '../enums/criterias.ts';
 import { FormActionTypes } from '../enums/formActionTypes.ts';
-// TODO: Refactor this function...
-import { urlBuilder } from '../secrets.ts';
+import { getDateRanges } from '../utils/dates.ts';
+import { AppState } from './App.tsx';
 import { CheckBox } from './CheckBox.tsx';
 import { DateField } from './DateField.tsx';
 import { Input } from './Input.tsx';
 import './JiraQueryBuilderForm.scss';
 
+
 interface FormProps {
-    callback: Dispatch<SetStateAction<string>>;
+    callback: Dispatch<SetStateAction<AppState>>;
 }
 
 interface FormState {
@@ -20,7 +22,7 @@ interface FormState {
     endDate: string;
 }
 
-const currentDate: string = new Date().toISOString().split('T')[0];
+const currentDate: Date = new Date();
 
 const initialFormState: FormState = {
     // Setting the default to have all boxes selected.
@@ -29,8 +31,8 @@ const initialFormState: FormState = {
         return hash;
     }, {}),
     assignee: '',
-    fromDate: '',
-    endDate: `${currentDate}`
+    fromDate: addMonths(currentDate, -1).toISOString().split('T')[0],
+    endDate: `${currentDate.toISOString().split('T')[0]}`
 };
 
 function formReducer(state: FormState, action: FormAction): FormState {
@@ -57,14 +59,20 @@ export const JiraQueryBuilderForm: React.FC<FormProps> = ({ callback }) => {
 
     const formId = 'JiraQueryBuilder';
 
-    useEffect(() => {
-        //TODO: update list of preselected
-    }, []);
-
     function submitHandler(event: React.SyntheticEvent): void {
         event.preventDefault();
         console.log(formState);
-        callback(urlBuilder(formState));
+        const criterias = Object.entries(formState.checkedCriterias).reduce((criteriasCollection, keyValTuple) => {
+            if (!keyValTuple[1]) {
+                return criteriasCollection;
+            }
+
+            const typedCriteria = keyValTuple[0].replace(/\s/gi, '') as keyof typeof Criterias;
+
+            return [...criteriasCollection, typedCriteria];
+        }, []);
+
+        callback({ assignee: formState.assignee, dateRanges: getDateRanges(formState.fromDate, formState.endDate), criterias });
     }
 
     const checkBoxes = Object.values(Criterias).map((criteria, i) => {
@@ -88,6 +96,7 @@ export const JiraQueryBuilderForm: React.FC<FormProps> = ({ callback }) => {
                 fieldId={'fromDateField'}
                 fieldName={'From Date'}
             />
+
             <DateField
                 dispatch={dispatch}
                 value={formState.endDate}

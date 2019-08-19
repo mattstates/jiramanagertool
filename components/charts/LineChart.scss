@@ -1,0 +1,16 @@
+svg {
+    overflow: visible;
+    margin: 20px auto;
+    .dot {
+        fill: #454545;
+    }
+    .x.axis text {
+        transform: rotate(-45deg) translate(-35px, 0);
+    }
+}
+
+.chartContainer {
+    border-top: 1px solid;
+    margin: 16px 0;
+    padding: 24px 0;
+}

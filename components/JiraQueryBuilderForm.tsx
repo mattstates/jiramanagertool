@@ -31,7 +31,7 @@ const initialFormState: FormState = {
         return hash;
     }, {}),
     assignee: '',
-    fromDate: addMonths(currentDate, -1).toISOString().split('T')[0],
+    fromDate: addMonths(currentDate, -12).toISOString().split('T')[0],
     endDate: `${currentDate.toISOString().split('T')[0]}`
 };
 
@@ -69,7 +69,7 @@ export const JiraQueryBuilderForm: React.FC<FormProps> = ({ callback }) => {
 
             const typedCriteria = keyValTuple[0].replace(/\s/gi, '') as keyof typeof Criterias;
 
-            return [...criteriasCollection, typedCriteria];
+            return [...criteriasCollection, Criterias[typedCriteria]];
         }, []);
 
         callback({ assignee: formState.assignee, dateRanges: getDateRanges(formState.fromDate, formState.endDate), criterias });
@@ -106,6 +106,7 @@ export const JiraQueryBuilderForm: React.FC<FormProps> = ({ callback }) => {
             />
 
             <button type="submit">Submit</button>
+            <p><sup>*Will return data in one month intervals.</sup></p>
         </form>
     );
 };

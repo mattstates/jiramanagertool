@@ -2,6 +2,11 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Criterias } from '../enums/criterias.ts';
 import { urlBuilder } from '../secrets.ts';
 import './App.scss';
+import { TaskCountFailedCodeReview } from './charts/TaskCountFailedCodeReview.tsx';
+import { TaskCountFailedQA } from './charts/TaskCountFailedQA.tsx';
+import { TasksCompleted } from './charts/TasksCompleted.tsx';
+import { TotalFailedCodeReview } from './charts/TotalFailedCodeReview.tsx';
+import { TotalFailedQA } from './charts/TotalFailedQA.tsx';
 import { JiraQueryBuilderForm } from './JiraQueryBuilderForm.tsx';
 
 export interface AppState {
@@ -16,13 +21,9 @@ export function App() {
     const [loading, updateLoading] = useState<boolean>(false);
 
     console.log(vizData, '<--- vizData');
-    // const results = appState.dateRanges.map((dateRange, i) => {
-    //     console.log(appState.criterias)
-    //     return <Result allowedCriterias={appState.criterias} url={urlBuilder(appState.assignee, dateRange[0], dateRange[1])} fromDate={dateRange[0]} endDate={dateRange[1]} key={dateRange.join('')} />
-    // })
+
     useEffect(() => {
         updateLoading(true);
-        console.log('effect');
         updateVizData([]);
 
         const data: any[] = [];
@@ -30,7 +31,6 @@ export function App() {
             return fetch(urlBuilder(appState.assignee, dateRange[0], dateRange[1]))
                 .then((response) => response.json())
                 .then((json) => {
-                    console.log('effect end');
                     return json;
                 });
         });
@@ -38,17 +38,15 @@ export function App() {
         Promise.all(promises)
             .then((results) => {
                 results.forEach((result) => {
-                    console.log(vizData, result, '<-- before update');
-                    // updateVizData([...vizData, result])
                     data.push(result);
                 });
-                console.log(appState.dateRanges)
-                console.log(data, '<-- ALL DATA')
+                console.log(appState.dateRanges);
+                console.log(data, '<-- ALL DATA');
 
                 const formattedData: { [key: string]: any } = appState.dateRanges.reduce((hash: { [key: string]: any }, dateRange, i) => {
-                     hash[dateRange[1]] = data[i];
-                     return hash;
-                }, {})
+                    hash[dateRange[1]] = data[i];
+                    return hash;
+                }, {});
 
                 updateVizData(formattedData);
                 updateLoading(false);
@@ -59,12 +57,26 @@ export function App() {
     }, [appState.dateRanges, appState.assignee, appState.criterias]);
 
     //TODO: Loop through an array of urls and map them to a Result element...
+    const isVisDataAvailable = Object.keys(vizData).length > 0;
+
     return (
         <Fragment>
             <p>Customize Your Search</p>
             <JiraQueryBuilderForm callback={updateAppState} />
             {loading ? 'LOADING...' : ''}
-            {/* {results} */}
+            {!loading && renderCriteria(Criterias.TasksCompleted, appState.criterias) && isVisDataAvailable && <TasksCompleted data={vizData} />}
+
+            {!loading && renderCriteria(Criterias.TaskCountFailedQA, appState.criterias) && isVisDataAvailable && <TaskCountFailedQA data={vizData} />}
+            {!loading && renderCriteria(Criterias.TotalFailedQA, appState.criterias) && isVisDataAvailable && <TotalFailedQA data={vizData} />}
+
+            {!loading && renderCriteria(Criterias.TaskCountFailedCodeReview, appState.criterias) && isVisDataAvailable && <TaskCountFailedCodeReview data={vizData} />}
+            {!loading && renderCriteria(Criterias.TotalFailedCodeReview, appState.criterias) && isVisDataAvailable && <TotalFailedCodeReview data={vizData} />}
+
         </Fragment>
     );
+}
+
+function renderCriteria(criteriaToShow: Criterias, allowedCriterias: Criterias[]) {
+    console.log(criteriaToShow, allowedCriterias)
+    return allowedCriterias.indexOf(criteriaToShow) > -1;
 }

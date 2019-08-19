@@ -1,11 +1,11 @@
 import React from 'react';
 import { Criterias } from '../enums/criterias.ts';
 import { useFetch } from '../hooks/useFetch.tsx';
-import { TaskCountFailedCodeReview } from './TaskCountFailedCodeReview.tsx';
-import { TaskCountFailedQA } from './TaskCountFailedQA.tsx';
-import { TasksCompleted } from './TasksCompleted.tsx';
-import { TotalFailedCodeReview } from './TotalFailedCodeReview.tsx';
-import { TotalFailedQA } from './TotalFailedQA.tsx';
+import { TaskCountFailedCodeReview } from './charts/TaskCountFailedCodeReview.tsx';
+import { TaskCountFailedQA } from './charts/TaskCountFailedQA.tsx';
+import { TasksCompleted } from './charts/TasksCompleted.tsx';
+import { TotalFailedCodeReview } from './charts/TotalFailedCodeReview.tsx';
+import { TotalFailedQA } from './charts/TotalFailedQA.tsx';
 
 interface ResultProps {
     url: string;

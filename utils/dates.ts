@@ -1,4 +1,4 @@
-import { format, isBefore, addDays } from 'date-fns';
+import { format, isBefore, addDays, addMonths } from 'date-fns';
 
 //TODO: Write helper functions to calculate dates using parameter intervals...
 export const getDateRanges = (fromDate: string, endDate: string): Array<[string, string]> => {
@@ -10,7 +10,9 @@ export const getDateRanges = (fromDate: string, endDate: string): Array<[string,
 
     // from... to...
     while (isBefore(fromDateObj, dateCounter)) {
-        let firstDate = addDays(dateCounter, -13);
+        // let firstDate = addDays(dateCounter, -13);
+        let firstDate = addMonths(dateCounter, -1);
+
 
         if (isBefore(fromDateObj, firstDate)) {
             dates.push([format(firstDate, dateFormat), format(dateCounter, dateFormat)]);
@@ -18,7 +20,9 @@ export const getDateRanges = (fromDate: string, endDate: string): Array<[string,
             dates.push([format(fromDateObj, dateFormat), format(dateCounter, dateFormat)]);
         }
 
-        dateCounter = addDays(firstDate, -1);
+        // dateCounter = addDays(firstDate, -1);
+        dateCounter = firstDate;
+
     }
 
     return dates;

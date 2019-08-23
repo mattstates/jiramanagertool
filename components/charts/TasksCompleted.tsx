@@ -1,7 +1,7 @@
 import React from 'react';
 import { LineChart } from './LineChart.tsx';
 
-interface TasksCompletedProps {
+interface ITasksCompletedProps {
     data: any;
 }
 
@@ -19,7 +19,7 @@ const testData: { date: string; info: number }[] = [
     { date: '2018-10-05', info: 20 }
 ].reverse();
 
-export const TasksCompleted: React.FC<TasksCompletedProps> = ({ data }) => {
+export const TasksCompleted: React.FC<ITasksCompletedProps> = ({ data }) => {
 
     const formattedData: { date: string; info: number }[] = Object.entries(data).reduce(
         (acc: { date: string; info: number }[], cur: [string, { issues: any }]) => {

@@ -1,12 +1,12 @@
 import React from 'react';
 import { LineChart } from './LineChart.tsx';
 
-interface TotalFailedQAProps {
+interface ITotalFailedQAProps {
     data: any;
 }
 
 // customfield_13381
-export const TotalFailedQA: React.FC<TotalFailedQAProps> = ({ data }) => {
+export const TotalFailedQA: React.FC<ITotalFailedQAProps> = ({ data }) => {
     const formattedData: { date: string; info: number }[] = Object.entries(data)
         .reduce((acc: { date: string; info: number }[], cur: [string, { issues: any }]) => {
             return [

@@ -4,15 +4,15 @@ import { FormAction } from '../actions/FormAction.ts';
 import { Criterias } from '../enums/criterias.ts';
 import { FormActionTypes } from '../enums/formActionTypes.ts';
 import { getDateRanges } from '../utils/dates.ts';
-import { AppState } from './App.tsx';
+import { IAppState } from './App.tsx';
 import { CheckBox } from './CheckBox.tsx';
 import { DateField } from './DateField.tsx';
 import { Input } from './Input.tsx';
 import './JiraQueryBuilderForm.scss';
 
 
-interface FormProps {
-    callback: Dispatch<SetStateAction<AppState>>;
+interface IFormProps {
+    callback: Dispatch<SetStateAction<IAppState>>;
 }
 
 interface FormState {
@@ -54,7 +54,7 @@ function formReducer(state: FormState, action: FormAction): FormState {
     }
 }
 
-export const JiraQueryBuilderForm: React.FC<FormProps> = ({ callback }) => {
+export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
     const [formState, dispatch] = useReducer(formReducer, initialFormState);
 
     const formId = 'JiraQueryBuilder';

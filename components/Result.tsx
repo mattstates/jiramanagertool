@@ -7,7 +7,7 @@ import { TasksCompleted } from './charts/TasksCompleted.tsx';
 import { TotalFailedCodeReview } from './charts/TotalFailedCodeReview.tsx';
 import { TotalFailedQA } from './charts/TotalFailedQA.tsx';
 
-interface ResultProps {
+interface IResultProps {
     url: string;
     fromDate: string;
     endDate: string;
@@ -16,7 +16,7 @@ interface ResultProps {
 
 // TESTING JIRA RESPONSES
 // TODO: Break each result into its own view and control it with the criteria checkboxes.
-export const Result: React.FC<ResultProps> = ({ url, fromDate, endDate, allowedCriterias }) => {
+export const Result: React.FC<IResultProps> = ({ url, fromDate, endDate, allowedCriterias }) => {
     const data = useFetch(url);
     console.log(data, '<----- RESULT')
     if (!data.issues) {

@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
 import { LineChart } from './LineChart.tsx';
 
-interface TotalFailedCodeReviewProps {
+interface ITotalFailedCodeReviewProps {
     data: any;
 }
 
 // customfield_13380
-export const TotalFailedCodeReview: React.FC<TotalFailedCodeReviewProps> = ({ data }) => {
+export const TotalFailedCodeReview: React.FC<ITotalFailedCodeReviewProps> = ({ data }) => {
     const container = useRef(null);
     const formattedData: { date: string; info: number }[] = Object.entries(data)
         .reduce((acc: { date: string; info: number }[], cur: [string, { issues: any }]) => {

@@ -9,14 +9,14 @@ import { TotalFailedCodeReview } from './charts/TotalFailedCodeReview.tsx';
 import { TotalFailedQA } from './charts/TotalFailedQA.tsx';
 import { JiraQueryBuilderForm } from './JiraQueryBuilderForm.tsx';
 
-export interface AppState {
+export interface IAppState {
     assignee: string;
     dateRanges: Array<[string, string]>;
     criterias: Array<Criterias>;
 }
 
 export function App() {
-    const [appState, updateAppState] = useState<AppState>({ assignee: '', dateRanges: [], criterias: [] });
+    const [appState, updateAppState] = useState<IAppState>({ assignee: '', dateRanges: [], criterias: [] });
     const [vizData, updateVizData] = useState<any>([]);
     const [loading, updateLoading] = useState<boolean>(false);
 

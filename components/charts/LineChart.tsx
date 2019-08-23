@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { format } from 'date-fns';
 import './LineChart.scss';
 
-interface LineChartProps {
+interface ILineChartProps {
     chartId: string;
     chartTitle: string;
     data: Array<{date: string; info: number}>;
@@ -18,7 +18,7 @@ const height = 270 - margin.top - margin.bottom;
 const lineWidth = 2;
 const circleWidth = 4;
 
-export const LineChart: React.FC<LineChartProps> = ({ data, chartId, chartTitle, lineColor, yMax }) => {
+export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle, lineColor, yMax }) => {
     const container = useRef(null);
 
     useEffect(() => {

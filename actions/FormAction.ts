@@ -1,6 +1,6 @@
 import { FormActionTypes } from '../enums/formActionTypes.ts';
 
-export interface FormAction {
+export interface IFormAction {
     payload: any;
     type: FormActionTypes;
 }

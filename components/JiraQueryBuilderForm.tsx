@@ -1,15 +1,14 @@
 import { addMonths } from 'date-fns';
 import React, { Dispatch, SetStateAction, useReducer } from 'react';
-import { FormAction } from '../actions/FormAction.ts';
+import { IFormAction } from '../actions/FormAction.ts';
 import { Criterias } from '../enums/criterias.ts';
 import { FormActionTypes } from '../enums/formActionTypes.ts';
 import { getDateRanges } from '../utils/dates.ts';
 import { IAppState } from './App.tsx';
 import { CheckBox } from './CheckBox.tsx';
 import { DateField } from './DateField.tsx';
-import { Input } from './Input.tsx';
+import { SearchInput } from './SearchInput.tsx';
 import './JiraQueryBuilderForm.scss';
-
 
 interface IFormProps {
     callback: Dispatch<SetStateAction<IAppState>>;
@@ -31,11 +30,13 @@ const initialFormState: FormState = {
         return hash;
     }, {}),
     assignee: '',
-    fromDate: addMonths(currentDate, -12).toISOString().split('T')[0],
+    fromDate: addMonths(currentDate, -12)
+        .toISOString()
+        .split('T')[0],
     endDate: `${currentDate.toISOString().split('T')[0]}`
 };
 
-function formReducer(state: FormState, action: FormAction): FormState {
+function formReducer(state: FormState, action: IFormAction): FormState {
     switch (action.type) {
         case FormActionTypes.UpdateCheckBoxes:
             const updatedCheckedCriterias = {
@@ -83,30 +84,34 @@ export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
     });
 
     return (
-        <form id={formId} onSubmit={submitHandler}>
-            <Input value={formState.assignee} dispatch={dispatch} />
+        <form id={formId} onSubmit={submitHandler} autoComplete={'off'}>
+            <SearchInput value={formState.assignee} dispatch={dispatch} />
             <p>Criterias:</p>
 
             <div className="checkboxes">{checkBoxes}</div>
 
-            <DateField
-                dispatch={dispatch}
-                value={formState.fromDate}
-                formAction={FormActionTypes.UpdateFromDate}
-                fieldId={'fromDateField'}
-                fieldName={'From Date'}
-            />
+            <div className="dateFields">
+                <DateField
+                    dispatch={dispatch}
+                    value={formState.fromDate}
+                    formAction={FormActionTypes.UpdateFromDate}
+                    fieldId={'fromDateField'}
+                    fieldName={'From Date'}
+                />
 
-            <DateField
-                dispatch={dispatch}
-                value={formState.endDate}
-                formAction={FormActionTypes.UpdateEndDate}
-                fieldId={'endDateField'}
-                fieldName={'End Date'}
-            />
+                <DateField
+                    dispatch={dispatch}
+                    value={formState.endDate}
+                    formAction={FormActionTypes.UpdateEndDate}
+                    fieldId={'endDateField'}
+                    fieldName={'End Date'}
+                />
+            </div>
 
             <button type="submit">Submit</button>
-            <p><sup>*Will return data in one month intervals.</sup></p>
+            <p>
+                <sup>*Will return data in one month intervals.</sup>
+            </p>
         </form>
     );
 };

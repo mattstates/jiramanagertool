@@ -1,10 +1,10 @@
 import React from 'react';
-import { FormAction } from '../actions/FormAction.ts';
+import { IFormAction } from '../actions/FormAction.ts';
 import { FormActionTypes } from '../enums/formActionTypes.ts';
 
 interface CheckBoxProps {
     criteria: string;
-    dispatch: React.Dispatch<FormAction>;
+    dispatch: React.Dispatch<IFormAction>;
     id: string;
     isChecked: boolean;
 }

@@ -1,0 +1,14 @@
+div.searchInput {
+    position: relative;
+    label, input {
+        display: block;
+    }
+    input {
+        border-radius: 5px;
+        border: 1px solid #ababab;
+        font-size: 16px;
+        height: 40px;
+        padding: 0 8px;
+        width: 262px;
+    }
+}

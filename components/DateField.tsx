@@ -1,10 +1,11 @@
 import React from 'react';
-import { FormAction } from '../actions/FormAction.ts';
+import { IFormAction } from '../actions/FormAction.ts';
 import { FormActionTypes } from '../enums/formActionTypes.ts';
+import './DateField.scss';
 
 interface DateFieldProps {
     value: string;
-    dispatch: React.Dispatch<FormAction>;
+    dispatch: React.Dispatch<IFormAction>;
     formAction: FormActionTypes;
     fieldId: string;
     fieldName: string;
@@ -12,7 +13,7 @@ interface DateFieldProps {
 
 export const DateField: React.FC<DateFieldProps> = ({ value, dispatch, formAction, fieldId, fieldName }) => {
     return (
-        <React.Fragment>
+        <div className="dateInput">
             <label htmlFor={fieldId}>{fieldName}</label>
             <input
                 id={fieldId}
@@ -22,6 +23,6 @@ export const DateField: React.FC<DateFieldProps> = ({ value, dispatch, formActio
                     dispatch({ type: formAction, payload: { date: e.target.value } });
                 }}
             />
-        </React.Fragment>
+        </div>
     );
 };

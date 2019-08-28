@@ -7,8 +7,8 @@ import { getDateRanges } from '../utils/dates.ts';
 import { IAppState } from './App.tsx';
 import { CheckBox } from './CheckBox.tsx';
 import { DateField } from './DateField.tsx';
-import { SearchInput } from './SearchInput.tsx';
 import './JiraQueryBuilderForm.scss';
+import { SearchInput } from './SearchInput.tsx';
 
 interface IFormProps {
     callback: Dispatch<SetStateAction<IAppState>>;
@@ -62,7 +62,7 @@ export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
 
     function submitHandler(event: React.SyntheticEvent): void {
         event.preventDefault();
-        console.log(formState);
+
         const criterias = Object.entries(formState.checkedCriterias).reduce((criteriasCollection, keyValTuple) => {
             if (!keyValTuple[1]) {
                 return criteriasCollection;
@@ -86,8 +86,8 @@ export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
     return (
         <form id={formId} onSubmit={submitHandler} autoComplete={'off'}>
             <SearchInput value={formState.assignee} dispatch={dispatch} />
-            <p>Criterias:</p>
 
+            <p>Criterias:</p>
             <div className="checkboxes">{checkBoxes}</div>
 
             <div className="dateFields">

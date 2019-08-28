@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React from 'react';
 import { useFetch } from '../hooks/useFetch.tsx';
 import { jiraApiUrlAutocomplete } from '../secrets.ts';
 import './Dropdown.scss';
@@ -20,19 +20,17 @@ interface DropdownProps {
 // TODO: Support comma separated assignee autocomplete.
 
 export const Dropdown: React.FC<DropdownProps> = ({ searchTerm, showDropdown, updateAssignee }) => {
-    
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
 
     const data = useFetch(lowerCaseSearchTerm.length ? jiraApiUrlAutocomplete + lowerCaseSearchTerm : '');
 
-    if (data.results && !data.results.every((item: {value: string;}) => item.value.toLowerCase() === lowerCaseSearchTerm)) {
+    if (data.results && !data.results.every((item: { value: string }) => item.value.toLowerCase() === lowerCaseSearchTerm)) {
         return (
             <ul className="dropdownList">
                 {data.results.map((item: any) => (
                     <li
                         key={item.value}
                         onClick={() => {
-                            console.log(item.value)
                             updateAssignee(item.value);
                         }}>
                         {item.value}

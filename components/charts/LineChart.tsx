@@ -1,15 +1,20 @@
-import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import { format } from 'date-fns';
+import React, { useEffect, useRef } from 'react';
+import { predictY } from '../../utils/predictY.ts';
 import './LineChart.scss';
 
 interface ILineChartProps {
     chartId: string;
     chartTitle: string;
-    data: Array<{date: string; info: number}>;
+    data: DataPoint[];
     lineColor?: string;
     yMax?: number;
 }
+
+type DataPoint = {
+    date: string;
+    info: number;
+};
 
 // Chart Constants
 const margin = { top: 30, right: 20, bottom: 30, left: 50 };
@@ -33,6 +38,10 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             .range([height, 0]); // output
 
         // 7. d3's line generator
+        const pathData = data.map((data, i) => {
+            return [i, data.info];
+        });
+
         const line = d3
             .line()
             .x(function(d, i) {
@@ -43,10 +52,22 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             }) // set the y values for the line generator
             .curve(d3.curveMonotoneX); // apply smoothing to the line
 
+        const trendLine = d3
+            .line()
+            .x(function(d, i) {
+                return xScale(d[0]);
+            }) // set the x values for the line generator
+            .y(function(d) {
+                return yScale(predictY(pathData, d[0]));
+            }) // set the y values for the line generator
+            .curve(d3.curveMonotoneX); // apply smoothing to the line
+
         // 8. An array of objects of length N. Each object has key -> value pair, the key being "y" and the value is a random number
 
         // 1. Select the container
         const svgContainer = d3.select(container.current);
+
+        const tooltip = d3.select(`div.${chartId}.tooltip`);
 
         // Main Graph Body
         svgContainer
@@ -76,13 +97,25 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
         // Path Line
         svgContainer
             .append('path')
-            .datum(data.map((data, i) => [i, data.info])) // 10. Binds data to the line
+            .datum(pathData) // 10. Binds data to the line
             .attr('class', 'line') // Assign a class for styling
-            .style('stroke', (lineColor || '#000000'))
+            .style('stroke', lineColor || '#000000')
             .style('stroke-width', lineWidth)
             .style('fill', 'none')
             .attr('transform', `translate(${margin.left}, ${margin.top})`)
             .attr('d', line); // 11. Calls the line generator
+
+        svgContainer
+            .append('path')
+            .datum(pathData) // 10. Binds data to the line
+            .attr('class', 'line') // Assign a class for styling
+            .style('stroke', lineColor || '#000000')
+            .style('stroke-dasharray', '8 8')
+            .style('stroke-width', 1)
+            .style('opacity', '.6')
+            .style('fill', 'none')
+            .attr('transform', `translate(${margin.left}, ${margin.top})`)
+            .attr('d', trendLine); // 11. Calls the line generator
 
         // Circles
         svgContainer
@@ -100,7 +133,10 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             .attr('r', circleWidth)
             .attr('transform', `translate(${margin.left}, ${margin.top})`)
             .on('mouseover', function(d) {
-                console.log(d.date, d.info);
+                tooltip.html(`Date: ${d.date}<br/>Value: ${d.info}`).style('opacity', '1');
+            })
+            .on('mouseout', function(d) {
+                tooltip.style('opacity', '0');
             });
 
         return () => {
@@ -110,6 +146,7 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
 
     return (
         <div className="chartContainer">
+            <div className={`${chartId} tooltip`} />
             <h2>{chartTitle}</h2>
             <svg ref={container} id={chartId} />
         </div>

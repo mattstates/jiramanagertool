@@ -5,8 +5,10 @@ import './App.scss';
 import { TaskCountFailedCodeReview } from './charts/TaskCountFailedCodeReview.tsx';
 import { TaskCountFailedQA } from './charts/TaskCountFailedQA.tsx';
 import { TasksCompleted } from './charts/TasksCompleted.tsx';
+import { TimeLogged } from './charts/TimeLogged.tsx';
 import { TotalFailedCodeReview } from './charts/TotalFailedCodeReview.tsx';
 import { TotalFailedQA } from './charts/TotalFailedQA.tsx';
+import { Velocity } from './charts/Velocity.tsx';
 import { JiraQueryBuilderForm } from './JiraQueryBuilderForm.tsx';
 
 export interface IAppState {
@@ -16,9 +18,9 @@ export interface IAppState {
 }
 
 export function App() {
-    const [appState, updateAppState] = useState<IAppState>({ assignee: '', dateRanges: [], criterias: [] });
-    const [vizData, updateVizData] = useState<any>([]);
-    const [loading, updateLoading] = useState<boolean>(false);
+    const [appState, updateAppState] = useState < IAppState > ({ assignee: '', dateRanges: [], criterias: [] });
+    const [vizData, updateVizData] = useState < any > ([]);
+    const [loading, updateLoading] = useState < boolean > (false);
 
     console.log(vizData, '<--- vizData');
 
@@ -40,8 +42,6 @@ export function App() {
                 results.forEach((result) => {
                     data.push(result);
                 });
-                console.log(appState.dateRanges);
-                console.log(data, '<-- ALL DATA');
 
                 const formattedData: { [key: string]: any } = appState.dateRanges.reduce((hash: { [key: string]: any }, dateRange, i) => {
                     hash[dateRange[1]] = data[i];
@@ -65,18 +65,20 @@ export function App() {
             <JiraQueryBuilderForm callback={updateAppState} />
             {loading ? 'LOADING...' : ''}
             {!loading && renderCriteria(Criterias.TasksCompleted, appState.criterias) && isVisDataAvailable && <TasksCompleted data={vizData} />}
+            {!loading && renderCriteria(Criterias.TimeLogged, appState.criterias) && isVisDataAvailable && <TimeLogged data={vizData} />}
+            {!loading && renderCriteria(Criterias.Velocity, appState.criterias) && isVisDataAvailable && <Velocity data={vizData} />}
 
             {!loading && renderCriteria(Criterias.TaskCountFailedQA, appState.criterias) && isVisDataAvailable && <TaskCountFailedQA data={vizData} />}
             {!loading && renderCriteria(Criterias.TotalFailedQA, appState.criterias) && isVisDataAvailable && <TotalFailedQA data={vizData} />}
 
-            {!loading && renderCriteria(Criterias.TaskCountFailedCodeReview, appState.criterias) && isVisDataAvailable && <TaskCountFailedCodeReview data={vizData} />}
+            {!loading && renderCriteria(Criterias.TaskCountFailedCodeReview, appState.criterias) && isVisDataAvailable && (
+                <TaskCountFailedCodeReview data={vizData} />
+            )}
             {!loading && renderCriteria(Criterias.TotalFailedCodeReview, appState.criterias) && isVisDataAvailable && <TotalFailedCodeReview data={vizData} />}
-
         </Fragment>
     );
 }
 
 function renderCriteria(criteriaToShow: Criterias, allowedCriterias: Criterias[]) {
-    console.log(criteriaToShow, allowedCriterias)
     return allowedCriterias.indexOf(criteriaToShow) > -1;
 }

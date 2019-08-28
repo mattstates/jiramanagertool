@@ -14,7 +14,7 @@ interface DateFieldProps {
 export const DateField: React.FC<DateFieldProps> = ({ value, dispatch, formAction, fieldId, fieldName }) => {
     return (
         <div className="dateInput">
-            <label htmlFor={fieldId}>{fieldName}</label>
+            <label htmlFor={fieldId}>{fieldName}:</label>
             <input
                 id={fieldId}
                 type="date"

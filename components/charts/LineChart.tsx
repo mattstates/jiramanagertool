@@ -8,6 +8,7 @@ interface ILineChartProps {
     chartTitle: string;
     data: DataPoint[];
     lineColor?: string;
+    tooltipPrecision?: number;
     yMax?: number;
 }
 
@@ -23,7 +24,7 @@ const height = 270 - margin.top - margin.bottom;
 const lineWidth = 2;
 const circleWidth = 4;
 
-export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle, lineColor, yMax }) => {
+export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle, lineColor, tooltipPrecision = 0, yMax }) => {
     const container = useRef(null);
 
     useEffect(() => {
@@ -132,8 +133,17 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             })
             .attr('r', circleWidth)
             .attr('transform', `translate(${margin.left}, ${margin.top})`)
-            .on('mouseover', function(d) {
-                tooltip.html(`Date: ${d.date}<br/>Value: ${d.info}`).style('opacity', '1');
+            .on('mouseover', function(d, ...args) {
+                tooltip.style('top', `${Number(this.getAttribute('cy')) + 70}px`);
+                tooltip.style('left', `${Number(this.getAttribute('cx')) - 25}px`);
+                tooltip
+                    .html(
+                        `
+                    Date: ${d.date}<br/>
+                    Value: ${d.info.toFixed(tooltipPrecision)}
+                `
+                    )
+                    .style('opacity', '1');
             })
             .on('mouseout', function(d) {
                 tooltip.style('opacity', '0');

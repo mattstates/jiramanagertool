@@ -32,6 +32,6 @@ export const TaskCountFailedQA: React.FC<ITaskCountFailedQAProps> = ({ data }) =
         .reverse();
 
     return (
-        <LineChart chartId={'taskCountFailedQAChart'} chartTitle={'Percentage of Tasks with Failed QA'} data={formattedData} lineColor={'#0000ff'} yMax={100} />
+        <LineChart chartId={'taskCountFailedQAChart'} chartTitle={'Percentage of Tasks with Failed QA'} data={formattedData} lineColor={'#0000ff'} yMax={100} tooltipPrecision={2}  />
     );
 };

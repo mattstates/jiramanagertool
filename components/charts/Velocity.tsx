@@ -1,5 +1,5 @@
 import React from 'react';
-import getVelocityDevisor from '../../utils/getVelocityDevisor.ts';
+import getVelocityDivisor from '../../utils/getVelocityDivisor.ts';
 import { LineChart } from './LineChart.tsx';
 
 interface IVelocityProps {
@@ -42,12 +42,12 @@ export const Velocity: React.FC<IVelocityProps> = ({ data }) => {
                                     }, 0)
                             );
                         }, 0) /
-                        getVelocityDevisor(mappedIssues) /
+                        getVelocityDivisor(mappedIssues) /
                         3600
                 }
             ];
         }, [])
         .reverse();
 
-    return <LineChart chartId={'velocityChart'} chartTitle={'Velocity on Tasks Completed in the Date Range'} data={formattedData} lineColor={'green'} />;
+    return <LineChart chartId={'velocityChart'} chartTitle={'Velocity on Tasks Completed in the Date Range'} data={formattedData} lineColor={'green'} tooltipPrecision={2} />;
 };

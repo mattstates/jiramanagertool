@@ -43,5 +43,5 @@ export default function getVelocityDivisor(issueFieldsCollection: AssignedJiraIs
         .map(countUniqueWorkLogDays)
         .reduce((total: number, assignee: number) => {
             return total + assignee;
-        }, 0);
+        }, 0) || 1;
 }

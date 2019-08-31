@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Criterias } from '../enums/criterias.ts';
 import { urlBuilder } from '../secrets.ts';
 import './App.scss';
+import { EstimationAccuracy } from './charts/EstimationAccuracy.tsx';
 import { TaskCountFailedCodeReview } from './charts/TaskCountFailedCodeReview.tsx';
 import { TaskCountFailedQA } from './charts/TaskCountFailedQA.tsx';
 import { TasksCompleted } from './charts/TasksCompleted.tsx';
@@ -75,6 +76,7 @@ export function App() {
                 <TaskCountFailedCodeReview data={vizData} />
             )}
             {!loading && renderCriteria(Criterias.TotalFailedCodeReview, appState.criterias) && isVisDataAvailable && <TotalFailedCodeReview data={vizData} />}
+            {!loading && renderCriteria(Criterias.EstimationAccuracy, appState.criterias) && isVisDataAvailable && <EstimationAccuracy data={vizData} />}
         </Fragment>
     );
 }

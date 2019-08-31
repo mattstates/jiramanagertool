@@ -1,5 +1,5 @@
 import { addMonths } from 'date-fns';
-import React, { Dispatch, SetStateAction, useReducer } from 'react';
+import React, { Dispatch, SetStateAction, useReducer, ReactHTMLElement } from 'react';
 import { IFormAction } from '../actions/FormAction.ts';
 import { Criterias } from '../enums/criterias.ts';
 import { FormActionTypes } from '../enums/formActionTypes.ts';
@@ -63,25 +63,30 @@ export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
     function submitHandler(event: React.SyntheticEvent): void {
         event.preventDefault();
 
-        const criterias = Object.entries(formState.checkedCriterias).reduce((criteriasCollection, keyValTuple) => {
-            if (!keyValTuple[1]) {
-                return criteriasCollection;
-            }
+        const criterias: Criterias[] = Object.entries(formState.checkedCriterias).reduce(
+            (criteriasCollection: Criterias[], keyValTuple: [string, boolean]): Criterias[] => {
+                if (!keyValTuple[1]) {
+                    return criteriasCollection;
+                }
 
-            const typedCriteria = keyValTuple[0].replace(/\s/gi, '') as keyof typeof Criterias;
+                const typedCriteria = keyValTuple[0].replace(/\s/gi, '') as keyof typeof Criterias;
 
-            return [...criteriasCollection, Criterias[typedCriteria]];
-        }, []);
+                return [...criteriasCollection, Criterias[typedCriteria]];
+            },
+            []
+        );
 
-        callback({ assignee: formState.assignee, dateRanges: getDateRanges(formState.fromDate, formState.endDate), criterias });
+        callback({ assignee: formState.assignee, criterias, dateRanges: getDateRanges(formState.fromDate, formState.endDate) });
     }
 
-    const checkBoxes = Object.values(Criterias).map((criteria, i) => {
-        const isChecked = formState.checkedCriterias[criteria] ? formState.checkedCriterias[criteria] : false;
+    const checkBoxes = Object.values(Criterias).map(
+        (criteria: string, i: number): JSX.Element => {
+            const isChecked = formState.checkedCriterias[criteria] ? formState.checkedCriterias[criteria] : false;
 
-        const id = `${criteria}${i}`;
-        return <CheckBox id={id} isChecked={isChecked} key={id} criteria={criteria} dispatch={dispatch} />;
-    });
+            const id = `${criteria}${i}`;
+            return <CheckBox id={id} isChecked={isChecked} key={id} criteria={criteria} dispatch={dispatch} />;
+        }
+    );
 
     return (
         <form id={formId} onSubmit={submitHandler} autoComplete={'off'}>

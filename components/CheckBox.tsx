@@ -9,7 +9,7 @@ interface CheckBoxProps {
     isChecked: boolean;
 }
 
-export const CheckBox: React.FC<CheckBoxProps> = ({ isChecked, id, criteria, dispatch }) => {
+export const CheckBox: React.FC<CheckBoxProps> = ({ criteria, dispatch, id, isChecked }) => {
     return (
         <div className="checkbox">
             <label htmlFor={id}>{criteria}</label>
@@ -17,7 +17,8 @@ export const CheckBox: React.FC<CheckBoxProps> = ({ isChecked, id, criteria, dis
                 onChange={() => dispatch({ type: FormActionTypes.UpdateCheckBoxes, payload: { criteria, isChecked: !isChecked } })}
                 checked={isChecked}
                 type="checkbox"
-                id={id}></input>
+                id={id}
+            />
         </div>
     );
 };

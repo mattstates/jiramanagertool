@@ -1,20 +1,22 @@
 import React, { useRef } from 'react';
+import { ChartData, ChartDataPoint } from '../../types/chartTypes';
+import { JiraIssue, JiraResponse } from '../../types/jiraTypes';
 import { LineChart } from './LineChart.tsx';
 
 interface ITotalFailedCodeReviewProps {
-    data: any;
+    data: ChartData;
 }
 
 // customfield_13380
 export const TotalFailedCodeReview: React.FC<ITotalFailedCodeReviewProps> = ({ data }) => {
     const container = useRef(null);
-    const formattedData: { date: string; info: number }[] = Object.entries(data)
-        .reduce((acc: { date: string; info: number }[], cur: [string, { issues: any }]) => {
+    const formattedData: ChartDataPoint[] = Object.entries(data)
+        .reduce((acc: ChartDataPoint[], cur: [string, JiraResponse]): ChartDataPoint[] => {
             return [
                 ...acc,
                 {
                     date: cur[0],
-                    info: cur[1].issues.reduce((total: number, issue: any) => {
+                    info: cur[1].issues.reduce((total: number, issue: JiraIssue): number => {
                         total += issue.fields.customfield_13380;
 
                         return total;

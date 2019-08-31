@@ -1,29 +1,29 @@
 import React from 'react';
 import { LineChart } from './LineChart.tsx';
+import { ChartDataPoint, ChartData } from '../../types/chartTypes';
+import { JiraIssue, JiraResponse } from '../../types/jiraTypes';
 
 interface ITaskCountFailedQAProps {
-    data: any;
+    data: ChartData;
 }
 
 // customfield_13381
 export const TaskCountFailedQA: React.FC<ITaskCountFailedQAProps> = ({ data }) => {
-    const formattedData: { date: string; info: number }[] = Object.entries(data)
-        .reduce((acc: { date: string; info: number }[], cur: [string, { issues: any }]) => {
-            return [
+    const formattedData: ChartDataPoint[] = Object.entries(data)
+        .reduce((acc: ChartDataPoint[], cur: [string, JiraResponse]): ChartDataPoint[] => {
+        return [
                 ...acc,
                 {
                     date: cur[0],
                     info:
                         Number(
                             (
-                                (cur[1].issues.reduce((total: number, issue: any) => {
+                                (cur[1].issues.reduce((total: number, issue: JiraIssue) => {
                                     if (issue.fields.customfield_13381) {
                                         total++;
                                     }
                                     return total;
-                                }, 0) /
-                                    cur[1].issues.length) *
-                                100
+                                }, 0) / cur[1].issues.length) * 100
                             ).toFixed(2)
                         ) || 0
                 }

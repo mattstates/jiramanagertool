@@ -1,25 +1,14 @@
-type WorkLog = {
-    updateAuthor: { name: string };
-    updated: string;
-};
+import { JiraIssueWorklog, JiraIssueField } from "../types/jiraTypes";
+import getDateFromJiraTimeStamp from "./getDateFromJiraTimeStamp.ts";
 
-type WorkLoggedJiraIssue = {
-    worklog: { worklogs: WorkLog[] };
-    assignee: { name: string };
-};
-
-/**
- * @param {Array} issueCollection - fields
- * @returns {Number}
- * */
-export default function countUniqueWorkLogDays(issueCollection: WorkLoggedJiraIssue[]): number {
+export default function countUniqueWorkLogDays(issueCollection: JiraIssueField[]): number {
     const days: string[] = [];
 
-    issueCollection.forEach((issue) => {
+    issueCollection.forEach((issue: JiraIssueField) => {
         const { worklog } = issue;
-        worklog.worklogs.forEach((log) => {
+        worklog.worklogs.forEach((log: JiraIssueWorklog) => {
             if (issue.assignee.name === log.updateAuthor.name) {
-                days.push(log.updated.slice(0, 10)); // "2018-08-29T16:46:14.470-0700" => "2018-08-29"
+                days.push(getDateFromJiraTimeStamp(log.updated)); // "2018-08-29T16:46:14.470-0700" => "2018-08-29"
             }
         });
     });

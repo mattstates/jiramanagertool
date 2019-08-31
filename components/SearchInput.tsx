@@ -7,13 +7,13 @@ import './SearchInput.scss';
 const INPUT_ID = 'assigneeField';
 
 interface InputProps {
-    value: string;
     dispatch: React.Dispatch<IFormAction>;
+    value: string;
 }
 
 // TODO: Set up Atlassian Autocomplete to suggest usernames as the user types.
 
-export const SearchInput: React.FC<InputProps> = ({ value, dispatch }) => {
+export const SearchInput: React.FC<InputProps> = ({ dispatch, value }) => {
     const inputRef = useRef(null);
     const [showDropdown, updateShowDropdown] = useState<boolean>(true);
 
@@ -24,7 +24,7 @@ export const SearchInput: React.FC<InputProps> = ({ value, dispatch }) => {
         }
     }, []);
 
-    function updateAssignee (assignee: string):void {
+    function updateAssignee (assignee: string): void {
         dispatch({ type: FormActionTypes.UpdateAssignee, payload: { assignee } });
     }
 

@@ -1,8 +1,11 @@
 import countUniqueWorkLogDays from './countUniqueWorkLogDays.ts';
+import { JiraIssueField } from '../types/jiraTypes';
+
+type AssignedTasksMap = {
+    [key: string]: object[];
+};
 
 /**
- * @param {Array} issueCollection - fields
- * @returns {Number}
  * @description When the issueCollection has been attributed to a sole assignee, there should not be multiple keys
  * on the accumulator in the reduce method. But for issueCollections that are an aggregation like the
  * Full Record Set or collections for a Resource Queue, the .reduce accumulator will have a key for every
@@ -11,16 +14,8 @@ import countUniqueWorkLogDays from './countUniqueWorkLogDays.ts';
  *
  * If for some reason there is no assignee, we will exclude that issue.
  */
-type AssignedTasksMap = {
-    [key: string]: object[];
-};
-
-type AssignedJiraIssue = {
-    assignee: { name: string };
-};
-
-export default function getVelocityDivisor(issueFieldsCollection: AssignedJiraIssue[]): number {
-    const issuesByAssignee: AssignedTasksMap = issueFieldsCollection.reduce((accumulator: AssignedTasksMap, issue) => {
+export default function getVelocityDivisor(issueFieldsCollection: JiraIssueField[]): number {
+    const issuesByAssignee: AssignedTasksMap = issueFieldsCollection.reduce((accumulator: AssignedTasksMap, issue: JiraIssueField): AssignedTasksMap => {
         let assignee = '';
 
         if (issue.assignee && issue.assignee.name) {
@@ -39,9 +34,11 @@ export default function getVelocityDivisor(issueFieldsCollection: AssignedJiraIs
     }, {});
 
     // Sum unique days to use as a divisor for estimation.
-    return Object.values(issuesByAssignee)
-        .map(countUniqueWorkLogDays)
-        .reduce((total: number, assignee: number) => {
-            return total + assignee;
-        }, 0) || 1;
+    return (
+        Object.values(issuesByAssignee)
+            .map(countUniqueWorkLogDays)
+            .reduce((total: number, assignee: number): number => {
+                return total + assignee;
+            }, 0) || 1
+    );
 }

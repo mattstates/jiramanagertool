@@ -1,5 +1,5 @@
-enum Criterias {
-    // EstimationAccuracy = 'Estimation Accuracy',
+export enum Criterias {
+    EstimationAccuracy = 'Estimation Accuracy',
     TaskCountFailedCodeReview = 'Task Count Failed Code Review',
     // TaskCountFailedDeployment = 'Task Count Failed Deployment',
     TaskCountFailedQA = 'Task Count Failed QA',
@@ -10,5 +10,3 @@ enum Criterias {
     TotalFailedQA = 'Total Failed QA',
     Velocity = 'Velocity'
 }
-
-export { Criterias };

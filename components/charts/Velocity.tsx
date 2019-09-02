@@ -4,6 +4,8 @@ import { JiraIssue, JiraIssueField, JiraIssueWorklog, JiraResponse } from '../..
 import getVelocityDivisor from '../../utils/getVelocityDivisor.ts';
 import { LineChart } from './LineChart.tsx';
 
+const VELOCITY_THRESHOLD = 6;
+
 interface IVelocityProps {
     data: ChartData;
 }
@@ -47,6 +49,8 @@ export const Velocity: React.FC<IVelocityProps> = ({ data }) => {
             ];
         }, [])
         .reverse();
+    
+    const largestVelocity = Math.max(...formattedData.map((data: ChartDataPoint) => data.info ));
 
-    return <LineChart chartId={'velocityChart'} chartTitle={'Velocity on Tasks Completed in the Date Range'} data={formattedData} lineColor={'green'} tooltipPrecision={2} />;
+    return <LineChart chartId={'velocityChart'} chartTitle={'Velocity on Tasks Completed in the Date Range'} data={formattedData} lineColor={'green'} tooltipPrecision={2} yMax={largestVelocity >= VELOCITY_THRESHOLD ? largestVelocity + 1 : VELOCITY_THRESHOLD} />;
 };

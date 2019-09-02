@@ -3,7 +3,6 @@ import React, { useEffect, useRef } from 'react';
 import { ChartDataPoint } from '../../types/chartTypes';
 import { predictY } from '../../utils/predictY.ts';
 import './LineChart.scss';
-import { number } from 'prop-types';
 
 interface ILineChartProps {
     chartId: string;
@@ -22,7 +21,6 @@ const height = 270 - margin.top - margin.bottom;
 const lineWidth = 2;
 const circleWidth = 4;
 const Y_TICK_THRESHOLD = 5;
-
 
 export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle, lineColor, tooltipPrecision = 0, yMax, yMin = 0 }) => {
     const container = useRef(null);
@@ -58,7 +56,8 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
                 return xScale(d[0]);
             })
             .y(function(d: [number, number]) {
-                return yScale(predictY(pathData, d[0]));
+                const yPoint = predictY(pathData, d[0]);
+                return yScale(yPoint >= yMin ? yPoint : yMin);
             })
             .curve(d3.curveMonotoneX);
 
@@ -89,9 +88,14 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             .append('g')
             .attr('class', 'y axis')
             .attr('transform', `translate(${margin.left}, ${margin.top})`)
-            .call(d3.axisLeft(yScale).ticks((() => {
-                return data.length > Y_TICK_THRESHOLD ? Y_TICK_THRESHOLD : data.length + 1;
-            })(), 's'));
+            .call(
+                d3.axisLeft(yScale).ticks(
+                    (() => {
+                        return data.length > Y_TICK_THRESHOLD ? Y_TICK_THRESHOLD : data.length + 1;
+                    })(),
+                    's'
+                )
+            );
 
         // Path Lines
         svgContainer
@@ -159,9 +163,9 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             .attr('r', circleWidth)
             .attr('transform', `translate(${margin.left}, ${margin.top})`)
             .on('mouseover', function(d, ...args) {
-                tooltip.style('top', `${Number(this.getAttribute('cy')) + 70}px`);
-                tooltip.style('left', `${Number(this.getAttribute('cx')) - 25}px`);
                 tooltip
+                    .style('top', `${Number(this.getAttribute('cy')) + 70}px`)
+                    .style('left', `${Number(this.getAttribute('cx')) - 25}px`)
                     .html(
                         `
                     Date: ${d.date}<br/>
@@ -171,7 +175,10 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
                     .style('opacity', '1');
             })
             .on('mouseout', function(d) {
-                tooltip.style('opacity', '0');
+                tooltip
+                    .style('opacity', '0')
+                    .style('top', '-1000px')
+                    .style('left', '-1000px');
             });
 
         return () => {

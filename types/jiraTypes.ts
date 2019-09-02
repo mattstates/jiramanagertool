@@ -4,6 +4,7 @@ export type JiraIssue = {
     id: string;
     key: string;
     self: string;
+    changelog: JiraIssueChangeLog;
 };
 
 export type JiraIssueField = {
@@ -42,4 +43,27 @@ export type JiraResponse = {
     maxResults: number;
     startAt: number;
     total: number;
+}
+
+export type JiraIssueChangeLog = {
+    startAt: number;
+    maxResults: number;
+    total: number;
+    histories: JiraChangelogHistory[];
+}
+
+export type JiraChangelogHistory = {
+    id: string;
+    author: JiraIdentity;
+    created: string; // EX: "2016-10-19T14:44:23.830-0700"
+    items: JiraHistoryItem[];
+}
+
+export type JiraHistoryItem = {
+    field: string;
+    fieldtype: string;
+    from?: string;
+    fromString?: string;
+    to: string;
+    toString: string;
 }

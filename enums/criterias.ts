@@ -6,7 +6,7 @@ export enum Criterias {
     TasksCompleted = 'Tasks Completed',
     TimeLogged = 'Time Logged',
     TotalFailedCodeReview = 'Total Failed Code Review',
-    // TotalFailedDeployment = 'Total Failed Deployment',
+    TotalFailedDeployment = 'Total Failed Deployment',
     TotalFailedQA = 'Total Failed QA',
     Velocity = 'Velocity'
 }

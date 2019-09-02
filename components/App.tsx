@@ -11,6 +11,7 @@ import { TotalFailedCodeReview } from './charts/TotalFailedCodeReview.tsx';
 import { TotalFailedQA } from './charts/TotalFailedQA.tsx';
 import { Velocity } from './charts/Velocity.tsx';
 import { JiraQueryBuilderForm } from './JiraQueryBuilderForm.tsx';
+import { TotalFailedDeployment } from './charts/TotalFailedDeployment.tsx';
 
 export interface IAppState {
     assignee: string;
@@ -68,6 +69,8 @@ export function App() {
             {!loading && renderCriteria(Criterias.TasksCompleted, appState.criterias) && isVisDataAvailable && <TasksCompleted data={vizData} />}
             {!loading && renderCriteria(Criterias.TimeLogged, appState.criterias) && isVisDataAvailable && <TimeLogged data={vizData} />}
             {!loading && renderCriteria(Criterias.Velocity, appState.criterias) && isVisDataAvailable && <Velocity data={vizData} />}
+
+            {!loading && renderCriteria(Criterias.TotalFailedDeployment, appState.criterias) && isVisDataAvailable && <TotalFailedDeployment data={vizData} />}
 
             {!loading && renderCriteria(Criterias.TaskCountFailedQA, appState.criterias) && isVisDataAvailable && <TaskCountFailedQA data={vizData} />}
             {!loading && renderCriteria(Criterias.TotalFailedQA, appState.criterias) && isVisDataAvailable && <TotalFailedQA data={vizData} />}

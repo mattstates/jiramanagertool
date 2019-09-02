@@ -8,10 +8,10 @@ import { TaskCountFailedQA } from './charts/TaskCountFailedQA.tsx';
 import { TasksCompleted } from './charts/TasksCompleted.tsx';
 import { TimeLogged } from './charts/TimeLogged.tsx';
 import { TotalFailedCodeReview } from './charts/TotalFailedCodeReview.tsx';
+import { TotalFailedDeployment } from './charts/TotalFailedDeployment.tsx';
 import { TotalFailedQA } from './charts/TotalFailedQA.tsx';
 import { Velocity } from './charts/Velocity.tsx';
 import { JiraQueryBuilderForm } from './JiraQueryBuilderForm.tsx';
-import { TotalFailedDeployment } from './charts/TotalFailedDeployment.tsx';
 
 export interface IAppState {
     assignee: string;

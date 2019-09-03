@@ -1,16 +1,16 @@
 import { addMonths } from 'date-fns';
 import React, { Dispatch, SetStateAction, useReducer } from 'react';
-import { IFormAction } from '../actions/FormAction.ts';
-import { Criterias } from '../enums/Criterias.ts';
+import { IFormAction } from '../actions/FormAction';
+import { Criterias } from '../enums/Criterias';
 import { DateRanges } from '../enums/dateRanges';
-import { FormActionTypes } from '../enums/FormActionTypes.ts';
-import { getDateRanges } from '../utils/dates.ts';
-import { IAppState } from './App.tsx';
-import { CheckBox } from './CheckBox.tsx';
-import { DateField } from './DateField.tsx';
+import { FormActionTypes } from '../enums/FormActionTypes';
+import { getDateRanges } from '../utils/dates';
+import { IAppState } from './App';
+import { CheckBox } from './CheckBox';
+import { DateField } from './DateField';
 import { DateIntervals } from './DateIntervals';
 import './JiraQueryBuilderForm.scss';
-import { SearchInput } from './SearchInput.tsx';
+import { SearchInput } from './SearchInput';
 
 interface IFormProps {
     callback: Dispatch<SetStateAction<IAppState>>;
@@ -18,16 +18,20 @@ interface IFormProps {
 
 interface FormState {
     assignee: string;
-    checkedCriterias: { [key: string]: boolean };
+    checkedCriterias: CheckedCriteriaHash;
     fromDate: string;
     endDate: string;
+}
+
+type CheckedCriteriaHash = {
+    [criteriaName: string]: boolean;
 }
 
 const currentDate: Date = new Date();
 
 const initialFormState: FormState = {
     // Setting the default to have all boxes selected.
-    checkedCriterias: Object.values(Criterias).reduce((hash: { [key: string]: boolean }, criteria: string) => {
+    checkedCriterias: Object.values(Criterias).reduce((hash: CheckedCriteriaHash, criteria: string) => {
         hash[criteria] = true;
         return hash;
     }, {}),

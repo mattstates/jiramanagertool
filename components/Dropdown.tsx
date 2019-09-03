@@ -1,6 +1,6 @@
 import React from 'react';
-import { useFetch } from '../hooks/useFetch.tsx';
-import { jiraApiUrlAutocomplete } from '../secrets.ts';
+import { useFetch } from '../hooks/useFetch';
+import { jiraApiUrlAutocomplete } from '../secrets';
 import './Dropdown.scss';
 
 // function getMatchingKey(inputString: string): string[] {

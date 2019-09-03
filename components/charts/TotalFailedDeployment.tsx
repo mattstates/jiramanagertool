@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { ChartData, ChartDataPoint } from '../../types/chartTypes';
 import { JiraIssue, JiraResponse, JiraIssueField } from '../../types/jiraTypes';
-import { LineChart } from './LineChart.tsx';
-import { getFailedStakeHolderCount } from '../../utils/getFailedStakeholderCount.ts';
+import { LineChart } from './LineChart';
+import { getFailedStakeHolderCount } from '../../utils/getFailedStakeholderCount';
 
 interface ITotalFailedDeploymentProps {
     data: ChartData;

@@ -1,7 +1,7 @@
-import { JiraResponse } from './jiraTypes.ts';
+import { JiraResponse } from './jiraTypes';
 
 export type ChartData = {
-    [key: string]: JiraResponse;
+    [endDate: string]: JiraResponse;
 };
 
 export type ChartDataPoint = {

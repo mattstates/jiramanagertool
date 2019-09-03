@@ -1,4 +1,4 @@
-import countUniqueWorkLogDays from './countUniqueWorkLogDays.ts';
+import countUniqueWorkLogDays from './countUniqueWorkLogDays';
 import { JiraIssueField } from '../types/jiraTypes';
 
 type AssignedTasksMap = {

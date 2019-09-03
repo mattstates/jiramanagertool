@@ -1,6 +1,6 @@
 import React from 'react';
 import { JiraIssue, JiraIssueField, JiraIssueWorklog, JiraResponse } from '../../types/jiraTypes';
-import { LineChart } from './LineChart.tsx';
+import { LineChart } from './LineChart';
 import { ChartData, ChartDataPoint } from '../../types/chartTypes';
 
 interface IEstimationAccuracyProps {

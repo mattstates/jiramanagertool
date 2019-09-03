@@ -1,5 +1,5 @@
 import React from 'react';
-import { LineChart } from './LineChart.tsx';
+import { LineChart } from './LineChart';
 import { ChartDataPoint, ChartData } from '../../types/chartTypes';
 import { JiraIssue, JiraResponse } from '../../types/jiraTypes';
 

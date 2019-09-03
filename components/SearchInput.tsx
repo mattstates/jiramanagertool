@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IFormAction } from '../actions/FormAction.ts';
-import { FormActionTypes } from '../enums/FormActionTypes.ts';
-import { Dropdown } from './Dropdown.tsx';
+import { IFormAction } from '../actions/FormAction';
+import { FormActionTypes } from '../enums/FormActionTypes';
+import { Dropdown } from './Dropdown';
 import './SearchInput.scss';
 
 const INPUT_ID = 'assigneeField';

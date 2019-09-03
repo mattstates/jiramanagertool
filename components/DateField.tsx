@@ -1,6 +1,6 @@
 import React from 'react';
-import { IFormAction } from '../actions/FormAction.ts';
-import { FormActionTypes } from '../enums/FormActionTypes.ts';
+import { IFormAction } from '../actions/FormAction';
+import { FormActionTypes } from '../enums/FormActionTypes';
 import './DateField.scss';
 
 interface DateFieldProps {

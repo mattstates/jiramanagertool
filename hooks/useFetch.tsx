@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { API_CREDENTIALS } from '../secrets.ts';
+import { API_CREDENTIALS } from '../secrets';
 
 export function useFetch(fetchUrl: string): { results?: any } {
     const [isFetchCompleted, updateIsFetchCompleted] = useState<boolean>(false);

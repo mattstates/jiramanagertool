@@ -1,8 +1,8 @@
 import React from 'react';
 import { ChartData, ChartDataPoint } from '../../types/chartTypes';
 import { JiraIssue, JiraIssueField, JiraIssueWorklog, JiraResponse } from '../../types/jiraTypes';
-import getVelocityDivisor from '../../utils/getVelocityDivisor.ts';
-import { LineChart } from './LineChart.tsx';
+import getVelocityDivisor from '../../utils/getVelocityDivisor';
+import { LineChart } from './LineChart';
 
 const VELOCITY_THRESHOLD = 6;
 

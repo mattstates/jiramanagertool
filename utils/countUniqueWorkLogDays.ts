@@ -1,5 +1,5 @@
 import { JiraIssueWorklog, JiraIssueField } from "../types/jiraTypes";
-import getDateFromJiraTimeStamp from "./getDateFromJiraTimeStamp.ts";
+import getDateFromJiraTimeStamp from "./getDateFromJiraTimeStamp";
 
 export default function countUniqueWorkLogDays(issueCollection: JiraIssueField[]): number {
     const days: string[] = [];

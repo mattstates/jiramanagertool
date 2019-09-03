@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Criterias } from '../enums/criterias.ts';
+import { Criterias } from '../enums/Criterias.ts';
 import { urlBuilder } from '../secrets.ts';
 import './App.scss';
 import { EstimationAccuracy } from './charts/EstimationAccuracy.tsx';
@@ -20,15 +20,15 @@ export interface IAppState {
 }
 
 export function App() {
-    const [appState, updateAppState] = useState < IAppState > ({ assignee: '', dateRanges: [], criterias: [] });
-    const [vizData, updateVizData] = useState < any > ([]);
-    const [loading, updateLoading] = useState < boolean > (false);
+    const [appState, updateAppState] = useState<IAppState>({ assignee: '', dateRanges: [], criterias: [] });
+    const [vizData, updateVizData] = useState<any>({});
+    const [loading, updateLoading] = useState<boolean>(false);
 
     console.log(vizData, '<--- vizData');
 
     useEffect(() => {
         updateLoading(true);
-        updateVizData([]);
+        updateVizData({});
 
         const data: any[] = [];
         const promises = appState.dateRanges.map((dateRange) => {

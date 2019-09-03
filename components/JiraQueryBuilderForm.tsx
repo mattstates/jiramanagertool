@@ -1,12 +1,14 @@
 import { addMonths } from 'date-fns';
-import React, { Dispatch, SetStateAction, useReducer, ReactHTMLElement } from 'react';
+import React, { Dispatch, SetStateAction, useReducer } from 'react';
 import { IFormAction } from '../actions/FormAction.ts';
-import { Criterias } from '../enums/criterias.ts';
-import { FormActionTypes } from '../enums/formActionTypes.ts';
+import { Criterias } from '../enums/Criterias.ts';
+import { DateRanges } from '../enums/dateRanges';
+import { FormActionTypes } from '../enums/FormActionTypes.ts';
 import { getDateRanges } from '../utils/dates.ts';
 import { IAppState } from './App.tsx';
 import { CheckBox } from './CheckBox.tsx';
 import { DateField } from './DateField.tsx';
+import { DateIntervals } from './DateIntervals';
 import './JiraQueryBuilderForm.scss';
 import { SearchInput } from './SearchInput.tsx';
 
@@ -112,6 +114,7 @@ export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
                     fieldName={'End Date'}
                 />
             </div>
+            <DateIntervals name="dateIntervals" dateRanges={Object.values(DateRanges)} defaultDateRange={DateRanges.Months}/>
 
             <button type="submit">Submit</button>
             <p>

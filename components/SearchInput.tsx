@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IFormAction } from '../actions/FormAction.ts';
-import { FormActionTypes } from '../enums/formActionTypes.ts';
+import { FormActionTypes } from '../enums/FormActionTypes.ts';
 import { Dropdown } from './Dropdown.tsx';
 import './SearchInput.scss';
 

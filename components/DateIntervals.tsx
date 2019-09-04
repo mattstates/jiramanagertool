@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { DateRanges } from '../enums/DateRanges';
 import { IFormAction } from '../actions/FormAction';
 import { FormActionTypes } from '../enums/FormActionTypes';

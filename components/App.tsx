@@ -54,7 +54,8 @@ export function App() {
                 updateVizData(formattedData);
                 updateLoading(false);
             })
-            .catch((err: any) => {
+            .catch((error: {message: string}) => {
+                console.log(error.message)
                 updateLoading(false);
             });
     }, [appState.dateRanges, appState.assignee, appState.criterias]);

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { IFormAction } from '../actions/FormAction';
 import { FormActionTypes } from '../enums/FormActionTypes';
 import { Dropdown } from './Dropdown';
@@ -15,7 +15,6 @@ interface InputProps {
 
 export const SearchInput: React.FC<InputProps> = ({ dispatch, value }) => {
     const inputRef = useRef(null);
-    const [showDropdown, updateShowDropdown] = useState<boolean>(true);
 
     useEffect(() => {
         inputRef.current.focus();
@@ -37,17 +36,14 @@ export const SearchInput: React.FC<InputProps> = ({ dispatch, value }) => {
                 value={value}
                 onChange={(e) => {
                     updateAssignee(e.target.value)
-                    updateShowDropdown(Boolean(e.target.value));
                 }}
                 ref={inputRef}
                 onFocus={() => {
-                    updateShowDropdown(Boolean(value));
                 }}
                 onBlur={() => {
-                    updateShowDropdown(false);
                 }}
             />
-            <Dropdown showDropdown={showDropdown} searchTerm={value} updateAssignee={updateAssignee} />
+            <Dropdown searchTerm={value} updateAssignee={updateAssignee} />
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import { JiraIssueField, JiraChangelogHistory, JiraHistoryItem, JiraIssue } from '../types/jiraTypes';
+import { JiraChangelogHistory, JiraHistoryItem, JiraIssue } from '../types/jiraTypes';
 
 const FAILED_STAKEHOLDER_STATUS = 'Failed Stakeholder Test';
 

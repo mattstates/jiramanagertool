@@ -13,13 +13,12 @@ import './Dropdown.scss';
 
 interface DropdownProps {
     searchTerm: string;
-    showDropdown: boolean;
     updateAssignee: React.Dispatch<string>;
 }
 
 // TODO: Support comma separated assignee autocomplete.
 
-export const Dropdown: React.FC<DropdownProps> = ({ showDropdown, searchTerm, updateAssignee }) => {
+export const Dropdown: React.FC<DropdownProps> = ({ searchTerm, updateAssignee }) => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
 
     const data = useFetch(lowerCaseSearchTerm.length ? jiraApiUrlAutocomplete + lowerCaseSearchTerm : '');

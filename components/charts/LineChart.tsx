@@ -42,7 +42,7 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
 
         const line = d3
             .line()
-            .x(function(d: [number, number], i) {
+            .x(function(d: [number, number]) {
                 return xScale(d[0]);
             })
             .y(function(d: [number, number]) {
@@ -52,7 +52,7 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
 
         const trendLine = d3
             .line()
-            .x(function(d: [number, number], i) {
+            .x(function(d: [number, number]) {
                 return xScale(d[0]);
             })
             .y(function(d: [number, number]) {
@@ -79,8 +79,8 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             .call(
                 d3
                     .axisBottom(xScale)
-                    .tickValues(data.map((d: ChartDataPoint, i: number) => i))
-                    .tickFormat((d, i) => data[i].date)
+                    .tickValues(data.map((_d: ChartDataPoint, i: number) => i))
+                    .tickFormat((_d, i) => data[i].date)
             );
 
         // Y Axis Line
@@ -121,16 +121,16 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             .attr('d', trendLine);
 
         if (yMin < 0) {
-            const zeroLineData = data.map((data, i) => {
+            const zeroLineData = data.map((_d, i) => {
                 return [i, 0];
             });
 
             const zeroLine = d3
                 .line()
-                .x(function(d, i) {
+                .x(function(d) {
                     return xScale(d[0]);
                 })
-                .y(function(d) {
+                .y(function() {
                     return yScale(0);
                 });
 
@@ -154,7 +154,7 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             .enter()
             .append('circle')
             .attr('class', 'dot')
-            .attr('cx', function(d, i) {
+            .attr('cx', function(_d, i) {
                 return xScale(i);
             })
             .attr('cy', function(d) {
@@ -162,7 +162,7 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             })
             .attr('r', circleWidth)
             .attr('transform', `translate(${margin.left}, ${margin.top})`)
-            .on('mouseover', function(d, ...args) {
+            .on('mouseover', function(d) {
                 tooltip
                     .style('top', `${Number(this.getAttribute('cy')) + 70}px`)
                     .style('left', `${Number(this.getAttribute('cx')) - 25}px`)
@@ -174,7 +174,7 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
                     )
                     .style('opacity', '1');
             })
-            .on('mouseout', function(d) {
+            .on('mouseout', function() {
                 tooltip
                     .style('opacity', '0')
                     .style('top', '-1000px')

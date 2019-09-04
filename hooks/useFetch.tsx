@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { API_CREDENTIALS } from '../secrets';
 
 export function useFetch(fetchUrl: string): { results?: any } {
-    const [isFetchCompleted, updateIsFetchCompleted] = useState<boolean>(false);
     const [fetchData, updateFetchData] = useState<object>({});
 
     const abortController = new AbortController();
@@ -19,11 +18,9 @@ export function useFetch(fetchUrl: string): { results?: any } {
             .then((response: any) => response.json())
             .then((json: object) => {
                 updateFetchData(json);
-                updateIsFetchCompleted(true);
             })
             .catch((error: any) => {
                 updateFetchData({ errorMessage: error.message });
-                updateIsFetchCompleted(true);
             });
         return () => {
             abortController.abort();

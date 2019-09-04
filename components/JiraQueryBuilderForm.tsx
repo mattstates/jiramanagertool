@@ -2,7 +2,7 @@ import { addMonths } from 'date-fns';
 import React, { Dispatch, SetStateAction, useReducer } from 'react';
 import { IFormAction } from '../actions/FormAction';
 import { Criterias } from '../enums/Criterias';
-import { DateRanges } from '../enums/dateRanges';
+import { DateRanges } from '../enums/DateRanges';
 import { FormActionTypes } from '../enums/FormActionTypes';
 import { getDateRanges } from '../utils/dates';
 import { IAppState } from './App';
@@ -16,11 +16,13 @@ interface IFormProps {
     callback: Dispatch<SetStateAction<IAppState>>;
 }
 
-interface FormState {
+interface IFormState {
     assignee: string;
     checkedCriterias: CheckedCriteriaHash;
     fromDate: string;
     endDate: string;
+    interval: DateRanges;
+    intervalCount: number;
 }
 
 type CheckedCriteriaHash = {
@@ -29,7 +31,7 @@ type CheckedCriteriaHash = {
 
 const currentDate: Date = new Date();
 
-const initialFormState: FormState = {
+const initialFormState: IFormState = {
     // Setting the default to have all boxes selected.
     checkedCriterias: Object.values(Criterias).reduce((hash: CheckedCriteriaHash, criteria: string) => {
         hash[criteria] = true;
@@ -39,10 +41,12 @@ const initialFormState: FormState = {
     fromDate: addMonths(currentDate, -12)
         .toISOString()
         .split('T')[0],
-    endDate: `${currentDate.toISOString().split('T')[0]}`
+    endDate: `${currentDate.toISOString().split('T')[0]}`,
+    interval: DateRanges.Months,
+    intervalCount: 1
 };
 
-function formReducer(state: FormState, action: IFormAction): FormState {
+function formReducer(state: IFormState, action: IFormAction): IFormState {
     switch (action.type) {
         case FormActionTypes.UpdateCheckBoxes:
             const updatedCheckedCriterias = {
@@ -56,6 +60,10 @@ function formReducer(state: FormState, action: IFormAction): FormState {
             return { ...state, fromDate: action.payload.date };
         case FormActionTypes.UpdateEndDate:
             return { ...state, endDate: action.payload.date };
+        case FormActionTypes.UpdateInterval:
+                return { ...state, interval: action.payload.interval };
+        case FormActionTypes.UpdateIntervalCount:
+                return { ...state, intervalCount: action.payload.intervalCount };
         default:
             return { ...state };
     }
@@ -82,7 +90,7 @@ export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
             []
         );
 
-        callback({ assignee: formState.assignee, criterias, dateRanges: getDateRanges(formState.fromDate, formState.endDate) });
+        callback({ assignee: formState.assignee, criterias, dateRanges: getDateRanges(formState.fromDate, formState.endDate, formState.interval, formState.intervalCount) });
     }
 
     const checkBoxes = Object.values(Criterias).map(
@@ -118,7 +126,7 @@ export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
                     fieldName={'End Date'}
                 />
             </div>
-            <DateIntervals name="dateIntervals" dateRanges={Object.values(DateRanges)} defaultDateRange={DateRanges.Months}/>
+            <DateIntervals name="dateIntervals" dateRanges={Object.values(DateRanges)} interval={formState.interval} intervalCount={formState.intervalCount} dispatch={dispatch} />
 
             <button type="submit">Submit</button>
             <p>

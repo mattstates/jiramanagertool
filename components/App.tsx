@@ -1,10 +1,9 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { Criterias } from '../enums/Criterias';
-import { urlBuilder } from '../secrets';
-import { ChartData } from '../types/chartTypes';
-import { JiraResponse } from '../types/jiraTypes';
 import './App.scss';
+import { ChartData } from '../types/chartTypes';
+import { Criterias } from '../enums/Criterias';
 import { EstimationAccuracy } from './charts/EstimationAccuracy';
+import { JiraQueryBuilderForm } from './JiraQueryBuilderForm';
+import { JiraResponse } from '../types/jiraTypes';
 import { TaskCountFailedCodeReview } from './charts/TaskCountFailedCodeReview';
 import { TaskCountFailedQA } from './charts/TaskCountFailedQA';
 import { TasksCompleted } from './charts/TasksCompleted';
@@ -12,21 +11,20 @@ import { TimeLogged } from './charts/TimeLogged';
 import { TotalFailedCodeReview } from './charts/TotalFailedCodeReview';
 import { TotalFailedDeployment } from './charts/TotalFailedDeployment';
 import { TotalFailedQA } from './charts/TotalFailedQA';
+import { urlBuilder } from '../secrets';
 import { Velocity } from './charts/Velocity';
-import { JiraQueryBuilderForm } from './JiraQueryBuilderForm';
+import React, { Fragment, useEffect, useState } from 'react';
 
 export interface IAppState {
     assignee: string;
-    dateRanges: Array<[string, string]>;
     criterias: Array<Criterias>;
+    dateRanges: Array<[string, string]>;
 }
 
 export function App() {
-    const [appState, updateAppState] = useState<IAppState>({ assignee: '', dateRanges: [], criterias: [] });
-    const [vizualizationData, updateVizData] = useState<ChartData>({});
+    const [appState, updateAppState] = useState<IAppState>({ assignee:'', criterias:[], dateRanges:[] });
     const [loading, updateLoading] = useState<boolean>(false);
-
-    console.log(vizualizationData, '<--- vizData');
+    const [vizualizationData, updateVizData] = useState<ChartData>({});
 
     useEffect(() => {
         updateLoading(true);
@@ -65,38 +63,41 @@ export function App() {
 
     let charts: JSX.Element[];
     if (!loading && isVisDataAvailable) {
-        charts = appState.criterias.map((criteria) => { return mapCriteriaToChartComponent(criteria, vizualizationData) })
+        charts = appState.criterias.map((criteria, i) => {
+            return mapCriteriaToChartComponent(criteria, vizualizationData, `${criteria.toString()}${i}`)
+        })
     }
 
+    console.log(vizualizationData);
     return (
         <Fragment>
-            <p>Customize Your Search</p>
+            <h3>Customize Your Search</h3>
             <JiraQueryBuilderForm callback={updateAppState} />
             {loading ? 'LOADING...' : charts}
         </Fragment>
     );
 }
 
-function mapCriteriaToChartComponent(criteria: Criterias, data: ChartData): JSX.Element {
+function mapCriteriaToChartComponent(criteria: Criterias, data: ChartData, key: string): JSX.Element {
     switch (criteria) {
         case Criterias.EstimationAccuracy:
-            return <EstimationAccuracy data={data} />
+            return <EstimationAccuracy data={data} key={key} />
         case Criterias.TaskCountFailedCodeReview:
-            return <TaskCountFailedCodeReview data={data} />
+            return <TaskCountFailedCodeReview data={data} key={key} />
         case Criterias.TaskCountFailedQA:
-            return <TaskCountFailedQA data={data} />
+            return <TaskCountFailedQA data={data} key={key} />
         case Criterias.TasksCompleted:
-            return <TasksCompleted data={data} />
+            return <TasksCompleted data={data} key={key} />
         case Criterias.TimeLogged:
-            return <TimeLogged data={data} />
+            return <TimeLogged data={data} key={key} />
         case Criterias.TotalFailedCodeReview:
-            return <TotalFailedCodeReview data={data} />
+            return <TotalFailedCodeReview data={data} key={key} />
         case Criterias.TotalFailedDeployment:
-            return <TotalFailedDeployment data={data} />
+            return <TotalFailedDeployment data={data} key={key} />
         case Criterias.TotalFailedQA:
-            return <TotalFailedQA data={data} />
+            return <TotalFailedQA data={data} key={key} />
         case Criterias.Velocity:
-            return <Velocity data={data} />
+            return <Velocity data={data} key={key} />
         default:
             return null;
     }

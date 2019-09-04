@@ -36,6 +36,37 @@ form {
         color: white;
         font-size: 16px;
         height: 40px;
+        margin-top: 16px;
         width: 200px;
+    }
+
+    em { font-size: 12px; }
+    .formLabel { margin: 0; }
+    .dateInterval {
+        display: flex;
+
+        .intervalField {
+            display: flex;
+            margin-left: 12px;
+
+            label, input {
+                align-self: center;
+            }
+            input {
+                margin: 0;
+            }
+            label {
+                margin-left: 4px;
+            }
+        }
+        
+        input[type=number] {
+            max-width: 64px;
+            border-radius: 5px;
+            border: 1px solid #ababab;
+            font-size: 16px;
+            height: 40px;
+            padding: 0 8px;
+        }
     }
 }

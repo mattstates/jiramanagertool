@@ -1,10 +1,9 @@
 form {
-
     p {
         margin: 16px 0 0;
     }
 
-    .checkboxes{
+    .checkboxes {
         display: flex;
         flex-wrap: wrap;
         .checkbox {
@@ -16,7 +15,7 @@ form {
             margin: 0 4px 8px;
             min-width: fit-content;
             padding: 4px 12px;
-            input { 
+            input {
                 align-self: center;
                 margin-left: 8px;
             }
@@ -40,8 +39,12 @@ form {
         width: 200px;
     }
 
-    em { font-size: 12px; }
-    .formLabel { margin: 0; }
+    em {
+        font-size: 12px;
+    }
+    .formLabel {
+        margin: 0;
+    }
     .dateInterval {
         display: flex;
 
@@ -49,7 +52,8 @@ form {
             display: flex;
             margin-left: 12px;
 
-            label, input {
+            label,
+            input {
                 align-self: center;
             }
             input {
@@ -59,8 +63,8 @@ form {
                 margin-left: 4px;
             }
         }
-        
-        input[type=number] {
+
+        input[type='number'] {
             max-width: 64px;
             border-radius: 5px;
             border: 1px solid #ababab;

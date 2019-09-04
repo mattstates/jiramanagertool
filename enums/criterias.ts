@@ -1,12 +1,16 @@
 export enum Criterias {
-    EstimationAccuracy = 'Estimation Accuracy',
-    TaskCountFailedCodeReview = 'Task Count Failed Code Review',
-    // TaskCountFailedDeployment = 'Task Count Failed Deployment',
-    TaskCountFailedQA = 'Task Count Failed QA',
     TasksCompleted = 'Tasks Completed',
-    TimeLogged = 'Time Logged',
-    TotalFailedCodeReview = 'Total Failed Code Review',
     TotalFailedDeployment = 'Total Failed Deployment',
+
+    TaskCountFailedCodeReview = 'Task Count Failed Code Review',
+    TotalFailedCodeReview = 'Total Failed Code Review',
+
+    TaskCountFailedQA = 'Task Count Failed QA',
     TotalFailedQA = 'Total Failed QA',
-    Velocity = 'Velocity'
+
+    TimeLogged = 'Time Logged',
+    Velocity = 'Velocity',
+
+    EstimationAccuracy = 'Estimation Accuracy',
+    AverageOriginalEstimate = 'Average Original Estimate',
 }

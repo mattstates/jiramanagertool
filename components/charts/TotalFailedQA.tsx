@@ -1,19 +1,21 @@
 import React from 'react';
-import { LineChart } from './LineChart.tsx';
+import { ChartData, ChartDataPoint } from '../../types/chartTypes';
+import { JiraIssue, JiraResponse } from '../../types/jiraTypes';
+import { LineChart } from './LineChart';
 
 interface ITotalFailedQAProps {
-    data: any;
+    data: ChartData;
 }
 
 // customfield_13381
 export const TotalFailedQA: React.FC<ITotalFailedQAProps> = ({ data }) => {
-    const formattedData: { date: string; info: number }[] = Object.entries(data)
-        .reduce((acc: { date: string; info: number }[], cur: [string, { issues: any }]) => {
+    const formattedData: ChartDataPoint[] = Object.entries(data)
+        .reduce((acc: ChartDataPoint[], cur: [string, JiraResponse]): ChartDataPoint[] => {
             return [
                 ...acc,
                 {
                     date: cur[0],
-                    info: cur[1].issues.reduce((total: number, issue: any) => {
+                    info: cur[1].issues.reduce((total: number, issue: JiraIssue): number => {
                         total += issue.fields.customfield_13381;
 
                         return total;

@@ -1,13 +1,15 @@
+import { JiraIssueField } from "../types/jiraTypes";
+
 type GroupedIssues = {
-    [key: string]: JiraIssue[];
+    [assignee: string]: JiraIssueField[];
 };
 
-type JiraIssue = {
-    assignee: { displayName: string };
-};
-
-export default function groupIssuesByAssignee(issues: JiraIssue[]): GroupedIssues {
-    return issues.reduce((aggregate: GroupedIssues, issue) => {
+/**
+ * @description
+ * Generate a hash where each key is an assignee and the value is a collection of jira tasks assigned to them.
+ */
+export default function groupIssuesByAssignee(issues: JiraIssueField[]): GroupedIssues {
+    return issues.reduce((aggregate: GroupedIssues, issue: JiraIssueField): GroupedIssues => {
         const assignee = issue.assignee.displayName.trim();
         if (!aggregate[assignee]) {
             aggregate[assignee] = [];

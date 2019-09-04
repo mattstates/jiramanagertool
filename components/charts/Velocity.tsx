@@ -1,24 +1,25 @@
 import React from 'react';
-import getVelocityDivisor from '../../utils/getVelocityDivisor.ts';
-import { LineChart } from './LineChart.tsx';
+import { ChartData, ChartDataPoint } from '../../types/chartTypes';
+import { JiraIssue, JiraIssueField, JiraIssueWorklog, JiraResponse } from '../../types/jiraTypes';
+import getVelocityDivisor from '../../utils/getVelocityDivisor';
+import { LineChart } from './LineChart';
+
+const VELOCITY_THRESHOLD = 6;
 
 interface IVelocityProps {
-    data: any;
+    data: ChartData;
 }
 
-type JiraIssue = {
-    assignee: { name: string };
-    worklog: { worklogs: any[] };
-};
-
 export const Velocity: React.FC<IVelocityProps> = ({ data }) => {
-    const formattedData: { date: string; info: number }[] = Object.entries(data)
-        .reduce((acc: { date: string; info: number }[], cur: [string, { issues: any }]) => {
-            const mappedIssues: JiraIssue[] = cur[1].issues.map((issue: any) => issue.fields);
+
+    const formattedData: ChartDataPoint[] = Object.entries(data)
+        .reduce((acc: ChartDataPoint[], cur: [string, JiraResponse]) => {
+
+            const mappedIssues: JiraIssueField[] = cur[1].issues.map((issue: JiraIssue) => issue.fields);
 
             const assignees: string[] = Array.from(
-                mappedIssues.reduce((assigneeCollection: Set<string>, issue: JiraIssue) => {
-                    assigneeCollection.add(issue.assignee.name);
+                mappedIssues.reduce((assigneeCollection: Set<string>, issueField: JiraIssueField) => {
+                    assigneeCollection.add(issueField.assignee.name);
                     return assigneeCollection;
                 }, new Set())
             );
@@ -29,16 +30,16 @@ export const Velocity: React.FC<IVelocityProps> = ({ data }) => {
                     // { date: string, info: totalTimeInSeconds / (60 * 60)}
                     date: cur[0],
                     info:
-                        mappedIssues.reduce((total: number, issue: JiraIssue) => {
-                            // We only want time logged by the assignee counted here, not total time on the task
+                        mappedIssues.reduce((total: number, issueField: JiraIssueField) => {
+                            // Only want time logged by the assignee counted here, not total time on the task
                             return (
                                 total +
-                                issue.worklog.worklogs
-                                    .filter((log: any) => {
+                                issueField.worklog.worklogs
+                                    .filter((log: JiraIssueWorklog) => {
                                         return assignees.indexOf(log.updateAuthor.name) > -1;
                                     })
-                                    .reduce((timeInSeconds: number, worklog: any) => {
-                                        return timeInSeconds + worklog.timeSpentSeconds;
+                                    .reduce((totalTimeSpentInSeconds: number, worklog: JiraIssueWorklog) => {
+                                        return totalTimeSpentInSeconds + worklog.timeSpentSeconds;
                                     }, 0)
                             );
                         }, 0) /
@@ -48,6 +49,8 @@ export const Velocity: React.FC<IVelocityProps> = ({ data }) => {
             ];
         }, [])
         .reverse();
+    
+    const largestVelocity = Math.max(...formattedData.map((data: ChartDataPoint) => data.info ));
 
-    return <LineChart chartId={'velocityChart'} chartTitle={'Velocity on Tasks Completed in the Date Range'} data={formattedData} lineColor={'green'} tooltipPrecision={2} />;
+    return <LineChart chartId={'velocityChart'} chartTitle={'Velocity on Tasks Completed in the Date Range'} data={formattedData} lineColor={'green'} tooltipPrecision={2} yMax={largestVelocity >= VELOCITY_THRESHOLD ? largestVelocity + 1 : VELOCITY_THRESHOLD} />;
 };

@@ -1,17 +1,17 @@
 import React from 'react';
-import { IFormAction } from '../actions/FormAction.ts';
-import { FormActionTypes } from '../enums/formActionTypes.ts';
+import { IFormAction } from '../actions/FormAction';
+import { FormActionTypes } from '../enums/FormActionTypes';
 import './DateField.scss';
 
 interface DateFieldProps {
-    value: string;
     dispatch: React.Dispatch<IFormAction>;
-    formAction: FormActionTypes;
     fieldId: string;
     fieldName: string;
+    formAction: FormActionTypes;
+    value: string;
 }
 
-export const DateField: React.FC<DateFieldProps> = ({ value, dispatch, formAction, fieldId, fieldName }) => {
+export const DateField: React.FC<DateFieldProps> = ({ dispatch, fieldId, fieldName, formAction, value }) => {
     return (
         <div className="dateInput">
             <label htmlFor={fieldId}>{fieldName}:</label>

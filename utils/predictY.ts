@@ -1,4 +1,4 @@
-export type PredictionData = {
+type PredictionData = {
     x: number;
     y: number;
     product: number;
@@ -7,10 +7,10 @@ export type PredictionData = {
 };
 
 // https://travishorn.com/d3-line-chart-with-forecast-90507cb27ef2
-export const predictY = (data: number[][], newX: number): number => {
+export const predictY = (data: Array<number[]>, newX: number): number => {
     const round = (n: number): number => Math.round(n * 100) / 100;
     const sum: PredictionData = data.reduce(
-        (acc: PredictionData, pair) => {
+        (acc: PredictionData, pair: number[]): PredictionData => {
             const x = pair[0];
             const y = pair[1];
             if (y !== null) {

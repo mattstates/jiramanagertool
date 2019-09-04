@@ -14,6 +14,7 @@ import { TotalFailedQA } from './charts/TotalFailedQA';
 import { urlBuilder } from '../secrets';
 import { Velocity } from './charts/Velocity';
 import React, { Fragment, useEffect, useState } from 'react';
+import { AverageOriginalEstimate } from './charts/AverageOriginalEstimate';
 
 export interface IAppState {
     assignee: string;
@@ -98,6 +99,8 @@ function mapCriteriaToChartComponent(criteria: Criterias, data: ChartData, key: 
             return <TotalFailedQA data={data} key={key} />
         case Criterias.Velocity:
             return <Velocity data={data} key={key} />
+        case Criterias.AverageOriginalEstimate:
+            return <AverageOriginalEstimate data={data} key={key} />
         default:
             return null;
     }

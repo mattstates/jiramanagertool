@@ -1,4 +1,7 @@
-#appEntry * {
-    box-sizing: border-box;
-    font-family: Helvetica, Arial, sans-serif;
+#appEntry {
+    min-height: 100vh;
+    * {
+        box-sizing: border-box;
+        font-family: Helvetica, Arial, sans-serif;
+    }
 }

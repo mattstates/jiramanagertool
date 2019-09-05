@@ -1,5 +1,5 @@
 import countUniqueWorkLogDays from './countUniqueWorkLogDays';
-import { JiraIssueField } from '../types/jiraTypes';
+import { JiraIssueField } from '../types/JiraTypes';
 
 type AssignedTasksMap = {
     [key: string]: object[];

@@ -1,30 +1,32 @@
 import { useEffect, useState } from 'react';
 import { API_CREDENTIALS } from '../secrets';
 
-export function useFetch(fetchUrl: string): { results?: any } {
-    const [fetchData, updateFetchData] = useState<object>({});
+export function useFetch<T>(fetchUrl: string): T {
+    const [fetchData, updateFetchData] = useState<T>(null);
 
     const abortController = new AbortController();
 
     useEffect(() => {
-        fetch(fetchUrl, {
-            headers: new Headers({
-                Authorization: API_CREDENTIALS
-            }),
-            method: 'GET',
-            credentials: 'include',
-            signal: abortController.signal
-        })
-            .then((response: any) => response.json())
-            .then((json: object) => {
-                updateFetchData(json);
+        if (fetchUrl.length) {
+            fetch(fetchUrl, {
+                headers: new Headers({
+                    Authorization: API_CREDENTIALS
+                }),
+                method: 'GET',
+                credentials: 'include',
+                signal: abortController.signal
             })
-            .catch((error: any) => {
-                updateFetchData({ errorMessage: error.message });
-            });
-        return () => {
-            abortController.abort();
-        };
+                .then((response: any) => response.json())
+                .then((json: T) => {
+                    updateFetchData(json);
+                })
+                .catch((_error: { message: string }) => {
+                    console.log(_error.message);
+                });
+            return () => {
+                abortController.abort();
+            };
+        }
     }, [fetchUrl]);
 
     return fetchData;

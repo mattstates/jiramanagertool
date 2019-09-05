@@ -1,6 +1,6 @@
-import React from 'react';
-import { IFormAction } from '../actions/FormAction';
 import { FormActionTypes } from '../enums/FormActionTypes';
+import { IFormAction } from '../actions/FormAction';
+import React from 'react';
 
 interface CheckBoxProps {
     criteria: string;

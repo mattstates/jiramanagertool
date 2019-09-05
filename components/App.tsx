@@ -1,9 +1,10 @@
 import './App.scss';
-import { ChartData } from '../types/chartTypes';
+import { AverageOriginalEstimate } from './charts/AverageOriginalEstimate';
+import { ChartData } from '../types/ChartTypes';
 import { Criterias } from '../enums/Criterias';
 import { EstimationAccuracy } from './charts/EstimationAccuracy';
 import { JiraQueryBuilderForm } from './JiraQueryBuilderForm';
-import { JiraResponse } from '../types/jiraTypes';
+import { JiraResponse } from '../types/JiraTypes';
 import { TaskCountFailedCodeReview } from './charts/TaskCountFailedCodeReview';
 import { TaskCountFailedQA } from './charts/TaskCountFailedQA';
 import { TasksCompleted } from './charts/TasksCompleted';
@@ -14,7 +15,6 @@ import { TotalFailedQA } from './charts/TotalFailedQA';
 import { urlBuilder } from '../secrets';
 import { Velocity } from './charts/Velocity';
 import React, { Fragment, useEffect, useState } from 'react';
-import { AverageOriginalEstimate } from './charts/AverageOriginalEstimate';
 
 export interface IAppState {
     assignee: string;

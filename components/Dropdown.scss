@@ -14,7 +14,8 @@ ul.dropdownList {
         padding: 8px;
         cursor: pointer;
     }
-    li:hover {
+    li:hover,
+    .active {
         background: #ababab;
     }
 }

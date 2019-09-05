@@ -1,6 +1,6 @@
 import React from 'react';
-import { ChartData, ChartDataPoint } from '../../types/chartTypes';
-import { JiraResponse } from '../../types/jiraTypes';
+import { ChartData, ChartDataPoint } from '../../types/ChartTypes';
+import { JiraResponse } from '../../types/JiraTypes';
 import { LineChart } from './LineChart';
 import { getFailedStakeHolderCount } from '../../utils/getFailedStakeholderCount';
 

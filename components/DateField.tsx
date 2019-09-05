@@ -1,7 +1,7 @@
-import React from 'react';
-import { IFormAction } from '../actions/FormAction';
-import { FormActionTypes } from '../enums/FormActionTypes';
 import './DateField.scss';
+import { FormActionTypes } from '../enums/FormActionTypes';
+import { IFormAction } from '../actions/FormAction';
+import React from 'react';
 
 interface DateFieldProps {
     dispatch: React.Dispatch<IFormAction>;
@@ -11,7 +11,13 @@ interface DateFieldProps {
     value: string;
 }
 
-export const DateField: React.FC<DateFieldProps> = ({ dispatch, fieldId, fieldName, formAction, value }) => {
+export const DateField: React.FC<DateFieldProps> = ({
+    dispatch,
+    fieldId,
+    fieldName,
+    formAction,
+    value
+}) => {
     return (
         <div className="dateInput">
             <label htmlFor={fieldId}>{fieldName}:</label>
@@ -19,7 +25,7 @@ export const DateField: React.FC<DateFieldProps> = ({ dispatch, fieldId, fieldNa
                 id={fieldId}
                 type="date"
                 value={value}
-                onChange={(e) => {
+                onChange={e => {
                     dispatch({ type: formAction, payload: { date: e.target.value } });
                 }}
             />

@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import React, { useEffect, useRef } from 'react';
-import { ChartDataPoint } from '../../types/chartTypes';
+import { ChartDataPoint } from '../../types/ChartTypes';
 import { predictY } from '../../utils/predictY';
 import './LineChart.scss';
 

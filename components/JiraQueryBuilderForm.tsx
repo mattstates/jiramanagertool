@@ -1,16 +1,16 @@
+import './JiraQueryBuilderForm.scss';
 import { addMonths } from 'date-fns';
-import React, { Dispatch, SetStateAction, useReducer } from 'react';
-import { IFormAction } from '../actions/FormAction';
-import { Criterias } from '../enums/Criterias';
-import { DateRanges } from '../enums/DateRanges';
-import { FormActionTypes } from '../enums/FormActionTypes';
-import { getDateRanges } from '../utils/dates';
-import { IAppState } from './App';
 import { CheckBox } from './CheckBox';
+import { Criterias } from '../enums/Criterias';
 import { DateField } from './DateField';
 import { DateIntervals } from './DateIntervals';
-import './JiraQueryBuilderForm.scss';
+import { DateRanges } from '../enums/DateRanges';
+import { FormActionTypes } from '../enums/FormActionTypes';
+import { getDateRanges } from '../utils/getDateRanges';
+import { IAppState } from './App';
+import { IFormAction } from '../actions/FormAction';
 import { SearchInput } from './SearchInput';
+import React, { Dispatch, SetStateAction, useReducer } from 'react';
 
 interface IFormProps {
     callback: Dispatch<SetStateAction<IAppState>>;
@@ -18,25 +18,28 @@ interface IFormProps {
 
 interface IFormState {
     assignee: string;
-    checkedCriterias: CheckedCriteriaHash;
-    fromDate: string;
+    checkedCriterias: CheckedCriteriaMap;
     endDate: string;
+    fromDate: string;
     interval: DateRanges;
     intervalCount: number;
 }
 
-type CheckedCriteriaHash = {
+type CheckedCriteriaMap = {
     [criteriaName: string]: boolean;
-}
+};
 
 const currentDate: Date = new Date();
 
 const initialFormState: IFormState = {
     // Setting the default to have all boxes selected.
-    checkedCriterias: Object.values(Criterias).reduce((hash: CheckedCriteriaHash, criteria: string) => {
-        hash[criteria] = true;
-        return hash;
-    }, {}),
+    checkedCriterias: Object.values(Criterias).reduce(
+        (map: CheckedCriteriaMap, criteria: string) => {
+            map[criteria] = true;
+            return map;
+        },
+        {}
+    ),
     assignee: '',
     fromDate: addMonths(currentDate, -12)
         .toISOString()
@@ -61,9 +64,9 @@ function formReducer(state: IFormState, action: IFormAction): IFormState {
         case FormActionTypes.UpdateEndDate:
             return { ...state, endDate: action.payload.date };
         case FormActionTypes.UpdateInterval:
-                return { ...state, interval: action.payload.interval };
+            return { ...state, interval: action.payload.interval };
         case FormActionTypes.UpdateIntervalCount:
-                return { ...state, intervalCount: action.payload.intervalCount };
+            return { ...state, intervalCount: action.payload.intervalCount };
         default:
             return { ...state };
     }
@@ -90,15 +93,34 @@ export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
             []
         );
 
-        callback({ assignee: formState.assignee, criterias, dateRanges: getDateRanges(formState.fromDate, formState.endDate, formState.interval, formState.intervalCount) });
+        callback({
+            assignee: formState.assignee,
+            criterias,
+            dateRanges: getDateRanges(
+                formState.fromDate,
+                formState.endDate,
+                formState.interval,
+                formState.intervalCount
+            )
+        });
     }
 
     const checkBoxes = Object.values(Criterias).map(
         (criteria: string, i: number): JSX.Element => {
-            const isChecked = formState.checkedCriterias[criteria] ? formState.checkedCriterias[criteria] : false;
+            const isChecked = formState.checkedCriterias[criteria]
+                ? formState.checkedCriterias[criteria]
+                : false;
 
             const id = `${criteria}${i}`;
-            return <CheckBox id={id} isChecked={isChecked} key={id} criteria={criteria} dispatch={dispatch} />;
+            return (
+                <CheckBox
+                    id={id}
+                    isChecked={isChecked}
+                    key={id}
+                    criteria={criteria}
+                    dispatch={dispatch}
+                />
+            );
         }
     );
 
@@ -126,12 +148,15 @@ export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
                     fieldName={'End Date'}
                 />
             </div>
-            <DateIntervals name="dateIntervals" dateRanges={Object.values(DateRanges)} interval={formState.interval} intervalCount={formState.intervalCount} dispatch={dispatch} />
+            <DateIntervals
+                name="dateIntervals"
+                dateRanges={Object.values(DateRanges)}
+                interval={formState.interval}
+                intervalCount={formState.intervalCount}
+                dispatch={dispatch}
+            />
 
             <button type="submit">Submit</button>
-            <p>
-                <sup>*Will return data in one month intervals.</sup>
-            </p>
         </form>
     );
 };

@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
-import { ChartData, ChartDataPoint } from '../../types/chartTypes';
-import { JiraIssue, JiraResponse } from '../../types/jiraTypes';
+import React from 'react';
+import { ChartData, ChartDataPoint } from '../../types/ChartTypes';
+import { JiraIssue, JiraResponse } from '../../types/JiraTypes';
 import { LineChart } from './LineChart';
 
 interface ITotalFailedCodeReviewProps {
@@ -9,7 +9,6 @@ interface ITotalFailedCodeReviewProps {
 
 // customfield_13380
 export const TotalFailedCodeReview: React.FC<ITotalFailedCodeReviewProps> = ({ data }) => {
-    const container = useRef(null);
     const formattedData: ChartDataPoint[] = Object.entries(data)
         .reduce((acc: ChartDataPoint[], cur: [string, JiraResponse]): ChartDataPoint[] => {
             return [

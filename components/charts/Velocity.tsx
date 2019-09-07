@@ -1,6 +1,6 @@
 import React from 'react';
-import { ChartData, ChartDataPoint } from '../../types/chartTypes';
-import { JiraIssue, JiraIssueField, JiraIssueWorklog, JiraResponse } from '../../types/jiraTypes';
+import { ChartData, ChartDataPoint } from '../../types/ChartTypes';
+import { JiraIssue, JiraIssueField, JiraIssueWorklog, JiraResponse } from '../../types/JiraTypes';
 import getVelocityDivisor from '../../utils/getVelocityDivisor';
 import { LineChart } from './LineChart';
 

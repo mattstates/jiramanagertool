@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { IFormAction } from '../actions/FormAction';
 import { FormActionTypes } from '../enums/FormActionTypes';
 import { Dropdown } from './Dropdown';
@@ -12,19 +12,18 @@ interface InputProps {
 }
 
 // TODO: Set up Atlassian Autocomplete to suggest usernames as the user types.
-
 export const SearchInput: React.FC<InputProps> = ({ dispatch, value }) => {
     const inputRef = useRef(null);
-    const [showDropdown, updateShowDropdown] = useState<boolean>(true);
+    const ulRef = useRef(null);
 
     useEffect(() => {
         inputRef.current.focus();
         return () => {
             inputRef.current.blur();
-        }
+        };
     }, []);
 
-    function updateAssignee (assignee: string): void {
+    function updateAssignee(assignee: string): void {
         dispatch({ type: FormActionTypes.UpdateAssignee, payload: { assignee } });
     }
 
@@ -35,19 +34,24 @@ export const SearchInput: React.FC<InputProps> = ({ dispatch, value }) => {
                 id={INPUT_ID}
                 type="text"
                 value={value}
-                onChange={(e) => {
-                    updateAssignee(e.target.value)
-                    updateShowDropdown(Boolean(e.target.value));
+                onChange={e => {
+                    updateAssignee(e.target.value);
                 }}
                 ref={inputRef}
-                onFocus={() => {
-                    updateShowDropdown(Boolean(value));
-                }}
-                onBlur={() => {
-                    updateShowDropdown(false);
+                onKeyUp={(e: React.KeyboardEvent) => {
+                    console.log(e.key);
+                    if (e.key === 'ArrowDown') {
+                        console.log(ulRef.current);
+                        ulRef.current.focus();
+                    }
                 }}
             />
-            <Dropdown showDropdown={showDropdown} searchTerm={value} updateAssignee={updateAssignee} />
+            <Dropdown
+                searchString={value}
+                updateAssignee={updateAssignee}
+                parentRef={inputRef}
+                ulRef={ulRef}
+            />
         </div>
     );
 };

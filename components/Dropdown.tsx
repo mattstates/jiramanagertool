@@ -1,41 +1,122 @@
-import React from 'react';
-import { useFetch } from '../hooks/useFetch';
-import { jiraApiUrlAutocomplete } from '../secrets';
 import './Dropdown.scss';
-
-// function getMatchingKey(inputString: string): string[] {
-//     const delimiter = '~|~';
-//     const matchWhiteSpaceNotInQuotes = /\s+(?=((\\[\\"]|[^\\"])*"(\\[\\"]|[^\\"])*")*(\\[\\"]|[^\\"])*$)/g;
-
-//     const collection = inputString.replace(matchWhiteSpaceNotInQuotes, delimiter).split(delimiter);
-//     return collection;
-// }
+import { jiraApiUrlAutocomplete } from '../secrets';
+import { JiraAutocompleteIdentity } from '../types/JiraTypes';
+import { useFetch } from '../hooks/useFetch';
+import React, { useState, useEffect } from 'react';
 
 interface DropdownProps {
-    searchTerm: string;
-    showDropdown: boolean;
+    parentRef: React.MutableRefObject<any>;
+    searchString: string;
+    ulRef: React.MutableRefObject<any>;
     updateAssignee: React.Dispatch<string>;
 }
 
-// TODO: Support comma separated assignee autocomplete.
+type AutoCompleteResponseData = { results: JiraAutocompleteIdentity[] };
 
-export const Dropdown: React.FC<DropdownProps> = ({ showDropdown, searchTerm, updateAssignee }) => {
-    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+function convertSearchStringToCollection(input: string): string[] {
+    return input.split(',').map((term: string): string => term.trim());
+}
 
-    const data = useFetch(lowerCaseSearchTerm.length ? jiraApiUrlAutocomplete + lowerCaseSearchTerm : '');
+function replaceLastItem<T>(collection: T[], item: T): T[] {
+    return [...collection.slice(0, collection.length - 1), item];
+}
 
-    if (data.results && !data.results.every((item: { value: string }) => item.value.toLowerCase() === lowerCaseSearchTerm)) {
+// TODO: Support using arrows for selections
+// TODO: Support staying focuses on the SearchInput on click
+// TODO: Refactor
+export const Dropdown: React.FC<DropdownProps> = ({
+    parentRef,
+    searchString,
+    ulRef,
+    updateAssignee
+}) => {
+    const [activeIndex, udpateActiveIndex] = useState<number>(null);
+
+    let searchCollection = convertSearchStringToCollection(searchString);
+
+    const lowerCaseSearchTerm = searchCollection[searchCollection.length - 1].toLowerCase();
+
+    const data = useFetch<AutoCompleteResponseData>(
+        lowerCaseSearchTerm.length ? jiraApiUrlAutocomplete + lowerCaseSearchTerm : ''
+    );
+
+    useEffect(() => {
+        if (activeIndex === -1) {
+            parentRef.current.focus();
+        }
+    }, [activeIndex]);
+
+    function handleKeyUp(e: React.KeyboardEvent): void {
+        const maxActiveIndex = data && data.results && data.results.length - 1;
+
+        let newIndex: number;
+        switch (e.key) {
+            case 'ArrowUp':
+                e.preventDefault();
+                newIndex = activeIndex - 1;
+                udpateActiveIndex(newIndex < -1 ? -1 : newIndex);
+                break;
+            case 'ArrowDown':
+                e.preventDefault();
+                newIndex = activeIndex === null ? 0 : activeIndex + 1;
+                udpateActiveIndex(newIndex > maxActiveIndex ? maxActiveIndex : newIndex);
+                break;
+            case 'Enter':
+                e.preventDefault();
+                e.stopPropagation();
+                dispatchUpdate();
+                break;
+        }
+    }
+
+    function dispatchUpdate(): void {
+        updateAssignee(searchCollection.join(', ').trim());
+        udpateActiveIndex(null);
+        parentRef.current.focus();
+    }
+
+    if (
+        lowerCaseSearchTerm.length > 2 &&
+        data &&
+        data.results &&
+        data.results.length &&
+        !data.results.some((item: JiraAutocompleteIdentity): boolean => {
+            return item.value.toLowerCase() === lowerCaseSearchTerm;
+        })
+    ) {
         return (
-            <ul className="dropdownList">
-                {data.results.map((item: { value: string }) => (
-                    <li
-                        key={item.value}
-                        onClick={() => {
-                            updateAssignee(item.value);
-                        }}>
-                        {item.value}
-                    </li>
-                ))}
+            <ul
+                ref={ulRef}
+                className="dropdownList"
+                tabIndex={0}
+                onKeyUp={(e: React.KeyboardEvent) => {
+                    handleKeyUp(e);
+                }}
+                onFocus={() => {
+                    udpateActiveIndex(0);
+                }}
+                onBlur={() => {
+                    udpateActiveIndex(null);
+                }}
+            >
+                {data.results.map((item: JiraAutocompleteIdentity, i: number) => {
+                    const html = { __html: `<span>${item.displayName}</span>` };
+                    if (i === activeIndex) {
+                        searchCollection = replaceLastItem(searchCollection, item.value);
+                    }
+
+                    return (
+                        <li
+                            className={i === activeIndex ? 'active' : ''}
+                            key={item.value}
+                            onClick={() => {
+                                searchCollection = replaceLastItem(searchCollection, item.value);
+                                dispatchUpdate();
+                            }}
+                            dangerouslySetInnerHTML={html}
+                        />
+                    );
+                })}
             </ul>
         );
     }

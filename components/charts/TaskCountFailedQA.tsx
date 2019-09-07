@@ -1,7 +1,7 @@
 import React from 'react';
 import { LineChart } from './LineChart';
-import { ChartDataPoint, ChartData } from '../../types/chartTypes';
-import { JiraIssue, JiraResponse } from '../../types/jiraTypes';
+import { ChartDataPoint, ChartData } from '../../types/ChartTypes';
+import { JiraIssue, JiraResponse } from '../../types/JiraTypes';
 
 interface ITaskCountFailedQAProps {
     data: ChartData;

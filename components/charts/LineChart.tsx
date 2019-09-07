@@ -1,8 +1,11 @@
-import * as d3 from 'd3';
-import React, { useEffect, useRef } from 'react';
-import { ChartDataPoint } from '../../types/chartTypes';
-import { predictY } from '../../utils/predictY';
 import './LineChart.scss';
+import { ChartDataPoint } from '../../types/ChartTypes';
+import { predictY } from '../../utils/predictY';
+import { axisBottom, axisLeft } from 'd3-axis';
+import { line, curveMonotoneX } from 'd3-shape';
+import { scaleLinear } from 'd3-scale';
+import { select } from 'd3-selection';
+import React, { useEffect, useRef } from 'react';
 
 interface ILineChartProps {
     chartId: string;
@@ -22,48 +25,55 @@ const lineWidth = 2;
 const circleWidth = 4;
 const Y_TICK_THRESHOLD = 5;
 
-export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle, lineColor, tooltipPrecision = 0, yMax, yMin = 0 }) => {
+export const LineChart: React.FC<ILineChartProps> = ({
+    data,
+    chartId,
+    chartTitle,
+    lineColor,
+    tooltipPrecision = 0,
+    yMax,
+    yMin = 0
+}) => {
     const container = useRef(null);
 
     useEffect(() => {
-        const xScale = d3
-            .scaleLinear()
+        const xScale = scaleLinear()
             .domain([0, data.length - 1]) // input
             .range([0, width]); // output
 
-        const yScale = d3
-            .scaleLinear()
-            .domain([yMin, yMax || Math.max(...data.map((data: ChartDataPoint): number => data.info))]) // input
+        const yScale = scaleLinear()
+            .domain([
+                yMin,
+                yMax || Math.max(...data.map((data: ChartDataPoint): number => data.info))
+            ]) // input
             .range([height, 0]); // output
 
         const pathData: Array<number[]> = data.map((data: ChartDataPoint, i): number[] => {
             return [i, data.info];
         });
 
-        const line = d3
-            .line()
-            .x(function(d: [number, number], i) {
+        const chartLine = line()
+            .x(function(d: [number, number]) {
                 return xScale(d[0]);
             })
             .y(function(d: [number, number]) {
                 return yScale(d[1]);
             })
-            .curve(d3.curveMonotoneX);
+            .curve(curveMonotoneX);
 
-        const trendLine = d3
-            .line()
-            .x(function(d: [number, number], i) {
+        const trendLine = line()
+            .x(function(d: [number, number]) {
                 return xScale(d[0]);
             })
             .y(function(d: [number, number]) {
                 const yPoint = predictY(pathData, d[0]);
                 return yScale(yPoint >= yMin ? yPoint : yMin);
             })
-            .curve(d3.curveMonotoneX);
+            .curve(curveMonotoneX);
 
-        const svgContainer = d3.select(container.current);
+        const svgContainer = select(container.current);
 
-        const tooltip = d3.select(`div.${chartId}.tooltip`);
+        const tooltip = select(`div.${chartId}.tooltip`);
 
         // Main Graph Body
         svgContainer
@@ -77,10 +87,9 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             .attr('class', 'x axis')
             .attr('transform', `translate(${margin.left}, ${height + margin.top})`)
             .call(
-                d3
-                    .axisBottom(xScale)
-                    .tickValues(data.map((d: ChartDataPoint, i: number) => i))
-                    .tickFormat((d, i) => data[i].date)
+                axisBottom(xScale)
+                    .tickValues(data.map((_d: ChartDataPoint, i: number) => i))
+                    .tickFormat((_d, i) => data[i].date)
             );
 
         // Y Axis Line
@@ -89,7 +98,7 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             .attr('class', 'y axis')
             .attr('transform', `translate(${margin.left}, ${margin.top})`)
             .call(
-                d3.axisLeft(yScale).ticks(
+                axisLeft(yScale).ticks(
                     (() => {
                         return data.length > Y_TICK_THRESHOLD ? Y_TICK_THRESHOLD : data.length + 1;
                     })(),
@@ -106,7 +115,7 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             .style('stroke-width', lineWidth)
             .style('fill', 'none')
             .attr('transform', `translate(${margin.left}, ${margin.top})`)
-            .attr('d', line);
+            .attr('d', chartLine);
 
         svgContainer
             .append('path')
@@ -121,16 +130,15 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             .attr('d', trendLine);
 
         if (yMin < 0) {
-            const zeroLineData = data.map((data, i) => {
+            const zeroLineData = data.map((_d, i) => {
                 return [i, 0];
             });
 
-            const zeroLine = d3
-                .line()
-                .x(function(d, i) {
+            const zeroLine = line()
+                .x(function(d) {
                     return xScale(d[0]);
                 })
-                .y(function(d) {
+                .y(function() {
                     return yScale(0);
                 });
 
@@ -154,7 +162,7 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             .enter()
             .append('circle')
             .attr('class', 'dot')
-            .attr('cx', function(d, i) {
+            .attr('cx', function(_d, i) {
                 return xScale(i);
             })
             .attr('cy', function(d) {
@@ -162,7 +170,7 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
             })
             .attr('r', circleWidth)
             .attr('transform', `translate(${margin.left}, ${margin.top})`)
-            .on('mouseover', function(d, ...args) {
+            .on('mouseover', function(d) {
                 tooltip
                     .style('top', `${Number(this.getAttribute('cy')) + 70}px`)
                     .style('left', `${Number(this.getAttribute('cx')) - 25}px`)
@@ -174,7 +182,7 @@ export const LineChart: React.FC<ILineChartProps> = ({ data, chartId, chartTitle
                     )
                     .style('opacity', '1');
             })
-            .on('mouseout', function(d) {
+            .on('mouseout', function() {
                 tooltip
                     .style('opacity', '0')
                     .style('top', '-1000px')

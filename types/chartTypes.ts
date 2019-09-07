@@ -1,4 +1,4 @@
-import { JiraResponse } from './jiraTypes';
+import { JiraResponse } from './JiraTypes';
 
 export type ChartData = {
     [endDate: string]: JiraResponse;

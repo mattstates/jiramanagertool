@@ -1,7 +1,7 @@
 import React from 'react';
 import { LineChart } from './LineChart';
-import { JiraIssue, JiraResponse } from '../../types/jiraTypes';
-import { ChartData, ChartDataPoint } from '../../types/chartTypes';
+import { JiraResponse } from '../../types/JiraTypes';
+import { ChartData, ChartDataPoint } from '../../types/ChartTypes';
 
 interface ITasksCompletedProps {
     data: ChartData;

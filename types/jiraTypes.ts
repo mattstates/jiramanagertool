@@ -1,10 +1,10 @@
 export type JiraIssue = {
+    changelog: JiraIssueChangeLog;
     expand: string;
     fields: JiraIssueField;
     id: string;
     key: string;
     self: string;
-    changelog: JiraIssueChangeLog;
 };
 
 export type JiraIssueField = {
@@ -20,20 +20,20 @@ export type JiraIssueField = {
 };
 
 export type JiraIdentity = {
-    name: string;
-    key: string;
     displayName: string;
+    key: string;
+    name: string;
 };
 
 export type JiraIssueWorklog = {
     author: JiraIdentity;
-    updateAuthor: JiraIdentity;
     created: string; // EX: "2018-09-06T17:47:00.000-0700"
     id: string;
     issueId: string;
     started: string; // EX: "2018-09-06T17:47:00.000-0700"
     timeSpent: string; // EX: "2h"
     timeSpentSeconds: number;
+    updateAuthor: JiraIdentity;
     updated: string; // EX: "2018-09-06T17:47:00.000-0700"
 };
 
@@ -43,21 +43,21 @@ export type JiraResponse = {
     maxResults: number;
     startAt: number;
     total: number;
-}
+};
 
 export type JiraIssueChangeLog = {
-    startAt: number;
-    maxResults: number;
-    total: number;
     histories: JiraChangelogHistory[];
-}
+    maxResults: number;
+    startAt: number;
+    total: number;
+};
 
 export type JiraChangelogHistory = {
-    id: string;
     author: JiraIdentity;
     created: string; // EX: "2016-10-19T14:44:23.830-0700"
+    id: string;
     items: JiraHistoryItem[];
-}
+};
 
 export type JiraHistoryItem = {
     field: string;
@@ -66,4 +66,9 @@ export type JiraHistoryItem = {
     fromString?: string;
     to: string;
     toString: string;
-}
+};
+
+export type JiraAutocompleteIdentity = {
+    displayName: string;
+    value: string;
+};

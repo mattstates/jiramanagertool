@@ -1,7 +1,7 @@
 import React from 'react';
 import { LineChart } from './LineChart';
-import { ChartDataPoint, ChartData } from '../../types/chartTypes';
-import { JiraResponse, JiraIssueField, JiraIssue, JiraIssueWorklog } from '../../types/jiraTypes';
+import { ChartDataPoint, ChartData } from '../../types/ChartTypes';
+import { JiraResponse, JiraIssueField, JiraIssue } from '../../types/JiraTypes';
 
 interface IAverageOriginalEstimateProps {
     data: ChartData;

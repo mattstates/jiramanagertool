@@ -1,7 +1,7 @@
 import React from 'react';
-import { JiraIssue, JiraIssueField, JiraIssueWorklog, JiraResponse } from '../../types/jiraTypes';
+import { JiraIssue, JiraIssueField, JiraIssueWorklog, JiraResponse } from '../../types/JiraTypes';
 import { LineChart } from './LineChart';
-import { ChartData, ChartDataPoint } from '../../types/chartTypes';
+import { ChartData, ChartDataPoint } from '../../types/ChartTypes';
 
 interface IEstimationAccuracyProps {
     data: ChartData;
@@ -52,7 +52,7 @@ export const EstimationAccuracy: React.FC<IEstimationAccuracyProps> = ({ data })
             chartId={'estimationAccuracyChart'}
             chartTitle={'Estimation Accuracy on Tasks Completed in the Date Range'}
             data={formattedData}
-            lineColor={'gold'}
+            lineColor={'#0052cc'}
             tooltipPrecision={2}
             yMin={yMin >= 0 ? 0 : yMin - 10}
         />

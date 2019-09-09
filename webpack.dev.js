@@ -14,8 +14,7 @@ module.exports = (env) => {
         },
         plugins: [
             new webpack.DefinePlugin({
-                DEVMODE: JSON.stringify(Boolean(env && env.DEVMODE)),
-                LOCAL: JSON.stringify(Boolean(env && env.LOCAL))
+                DEVMODE: JSON.stringify(Boolean(env && env.DEVMODE))
             })
         ]
     });

@@ -4,6 +4,8 @@ import { JiraAutocompleteIdentity } from '../types/JiraTypes';
 import { useFetch } from '../hooks/useFetch';
 import React, { useState, useEffect } from 'react';
 
+const START_AUTOCOMPLETE_CHAR_THRESHOLD = 2;
+
 interface DropdownProps {
     parentRef: React.MutableRefObject<any>;
     searchString: string;
@@ -37,7 +39,9 @@ export const Dropdown: React.FC<DropdownProps> = ({
     const lowerCaseSearchTerm = searchCollection[searchCollection.length - 1].toLowerCase();
 
     const data = useFetch<AutoCompleteResponseData>(
-        lowerCaseSearchTerm.length ? jiraApiUrlAutocomplete + lowerCaseSearchTerm : ''
+        lowerCaseSearchTerm.length > START_AUTOCOMPLETE_CHAR_THRESHOLD
+            ? jiraApiUrlAutocomplete + lowerCaseSearchTerm
+            : ''
     );
 
     useEffect(() => {
@@ -69,6 +73,17 @@ export const Dropdown: React.FC<DropdownProps> = ({
         }
     }
 
+    function handleKeyDown(e: React.KeyboardEvent): void {
+        switch (e.key) {
+            case 'ArrowUp':
+                e.preventDefault();
+                break;
+            case 'ArrowDown':
+                e.preventDefault();
+                break;
+        }
+    }
+
     function dispatchUpdate(): void {
         updateAssignee(searchCollection.join(', ').trim());
         udpateActiveIndex(null);
@@ -92,6 +107,8 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 onKeyUp={(e: React.KeyboardEvent) => {
                     handleKeyUp(e);
                 }}
+                onKeyDown={handleKeyDown}
+                onKeyPress={handleKeyDown}
                 onFocus={() => {
                     udpateActiveIndex(0);
                 }}

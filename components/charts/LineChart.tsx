@@ -1,8 +1,8 @@
 import './LineChart.scss';
-import { ChartDataPoint } from '../../types/ChartTypes';
-import { predictY } from '../../utils/predictY';
 import { axisBottom, axisLeft } from 'd3-axis';
+import { ChartDataPoint } from '../../types/ChartTypes';
 import { line, curveMonotoneX } from 'd3-shape';
+import { predictY } from '../../utils/predictY';
 import { scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
 import React, { useEffect, useRef } from 'react';

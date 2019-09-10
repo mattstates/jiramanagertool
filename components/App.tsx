@@ -15,6 +15,7 @@ import { TotalFailedQA } from './charts/TotalFailedQA';
 import { urlBuilder } from '../secrets';
 import { Velocity } from './charts/Velocity';
 import React, { Fragment, useEffect, useState } from 'react';
+import { Loader } from './Loader';
 
 export interface IAppState {
     assignee: string;
@@ -75,7 +76,7 @@ export function App() {
         <Fragment>
             <h3>Customize Your Search</h3>
             <JiraQueryBuilderForm callback={updateAppState} />
-            {loading ? 'LOADING...' : charts}
+            {loading ? <Loader /> : charts}
         </Fragment>
     );
 }

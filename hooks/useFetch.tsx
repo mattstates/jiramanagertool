@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { API_CREDENTIALS } from '../secrets';
 
 export function useFetch<T>(fetchUrl: string): T {
     const [fetchData, updateFetchData] = useState<T>(null);
@@ -10,10 +9,9 @@ export function useFetch<T>(fetchUrl: string): T {
         if (fetchUrl.length) {
             fetch(fetchUrl, {
                 headers: new Headers({
-                    Authorization: API_CREDENTIALS
+                    'Content-Type': 'application/json'
                 }),
                 method: 'GET',
-                credentials: 'include',
                 signal: abortController.signal
             })
                 .then((response: any) => response.json())

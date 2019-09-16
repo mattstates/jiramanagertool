@@ -1,5 +1,5 @@
-import countUniqueWorkLogDays from './countUniqueWorkLogDays';
 import { JiraIssueField } from '../types/JiraTypes';
+import countUniqueWorkLogDays from './countUniqueWorkLogDays';
 
 type AssignedTasksMap = {
     [key: string]: object[];
@@ -15,23 +15,26 @@ type AssignedTasksMap = {
  * If for some reason there is no assignee, we will exclude that issue.
  */
 export default function getVelocityDivisor(issueFieldsCollection: JiraIssueField[]): number {
-    const issuesByAssignee: AssignedTasksMap = issueFieldsCollection.reduce((accumulator: AssignedTasksMap, issue: JiraIssueField): AssignedTasksMap => {
-        let assignee = '';
+    const issuesByAssignee: AssignedTasksMap = issueFieldsCollection.reduce(
+        (accumulator: AssignedTasksMap, issue: JiraIssueField): AssignedTasksMap => {
+            let assignee = '';
 
-        if (issue.assignee && issue.assignee.name) {
-            assignee = issue.assignee.name;
-        } else {
+            if (issue.assignee && issue.assignee.name) {
+                assignee = issue.assignee.name;
+            } else {
+                return accumulator;
+            }
+
+            if (!accumulator.hasOwnProperty(assignee)) {
+                accumulator[assignee] = [];
+            }
+
+            accumulator[assignee].push(issue);
+
             return accumulator;
-        }
-
-        if (!accumulator.hasOwnProperty(assignee)) {
-            accumulator[assignee] = [];
-        }
-
-        accumulator[assignee].push(issue);
-
-        return accumulator;
-    }, {});
+        },
+        {}
+    );
 
     // Sum unique days to use as a divisor for estimation.
     return (

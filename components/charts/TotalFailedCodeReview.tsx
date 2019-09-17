@@ -1,7 +1,8 @@
-import React from 'react';
 import { ChartData, ChartDataPoint } from '../../types/ChartTypes';
+import { Description } from './Description';
 import { JiraIssue, JiraResponse } from '../../types/JiraTypes';
 import { LineChart } from './LineChart';
+import React from 'react';
 
 interface ITotalFailedCodeReviewProps {
     data: ChartData;
@@ -25,5 +26,21 @@ export const TotalFailedCodeReview: React.FC<ITotalFailedCodeReviewProps> = ({ d
         }, [])
         .reverse();
 
-    return <LineChart chartId={'totalFailedCodeReviewChart'} chartTitle={'Total Times Failed Code Review'} data={formattedData} lineColor={'#cc0000'} />;
+    return (
+        <div>
+            <LineChart
+                chartId={'totalFailedCodeReviewChart'}
+                chartTitle={'Total Times Failed Code Review'}
+                data={formattedData}
+                lineColor={'#cc0000'}
+                yLabel={'Total'}
+            />
+            <Description
+                description={`
+Count of the number of times tasks have failed code review.`}
+                calculatedBy={`Aggregate of all tasks failed code review count`}
+                footNote={`*Each instance of a failed code review is counted.`}
+            />
+        </div>
+    );
 };

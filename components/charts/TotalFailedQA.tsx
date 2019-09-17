@@ -1,7 +1,8 @@
-import React from 'react';
 import { ChartData, ChartDataPoint } from '../../types/ChartTypes';
+import { Description } from './Description';
 import { JiraIssue, JiraResponse } from '../../types/JiraTypes';
 import { LineChart } from './LineChart';
+import React from 'react';
 
 interface ITotalFailedQAProps {
     data: ChartData;
@@ -25,5 +26,21 @@ export const TotalFailedQA: React.FC<ITotalFailedQAProps> = ({ data }) => {
         }, [])
         .reverse();
 
-    return <LineChart chartId={'totalFailedQAChart'} chartTitle={'Total Times Failed QA'} data={formattedData} lineColor={'#0000cc'} />;
+    return (
+        <div>
+            <LineChart
+                chartId={'totalFailedQAChart'}
+                chartTitle={'Total Times Failed QA'}
+                data={formattedData}
+                lineColor={'#0000cc'}
+                yLabel={'Total'}
+            />
+            <Description
+                description={`
+Count of the number of times tasks have failed QA.`}
+                calculatedBy={`Aggregate of all tasks failed QA count`}
+                footNote={`*Each instance of failed QA is counted.`}
+            />
+        </div>
+    );
 };

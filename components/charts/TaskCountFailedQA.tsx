@@ -1,7 +1,8 @@
-import React from 'react';
-import { LineChart } from './LineChart';
 import { ChartDataPoint, ChartData } from '../../types/ChartTypes';
+import { Description } from './Description';
 import { JiraIssue, JiraResponse } from '../../types/JiraTypes';
+import { LineChart } from './LineChart';
+import React from 'react';
 
 interface ITaskCountFailedQAProps {
     data: ChartData;
@@ -11,7 +12,7 @@ interface ITaskCountFailedQAProps {
 export const TaskCountFailedQA: React.FC<ITaskCountFailedQAProps> = ({ data }) => {
     const formattedData: ChartDataPoint[] = Object.entries(data)
         .reduce((acc: ChartDataPoint[], cur: [string, JiraResponse]): ChartDataPoint[] => {
-        return [
+            return [
                 ...acc,
                 {
                     date: cur[0],
@@ -23,7 +24,9 @@ export const TaskCountFailedQA: React.FC<ITaskCountFailedQAProps> = ({ data }) =
                                         total++;
                                     }
                                     return total;
-                                }, 0) / cur[1].issues.length) * 100
+                                }, 0) /
+                                    cur[1].issues.length) *
+                                100
                             ).toFixed(2)
                         ) || 0
                 }
@@ -32,6 +35,22 @@ export const TaskCountFailedQA: React.FC<ITaskCountFailedQAProps> = ({ data }) =
         .reverse();
 
     return (
-        <LineChart chartId={'taskCountFailedQAChart'} chartTitle={'Percentage of Tasks with Failed QA'} data={formattedData} lineColor={'#0000ff'} yMax={100} tooltipPrecision={2}  />
+        <div>
+            <LineChart
+                chartId={'taskCountFailedQAChart'}
+                chartTitle={'Percentage of Tasks with Failed QA'}
+                data={formattedData}
+                lineColor={'#0000ff'}
+                yMax={100}
+                tooltipPrecision={2}
+                yLabel={'Percent'}
+            />
+            <Description
+                description={`
+The percentage of the tasks in the result set that have ever failed QA.`}
+                calculatedBy={`(Number Tasks that Have Ever Failed QA / Total Tasks)`}
+                footNote={`*Does not count multiple fails. EX: A task that fails 3 times is counted as one.`}
+            />
+        </div>
     );
 };

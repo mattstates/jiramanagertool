@@ -1,7 +1,8 @@
-import React from 'react';
-import { LineChart } from './LineChart';
-import { JiraIssue, JiraResponse } from '../../types/JiraTypes';
 import { ChartData, ChartDataPoint } from '../../types/ChartTypes';
+import { Description } from './Description';
+import { JiraIssue, JiraResponse } from '../../types/JiraTypes';
+import { LineChart } from './LineChart';
+import React from 'react';
 
 interface ITaskCountFailedCodeReviewProps {
     data: ChartData;
@@ -23,7 +24,9 @@ export const TaskCountFailedCodeReview: React.FC<ITaskCountFailedCodeReviewProps
                                         total++;
                                     }
                                     return total;
-                                }, 0) / cur[1].issues.length) * 100
+                                }, 0) /
+                                    cur[1].issues.length) *
+                                100
                             ).toFixed(2)
                         ) || 0
                 }
@@ -32,13 +35,22 @@ export const TaskCountFailedCodeReview: React.FC<ITaskCountFailedCodeReviewProps
         .reverse();
 
     return (
-        <LineChart
-            chartId={'taskCountFailedCodeReviewChart'}
-            chartTitle={'Percentage of Tasks with Failed Code Review'}
-            data={formattedData}
-            lineColor={'#ff0000'}
-            tooltipPrecision={2}
-            yMax={100}
-        />
+        <div>
+            <LineChart
+                chartId={'taskCountFailedCodeReviewChart'}
+                chartTitle={'Percentage of Tasks with Failed Code Review'}
+                data={formattedData}
+                lineColor={'#ff0000'}
+                tooltipPrecision={2}
+                yMax={100}
+                yLabel={'Percent'}
+            />
+            <Description
+                description={`
+The percentage of the tasks in the result set that have ever failed a code review.`}
+                calculatedBy={`(Number Tasks that Have Ever Failed Code Review / Total Tasks)`}
+                footNote={`*Does not count multiple fails. EX: A task that fails 3 times is counted as one.`}
+            />
+        </div>
     );
 };

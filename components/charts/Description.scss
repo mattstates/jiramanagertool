@@ -1,0 +1,17 @@
+.description {
+    a {
+        border-radius: 4px;
+        border: 2px solid #0049b0;
+        cursor: pointer;
+        padding: 4px 12px;
+        width: 200px;
+    }
+    &__body {
+
+    }
+    &--hidden {
+        height: 0;
+        opacity: 0;
+        transition: 200ms;
+    }
+}

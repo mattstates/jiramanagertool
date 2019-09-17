@@ -1,4 +1,5 @@
 import { ChartData, ChartDataPoint } from '../../types/ChartTypes';
+import { Description } from './Description';
 import { getYMaxThreshold } from '../../utils/getYMaxThreshold';
 import { JiraIssue, JiraIssueField, JiraIssueWorklog, JiraResponse } from '../../types/JiraTypes';
 import { LineChart } from './LineChart';
@@ -65,13 +66,22 @@ export const TimeVelocity: React.FC<ITimeVelocityProps> = ({ data }) => {
     const dataMax = Math.max(...formattedData.map((data: ChartDataPoint) => data.info));
 
     return (
-        <LineChart
-            chartId={'velocityChart'}
-            chartTitle={'Time Velocity on Tasks Completed in the Date Range'}
-            data={formattedData}
-            lineColor={'green'}
-            tooltipPrecision={2}
-            yMax={getYMaxThreshold({ dataMax, yThreshold: VELOCITY_THRESHOLD })}
-        />
+        <div>
+            <LineChart
+                chartId={'velocityChart'}
+                chartTitle={'Time Velocity on Tasks Completed in the Date Range'}
+                data={formattedData}
+                lineColor={'green'}
+                tooltipPrecision={2}
+                yMax={getYMaxThreshold({ dataMax, yThreshold: VELOCITY_THRESHOLD })}
+                yLabel={'Hours Logged per Day'}
+            />
+            <Description
+                description={`
+Average amount of time logged per day.`}
+                calculatedBy={`(Total time logged on tasks in the result set / Number of unique days where the assignee logged time on one of the tasks)`}
+                footNote={`*Does not include time logged on the same tasks by someone who is not the assignee.`}
+            />
+        </div>
     );
 };

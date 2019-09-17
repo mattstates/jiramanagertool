@@ -13,6 +13,8 @@ interface ILineChartProps {
     data: ChartDataPoint[];
     lineColor?: string;
     tooltipPrecision?: number;
+    xLabel?: string;
+    yLabel: string;
     yMax?: number;
     yMin?: number;
 }
@@ -32,7 +34,9 @@ export const LineChart: React.FC<ILineChartProps> = ({
     lineColor,
     tooltipPrecision = 0,
     yMax,
-    yMin = 0
+    yMin = 0,
+    yLabel,
+    xLabel = 'Interval End Date'
 }) => {
     const container = useRef(null);
 
@@ -105,6 +109,23 @@ export const LineChart: React.FC<ILineChartProps> = ({
                     's'
                 )
             );
+        
+        // X Axis Label
+        svgContainer
+            .append('text')
+            .attr('transform', `translate(${width / 2 + 25}, ${(height + margin.top + 80)})`)
+            .style('text-anchor', 'middle')
+            .text(xLabel);
+
+        // Y Axis Label
+        svgContainer
+            .append('text')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', 0)
+            .attr('x', (0 - height / 2) - 25)
+            .attr('dy', '1em')
+            .style('text-anchor', 'middle')
+            .text(yLabel);
 
         // Path Lines
         svgContainer

@@ -34,7 +34,7 @@ export const AverageOriginalEstimate: React.FC<IAverageOriginalEstimateProps> = 
         <div>
             <LineChart
                 chartId={'averageOriginalEstimateChart'}
-                chartTitle={'Average Original Estimate for Tasks Completed in the Date Range'}
+                chartTitle={'Average Original Estimate'}
                 data={formattedData}
                 lineColor={'purple'}
                 tooltipPrecision={2}

@@ -65,7 +65,7 @@ export const EstimationAccuracy: React.FC<IEstimationAccuracyProps> = ({ data })
         <div>
             <LineChart
                 chartId={'estimationAccuracyChart'}
-                chartTitle={'Estimation Accuracy on Tasks Completed in the Date Range'}
+                chartTitle={'Estimation Accuracy'}
                 data={formattedData}
                 lineColor={'#0052cc'}
                 tooltipPrecision={2}

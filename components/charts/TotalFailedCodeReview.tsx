@@ -30,7 +30,7 @@ export const TotalFailedCodeReview: React.FC<ITotalFailedCodeReviewProps> = ({ d
         <div>
             <LineChart
                 chartId={'totalFailedCodeReviewChart'}
-                chartTitle={'Total Times Failed Code Review'}
+                chartTitle={'Failed Code Review'}
                 data={formattedData}
                 lineColor={'#cc0000'}
                 yLabel={'Total'}

@@ -25,7 +25,7 @@ export const TasksCompleted: React.FC<ITasksCompletedProps> = ({ data }) => {
         <div>
             <LineChart
                 chartId={'tasksCompletedChart'}
-                chartTitle={'Total Completed Tasks'}
+                chartTitle={'Completed Tasks'}
                 data={formattedData}
                 lineColor={'#111'}
                 yLabel={'Total'}

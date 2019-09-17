@@ -69,7 +69,7 @@ export const TimeVelocity: React.FC<ITimeVelocityProps> = ({ data }) => {
         <div>
             <LineChart
                 chartId={'velocityChart'}
-                chartTitle={'Time Velocity on Tasks Completed in the Date Range'}
+                chartTitle={'Time Velocity'}
                 data={formattedData}
                 lineColor={'green'}
                 tooltipPrecision={2}

@@ -38,7 +38,7 @@ export const TaskCountFailedQA: React.FC<ITaskCountFailedQAProps> = ({ data }) =
         <div>
             <LineChart
                 chartId={'taskCountFailedQAChart'}
-                chartTitle={'Percentage of Tasks with Failed QA'}
+                chartTitle={'Failed QA Percentage'}
                 data={formattedData}
                 lineColor={'#0000ff'}
                 yMax={100}

@@ -5,6 +5,7 @@ import { line, curveMonotoneX } from 'd3-shape';
 import { predictY } from '../../utils/predictY';
 import { scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
+import format from 'date-fns/format';
 import React, { useEffect, useRef } from 'react';
 
 interface ILineChartProps {
@@ -26,6 +27,7 @@ const height = 270 - margin.top - margin.bottom;
 const lineWidth = 2;
 const circleWidth = 4;
 const Y_TICK_THRESHOLD = 5;
+const DATE_FORMAT = 'MMM D YY';
 
 export const LineChart: React.FC<ILineChartProps> = ({
     data,
@@ -93,7 +95,7 @@ export const LineChart: React.FC<ILineChartProps> = ({
             .call(
                 axisBottom(xScale)
                     .tickValues(data.map((_d: ChartDataPoint, i: number) => i))
-                    .tickFormat((_d, i) => data[i].date)
+                    .tickFormat((_d, i) => format(data[i].date, DATE_FORMAT))
             );
 
         // Y Axis Line
@@ -197,7 +199,7 @@ export const LineChart: React.FC<ILineChartProps> = ({
                     .style('left', `${Number(this.getAttribute('cx')) - 25}px`)
                     .html(
                         `
-                    Date: ${d.date}<br/>
+                    Date: ${format(d.date, DATE_FORMAT)}<br/>
                     Value: ${d.info.toFixed(tooltipPrecision)}
                 `
                     )

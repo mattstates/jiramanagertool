@@ -30,14 +30,14 @@ export const TotalFailedQA: React.FC<ITotalFailedQAProps> = ({ data }) => {
         <div>
             <LineChart
                 chartId={'totalFailedQAChart'}
-                chartTitle={'Total Times Failed QA'}
+                chartTitle={'Failed QA'}
                 data={formattedData}
                 lineColor={'#0000cc'}
                 yLabel={'Total'}
             />
             <Description
                 description={`
-Count of the number of times tasks have failed QA.`}
+                    Count of the number of times tasks have failed QA.`}
                 calculatedBy={`Aggregate of all tasks failed QA count`}
                 footNote={`*Each instance of failed QA is counted.`}
             />

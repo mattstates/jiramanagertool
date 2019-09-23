@@ -86,6 +86,7 @@ export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
                     return criteriasCollection;
                 }
 
+                // TODO: Fix this. It is hacky and makes it so that the key and value must be equal.
                 const typedCriteria = keyValTuple[0].replace(/\s/gi, '') as keyof typeof Criterias;
 
                 return [...criteriasCollection, Criterias[typedCriteria]];

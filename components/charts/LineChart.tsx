@@ -50,7 +50,10 @@ export const LineChart: React.FC<ILineChartProps> = ({
         const yScale = scaleLinear()
             .domain([
                 yMin,
-                yMax || Math.max(...data.map((data: ChartDataPoint): number => data.info))
+                yMax || (()=> {
+                    const max = Math.ceil(Math.max(...data.map((data: ChartDataPoint): number => data.info)) * 1.33)
+                    return max > Y_TICK_THRESHOLD - 1 ? max : Y_TICK_THRESHOLD;
+                })()
             ]) // input
             .range([height, 0]); // output
 

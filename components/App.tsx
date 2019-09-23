@@ -75,6 +75,7 @@ export function App() {
     const isVisDataAvailable = Object.keys(vizualizationData).length > 0;
 
     let charts: JSX.Element[];
+
     if (!loading && isVisDataAvailable) {
         charts = appState.criterias.map((criteria, i) => {
             return mapCriteriaToChartComponent({

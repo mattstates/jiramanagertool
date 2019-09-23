@@ -38,7 +38,7 @@ export const TaskCountFailedCodeReview: React.FC<ITaskCountFailedCodeReviewProps
         <div>
             <LineChart
                 chartId={'taskCountFailedCodeReviewChart'}
-                chartTitle={'Percentage of Tasks with Failed Code Review'}
+                chartTitle={'Failed Code Review Percentage'}
                 data={formattedData}
                 lineColor={'#ff0000'}
                 tooltipPrecision={2}

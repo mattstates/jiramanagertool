@@ -1,3 +1,4 @@
+// import '../st¬yles/reset.scss';
 import './App.scss';
 import { AverageOriginalEstimate } from './charts/AverageOriginalEstimate';
 import { ChartData } from '../types/ChartTypes';
@@ -15,6 +16,7 @@ import { TimeVelocity } from './charts/TimeVelocity';
 import { TotalFailedCodeReview } from './charts/TotalFailedCodeReview';
 import { TotalFailedDeployment } from './charts/TotalFailedDeployment';
 import { TotalFailedQA } from './charts/TotalFailedQA';
+import { TotalTimeOriginalEstimate } from './charts/TotalTimeOriginalEstimate';
 import { urlBuilder } from '../secrets';
 import React, { Fragment, useEffect, useState } from 'react';
 
@@ -73,10 +75,14 @@ export function App() {
     const isVisDataAvailable = Object.keys(vizualizationData).length > 0;
 
     let charts: JSX.Element[];
+
     if (!loading && isVisDataAvailable) {
         charts = appState.criterias.map((criteria, i) => {
-            return mapCriteriaToChartComponent(
-                { criteria, data: vizualizationData, key: `${criteria.toString()}${i}` }            );
+            return mapCriteriaToChartComponent({
+                criteria,
+                data: vizualizationData,
+                key: `${criteria.toString()}${i}`
+            });
         });
     }
 
@@ -90,8 +96,15 @@ export function App() {
     );
 }
 
-function mapCriteriaToChartComponent(
-{ criteria, data, key }: { criteria: Criterias; data: ChartData; key: string; }): JSX.Element {
+function mapCriteriaToChartComponent({
+    criteria,
+    data,
+    key
+}: {
+    criteria: Criterias;
+    data: ChartData;
+    key: string;
+}): JSX.Element {
     switch (criteria) {
         case Criterias.EstimationAccuracy:
             return <EstimationAccuracy data={data} key={key} />;
@@ -115,5 +128,7 @@ function mapCriteriaToChartComponent(
             return <AverageOriginalEstimate data={data} key={key} />;
         case Criterias.TaskVelocity:
             return <TaskVelocity data={data} key={key} />;
+        case Criterias.TotalTimeOriginalEstimate:
+            return <TotalTimeOriginalEstimate data={data} key={key} />;
     }
 }

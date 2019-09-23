@@ -58,7 +58,7 @@ export const TimeLogged: React.FC<ITimeLoggedProps> = ({ data }) => {
         <div>
             <LineChart
                 chartId={'timeLoggedChart'}
-                chartTitle={'Total Hours Logged on Tasks Completed in the Date Range'}
+                chartTitle={'Time Logged'}
                 data={formattedData}
                 lineColor={'orange'}
                 yLabel={'Hours'}

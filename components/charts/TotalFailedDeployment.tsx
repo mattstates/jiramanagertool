@@ -27,7 +27,7 @@ export const TotalFailedDeployment: React.FC<ITotalFailedDeploymentProps> = ({ d
         <div>
             <LineChart
                 chartId={'totalFailedDeploymentChart'}
-                chartTitle={'Total Times Failed Stakeholder Test'}
+                chartTitle={'Failed Stakeholder Test'}
                 data={formattedData}
                 lineColor={'#6633aa'}
                 yLabel={'Total'}

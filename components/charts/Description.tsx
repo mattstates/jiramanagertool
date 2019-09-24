@@ -12,25 +12,14 @@ export const Description: React.FC<IDescriptionProps> = ({ description, calculat
 
     return (
         <div className="description">
-            <a
+            <button className={isVisible ? 'active' : ''}
                 onClick={e => {
                     e.preventDefault();
                     updateIsVisible(!isVisible);
-                    console.log(isVisible);
                 }}
-                // onMouseLeave={() => {
-                //     console.log('mouse leave');
-
-                //     updateIsVisible(false);
-                // }}
-                // onMouseOver={() => {
-                //     console.log('mouse over');
-                //     updateIsVisible(true);
-                //     console.log(isVisible);
-                // }}
             >
                 Description
-            </a>
+            </button>
             <div className={`description__body${isVisible ? '' : ' description--hidden'}`}>
                 <p>{description}</p>
                 <p>

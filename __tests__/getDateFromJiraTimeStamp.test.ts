@@ -1,4 +1,4 @@
-import getDateFromJiraTimeStamp from '../utils/getDateFromJiraTimeStamp';
+import getDateFromJiraTimeStamp from '../src/utils/getDateFromJiraTimeStamp';
 
 describe('getDateFromJiraTimeStamp', () => {
     test('2018-08-29T16:46:14.470-0700 returns 2018-08-29', () => {

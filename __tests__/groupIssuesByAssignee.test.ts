@@ -1,4 +1,4 @@
-import groupIssuesByAssignee from '../utils/groupIssuesByAssignee';
+import groupIssuesByAssignee from '../src/utils/groupIssuesByAssignee';
 import mockJiraIssueFields from '../mockData/mockJiraFields';
 
 describe('groupIssuesByAssignee', () => {

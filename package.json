@@ -2,11 +2,10 @@
     "name": "jira-manager-tool",
     "version": "0.0.1",
     "description": "Jira Data Collection",
-    "main": "index.js",
+    "main": "./src/index.js",
     "repository": "https://github.com/mattstates/jiramanagertool.git",
     "scripts": {
-        "test": "jest",
-        "watch": "webpack --watch",
+        "test": "jest --verbose",
         "start": "webpack-dev-server --open --config webpack.dev.js --env.DEVMODE=true",
         "start-local": "webpack-dev-server --open --config webpack.dev.js --env.DEVMODE=false",
         "build": "webpack --config webpack.prod.js"
@@ -57,6 +56,7 @@
         "@types/webpack": "^4.39.1",
         "d3": "^5.12.0",
         "date-fns": "^1.30.1",
+        "deepmerge": "^4.0.0",
         "react": "^16.9.0",
         "react-dom": "^16.9.0"
     }

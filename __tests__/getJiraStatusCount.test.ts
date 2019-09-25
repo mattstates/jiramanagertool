@@ -1,5 +1,5 @@
 import mockJiraIssue from '../mockData/mockJiraIssue';
-import { getJiraStatusCount } from '../utils/getJiraStatusCount';
+import { getJiraStatusCount } from '../src/utils/getJiraStatusCount';
 /*
 const uniqueStatuses: string[] = Array.from(
     // This is too cute, just use a .reduce...

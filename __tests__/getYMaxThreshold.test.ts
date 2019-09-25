@@ -1,4 +1,4 @@
-import { getYMaxThreshold } from "../utils/getYMaxThreshold";
+import { getYMaxThreshold } from "../src/utils/getYMaxThreshold";
 
 describe('getYMaxThreshold', () => {
     const dataMax = 5;

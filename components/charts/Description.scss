@@ -1,13 +1,28 @@
 .description {
-    a {
+    button {
         border-radius: 4px;
         border: 2px solid #0049b0;
         cursor: pointer;
+        margin: 20px 0;
+        outline: none;
         padding: 4px 12px;
-        width: 200px;
+        width: 100px;
+    }
+    .active {
+        background: #0049b0;
+        color: #ffffff;
     }
     &__body {
-
+        strong {
+            font-weight: 700;
+        }
+        p {
+            margin: 12px 0;
+        }
+    }
+    sup {
+        font-size: smaller;
+        vertical-align: super;
     }
     &--hidden {
         height: 0;

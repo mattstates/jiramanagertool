@@ -1,4 +1,4 @@
-// import '../st¬yles/reset.scss';
+import '../styles/reset.scss';
 import './App.scss';
 import { AverageOriginalEstimate } from './charts/AverageOriginalEstimate';
 import { ChartData } from '../types/ChartTypes';

@@ -198,8 +198,8 @@ export const LineChart: React.FC<ILineChartProps> = ({
             .attr('transform', `translate(${margin.left}, ${margin.top})`)
             .on('mouseover', function(d) {
                 tooltip
-                    .style('top', `${Number(this.getAttribute('cy')) + 70}px`)
-                    .style('left', `${Number(this.getAttribute('cx')) - 25}px`)
+                    .style('top', `${Number(this.getAttribute('cy')) + 10}px`)
+                    .style('left', `${Number(this.getAttribute('cx')) - 30}px`)
                     .html(
                         `
                     Date: ${format(d.date, DATE_FORMAT)}<br/>

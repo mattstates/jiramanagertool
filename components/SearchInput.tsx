@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import { IFormAction } from '../actions/FormAction';
-import { FormActionTypes } from '../enums/FormActionTypes';
-import { Dropdown } from './Dropdown';
 import './SearchInput.scss';
+import { Dropdown } from './Dropdown';
+import { FormActionTypes } from '../enums/FormActionTypes';
+import { IFormAction } from '../actions/FormAction';
+import React, { useEffect, useRef } from 'react';
 
 const INPUT_ID = 'assigneeField';
 
@@ -39,9 +39,7 @@ export const SearchInput: React.FC<InputProps> = ({ dispatch, value }) => {
                 }}
                 ref={inputRef}
                 onKeyUp={(e: React.KeyboardEvent) => {
-                    console.log(e.key);
                     if (e.key === 'ArrowDown') {
-                        console.log(ulRef.current);
                         ulRef.current.focus();
                     }
                 }}

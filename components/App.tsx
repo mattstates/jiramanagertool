@@ -39,36 +39,41 @@ export function App() {
         updateLoading(true);
         updateVizData({});
 
-        const data: JiraResponse[] = [];
-        const promises = appState.dateRanges.map(dateRange => {
-            return fetch(urlBuilder(appState.assignee, dateRange[0], dateRange[1]))
-                .then(response => response.json())
-                .then((json: JiraResponse) => {
-                    return json;
-                });
-        });
+        (async () => {
+            let responseData: Array<JiraResponse[]>;
 
-        Promise.all(promises)
-            .then(results => {
-                results.forEach(result => {
-                    data.push(result);
-                });
-
-                const formattedData: ChartData = appState.dateRanges.reduce(
-                    (hash: ChartData, dateRange, i): ChartData => {
-                        hash[dateRange[1]] = data[i];
-                        return hash;
-                    },
-                    {}
-                );
-
-                updateVizData(formattedData);
-                updateLoading(false);
-            })
-            .catch((error: { message: string }) => {
+            try {
+                responseData = await getJiraResponseData(appState.assignee, appState.dateRanges);
+            } catch (error) {
                 console.log(error.message);
-                updateLoading(false);
-            });
+            }
+
+            const formattedData: ChartData = appState.dateRanges.reduce(
+                (hash: ChartData, dateRange, i): ChartData => {
+                    // Not sure why TypeScript doesn't want to accept .reduce without an initial value param.
+                    hash[dateRange[1]] = responseData[i].reduce<JiraResponse>(
+                        (responseAccumlator, jiraResponse): JiraResponse => {
+                            return {
+                                ...responseAccumlator,
+                                issues: [...responseAccumlator.issues, ...jiraResponse.issues]
+                            };
+                        },
+                        {
+                            expand: '',
+                            issues: [],
+                            maxResults: 0,
+                            startAt: 0,
+                            total: 0
+                        }
+                    );
+                    return hash;
+                },
+                {}
+            );
+
+            updateVizData(formattedData);
+            updateLoading(false);
+        })();
     }, [appState.dateRanges, appState.assignee, appState.criterias]);
 
     //TODO: Loop through an array of urls and map them to a Result element to show what the JQL query was for the result...
@@ -86,7 +91,6 @@ export function App() {
         });
     }
 
-    console.log(vizualizationData);
     return (
         <Fragment>
             <h3>Customize Your Search</h3>
@@ -131,4 +135,52 @@ function mapCriteriaToChartComponent({
         case Criterias.TotalTimeOriginalEstimate:
             return <TotalTimeOriginalEstimate data={data} key={key} />;
     }
+}
+
+/**
+ * @description Fetches all results in the event that there are more issues than the max results query param allows. Has a dependency on urlBuilder()
+ */
+async function getJiraResponseData(assignee: string, dateRanges: Array<[string, string]>) {
+    // TODO: Handle fetching errors.
+    const initialPromises = dateRanges.map(async dateRange => {
+        const response = await fetch(urlBuilder(assignee, dateRange[0], dateRange[1], 0));
+        const json: JiraResponse = await response.json();
+        return json;
+    });
+
+    const initialResponses = await Promise.all<JiraResponse>(initialPromises);
+
+    const subsequentPromises = initialResponses.map(
+        async (initialResponse, responseIndex): Promise<JiraResponse[]> => {
+            const { maxResults, total } = initialResponse;
+            const apiCallCount = Math.floor(total / maxResults);
+            let remainingResults: Promise<JiraResponse>[] = [
+                new Promise<JiraResponse>((resolve, _reject) => {
+                    resolve(initialResponse);
+                })
+            ];
+            if (apiCallCount > 0) {
+                remainingResults = [
+                    ...remainingResults,
+                    ...new Array(apiCallCount).fill(null).map(async (_element, i) => {
+                        const response = await fetch(
+                            urlBuilder(
+                                assignee,
+                                dateRanges[responseIndex][0],
+                                dateRanges[responseIndex][1],
+                                (i + 1) * maxResults
+                            )
+                        );
+                        const json: JiraResponse = await response.json();
+                        return json;
+                    })
+                ];
+            }
+
+            return await Promise.all<JiraResponse>(remainingResults);
+        }
+    );
+    const subsequentResponses = await Promise.all(subsequentPromises);
+
+    return subsequentResponses;
 }

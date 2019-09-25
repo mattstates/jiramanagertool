@@ -17,7 +17,7 @@ import { TotalFailedCodeReview } from './charts/TotalFailedCodeReview';
 import { TotalFailedDeployment } from './charts/TotalFailedDeployment';
 import { TotalFailedQA } from './charts/TotalFailedQA';
 import { TotalTimeOriginalEstimate } from './charts/TotalTimeOriginalEstimate';
-import { urlBuilder } from '../secrets';
+import getJiraSearchUrl from '../utils/getJiraSearchUrl';
 import React, { Fragment, useEffect, useState } from 'react';
 
 export interface IAppState {
@@ -143,7 +143,7 @@ function mapCriteriaToChartComponent({
 async function getJiraResponseData(assignee: string, dateRanges: Array<[string, string]>) {
     // TODO: Handle fetching errors.
     const initialPromises = dateRanges.map(async dateRange => {
-        const response = await fetch(urlBuilder(assignee, dateRange[0], dateRange[1], 0));
+        const response = await fetch(getJiraSearchUrl(assignee, dateRange[0], dateRange[1], 0));
         const json: JiraResponse = await response.json();
         return json;
     });
@@ -164,7 +164,7 @@ async function getJiraResponseData(assignee: string, dateRanges: Array<[string, 
                     ...remainingResults,
                     ...new Array(apiCallCount).fill(null).map(async (_element, i) => {
                         const response = await fetch(
-                            urlBuilder(
+                            getJiraSearchUrl(
                                 assignee,
                                 dateRanges[responseIndex][0],
                                 dateRanges[responseIndex][1],

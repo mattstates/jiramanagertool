@@ -3,3 +3,4 @@
 .ds_store
 requirements.md
 secrets.ts
+_appconfig.json

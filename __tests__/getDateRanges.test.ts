@@ -1,5 +1,5 @@
-import { getDateRanges } from '../utils/getDateRanges';
-import { DateRanges } from '../enums/DateRanges';
+import { getDateRanges } from '../src/utils/getDateRanges';
+import { DateRanges } from '../src/enums/DateRanges';
 
 describe('getDateRanges', () => {
     test('One month intervals for a year returns 12 results', () => {

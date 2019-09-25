@@ -4,7 +4,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     entry: {
-        app: './index.tsx'
+        app: './src/index.tsx'
     },
     plugins: [
         new CleanWebpackPlugin(['dist']),

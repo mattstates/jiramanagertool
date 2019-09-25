@@ -1,10 +1,16 @@
 import './Dropdown.scss';
-import { jiraApiUrlAutocomplete } from '../secrets';
+import { hostName, jiraApiAutocompleteEndpoint, jirabaseApiEndpoint } from '../init';
 import { JiraAutocompleteIdentity } from '../types/JiraTypes';
 import { useFetch } from '../hooks/useFetch';
 import React, { useState, useEffect } from 'react';
 
 const START_AUTOCOMPLETE_CHAR_THRESHOLD = 2;
+
+const AUTOCOMPLETE_API =
+    hostName +
+    jirabaseApiEndpoint +
+    jiraApiAutocompleteEndpoint +
+    '?fieldName=assignee&fieldValue=';
 
 interface DropdownProps {
     parentRef: React.MutableRefObject<any>;
@@ -23,8 +29,6 @@ function replaceLastItem<T>(collection: T[], item: T): T[] {
     return [...collection.slice(0, collection.length - 1), item];
 }
 
-// TODO: Support using arrows for selections
-// TODO: Support staying focuses on the SearchInput on click
 // TODO: Refactor
 export const Dropdown: React.FC<DropdownProps> = ({
     parentRef,
@@ -40,7 +44,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
 
     const data = useFetch<AutoCompleteResponseData>(
         lowerCaseSearchTerm.length > START_AUTOCOMPLETE_CHAR_THRESHOLD
-            ? jiraApiUrlAutocomplete + lowerCaseSearchTerm
+            ? AUTOCOMPLETE_API + lowerCaseSearchTerm
             : ''
     );
 

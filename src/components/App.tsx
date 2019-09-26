@@ -30,7 +30,6 @@ export function App() {
 
         (async () => {
             let responseData: Array<JiraResponse[]>;
-
             try {
                 responseData = await getJiraResponseData(appState.assignee, appState.dateRanges);
             } catch (error) {

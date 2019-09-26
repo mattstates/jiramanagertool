@@ -10,12 +10,12 @@ export const getDateRanges = (
     interval: DateRanges,
     intervalMultiple: number
 ): Array<[string, string]> => {
-    const fromDateObj = new Date(fromDate + ','); // Adding a comma is hacky, makes sure the date doesn't give the prior date
-    const endDateObj = new Date(endDate + ',');
-    let dateCounter = endDateObj;
-    const dateFormat = 'YYYY-MM-DD';
-    const dates: Array<[string, string]> = [];
+    const dateFormat = 'YYYY/MM/DD';
     const dateAdder = getDateFunction(interval);
+    const dates: Array<[string, string]> = [];
+    const endDateObj = new Date(format(endDate, dateFormat));
+    const fromDateObj = new Date(format(fromDate, dateFormat));
+    let dateCounter = endDateObj;
 
     // from... to...
     while (isBefore(fromDateObj, dateCounter)) {

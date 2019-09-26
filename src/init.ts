@@ -1,5 +1,5 @@
 import merge from 'deepmerge'; //https://github.com/TehShrike/deepmerge
-declare var DEVMODE: string;
+declare var DEVMODE: string; //Webpack assigns a value to this
 
 interface IAppConfiguration {
     jiraApiConfiguration: {
@@ -19,7 +19,7 @@ interface IAppConfiguration {
         apiHostName: string;
         jiraApiAutocompleteEndpoint: string;
         jiraApiSearchEndpoint: string;
-        jirabaseApiEndpoint: string;
+        jiraBaseApiEndpoint: string;
         test?: string;
     };
 }
@@ -33,7 +33,7 @@ class Configuration implements IAppConfiguration {
         apiHostName: '';
         jiraApiAutocompleteEndpoint: '';
         jiraApiSearchEndpoint: '';
-        jirabaseApiEndpoint: '';
+        jiraBaseApiEndpoint: '';
     };
 }
 
@@ -45,24 +45,22 @@ try {
     publicConfiguration = new Configuration();
 }
 
-let privateConfiguration: IAppConfiguration;
+let CONFIG = publicConfiguration;
+
 try {
-    privateConfiguration = require('../_appconfig.json');
-} catch (error) {
-    console.error(error.message);
-    privateConfiguration = new Configuration();
+    let privateConfiguration = require('../_appconfig.json');
+    CONFIG = merge(publicConfiguration, privateConfiguration);
+} catch (_error) {
+    console.warn('No Private appconfig.json');
 }
 
-const CONFIG = merge(publicConfiguration, privateConfiguration, {
-    arrayMerge: (_destination, source) => source
-});
 
 // TODO: Implement a configuration validator;
 const {
     apiHostName,
     jiraApiAutocompleteEndpoint,
     jiraApiSearchEndpoint,
-    jirabaseApiEndpoint
+    jiraBaseApiEndpoint
 } = CONFIG.urlConfiguration;
 
 const { doneStatusDefinitions, jiraApiMaxResults, options } = CONFIG.jiraApiConfiguration;
@@ -71,11 +69,11 @@ const { jiraCustomFields } = options;
 const hostName = DEVMODE === 'true' ? apiHostName : '';
 
 export {
+    doneStatusDefinitions,
     hostName,
     jiraApiAutocompleteEndpoint,
-    jiraApiSearchEndpoint,
-    jirabaseApiEndpoint,
-    doneStatusDefinitions,
     jiraApiMaxResults,
+    jiraApiSearchEndpoint,
+    jiraBaseApiEndpoint,
     jiraCustomFields
 };

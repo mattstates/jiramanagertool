@@ -1,5 +1,5 @@
 import './Dropdown.scss';
-import { hostName, jiraApiAutocompleteEndpoint, jirabaseApiEndpoint } from '../init';
+import { hostName, jiraApiAutocompleteEndpoint, jiraBaseApiEndpoint } from '../init';
 import { JiraAutocompleteIdentity } from '../types/JiraTypes';
 import { useFetch } from '../hooks/useFetch';
 import React, { useState, useEffect } from 'react';
@@ -8,7 +8,7 @@ const START_AUTOCOMPLETE_CHAR_THRESHOLD = 2;
 
 const AUTOCOMPLETE_API =
     hostName +
-    jirabaseApiEndpoint +
+    jiraBaseApiEndpoint +
     jiraApiAutocompleteEndpoint +
     '?fieldName=assignee&fieldValue=';
 

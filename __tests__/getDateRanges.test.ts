@@ -25,38 +25,38 @@ describe('getDateRanges Accepts different date string formats', () => {
     test('YYYY-MM-DD', () => {
         const dateRanges = getDateRanges('2019-01-01', '2019-02-01', ...params);
         expect(dateRanges.length).toEqual(1);
-        expect(dateRanges[0][0]).toEqual('2019-01-01');
-        expect(dateRanges[0][1]).toEqual('2019-02-01');
+        expect(dateRanges[0][0]).toEqual('2019/01/01');
+        expect(dateRanges[0][1]).toEqual('2019/02/01');
     });
     test('YYYY/MM/DD', () => {
         const dateRanges = getDateRanges('2019/01/01', '2019/02/01', ...params);
         expect(dateRanges.length).toEqual(1);
-        expect(dateRanges[0][0]).toEqual('2019-01-01');
-        expect(dateRanges[0][1]).toEqual('2019-02-01');
+        expect(dateRanges[0][0]).toEqual('2019/01/01');
+        expect(dateRanges[0][1]).toEqual('2019/02/01');
     });
     test('MM-DD-YYYY', () => {
         const dateRanges = getDateRanges('01-01-2019', '02-01-2019', ...params);
         expect(dateRanges.length).toEqual(1);
-        expect(dateRanges[0][0]).toEqual('2019-01-01');
-        expect(dateRanges[0][1]).toEqual('2019-02-01');
+        expect(dateRanges[0][0]).toEqual('2019/01/01');
+        expect(dateRanges[0][1]).toEqual('2019/02/01');
     });
     test('MM/DD/YYYY', () => {
         const dateRanges = getDateRanges('01/01/2019', '02/01/2019', ...params);
         expect(dateRanges.length).toEqual(1);
-        expect(dateRanges[0][0]).toEqual('2019-01-01');
-        expect(dateRanges[0][1]).toEqual('2019-02-01');
+        expect(dateRanges[0][0]).toEqual('2019/01/01');
+        expect(dateRanges[0][1]).toEqual('2019/02/01');
     });
     test('MM-DD-YY', () => {
         const dateRanges = getDateRanges('01-01-19', '02-01-19', ...params);
         expect(dateRanges.length).toEqual(1);
-        expect(dateRanges[0][0]).toEqual('2019-01-01');
-        expect(dateRanges[0][1]).toEqual('2019-02-01');
+        expect(dateRanges[0][0]).toEqual('2019/01/01');
+        expect(dateRanges[0][1]).toEqual('2019/02/01');
     });
     test('MM/DD/YY', () => {
         const dateRanges = getDateRanges('01/01/19', '02/01/19', ...params);
         expect(dateRanges.length).toEqual(1);
-        expect(dateRanges[0][0]).toEqual('2019-01-01');
-        expect(dateRanges[0][1]).toEqual('2019-02-01');
+        expect(dateRanges[0][0]).toEqual('2019/01/01');
+        expect(dateRanges[0][1]).toEqual('2019/02/01');
     });
 });
 

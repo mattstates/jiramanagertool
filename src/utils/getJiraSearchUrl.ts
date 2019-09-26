@@ -1,6 +1,6 @@
 import {
     hostName,
-    jirabaseApiEndpoint,
+    jiraBaseApiEndpoint,
     jiraApiSearchEndpoint,
     doneStatusDefinitions,
     jiraApiMaxResults,
@@ -25,7 +25,7 @@ export default function getJiraSearchUrl(
 
     return (
         hostName +
-        jirabaseApiEndpoint +
+        jiraBaseApiEndpoint +
         jiraApiSearchEndpoint +
         '?jql=' +
         encodeURIComponent(

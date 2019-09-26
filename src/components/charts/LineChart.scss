@@ -25,11 +25,10 @@ svg {
         border-radius: 4px;
         border: $borderStyle;
         font-size: 17px;
-        left: 450px;
+        left: -9999px;
         opacity: 0;
         padding: 4px 12px;
         position: absolute;
-        top: 140px;
         transition: 300ms opacity;
         z-index: 1;
         width: 165px;
@@ -43,7 +42,7 @@ svg {
         height: 10px;
         left: 75px;
         position: absolute;
-        top: 51px; // TODO: Works in Confluence, but not outside of it.
+        top: auto;
         transform: rotate(45deg);
         width: 10px;
         z-index: -1;

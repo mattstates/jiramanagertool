@@ -98,8 +98,8 @@ export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
             assignee: formState.assignee,
             criterias,
             dateRanges: getDateRanges(
-                formState.fromDate,
-                formState.endDate,
+                new Date(formState.fromDate),
+                new Date(formState.endDate),
                 formState.interval,
                 formState.intervalCount
             )

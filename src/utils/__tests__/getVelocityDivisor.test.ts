@@ -1,5 +1,5 @@
-import getVelocityDivisor from '../src/utils/getVelocityDivisor';
-import mockJiraIssueFields from '../mockData/mockJiraFields';
+import getVelocityDivisor from '../getVelocityDivisor';
+import mockJiraIssueFields from '../../../mockData/mockJiraFields';
 
 describe('getVelocityDivisor', () => {
 

@@ -2,17 +2,19 @@ import '../styles/reset.scss';
 import './App.scss';
 import { ChartData } from '../types/ChartTypes';
 import { Criterias } from '../enums/Criterias';
-import { getJiraResponseData } from '../utils/getJiraResponseData';
+import { format } from 'date-fns';
 import { JiraQueryBuilderForm } from './JiraQueryBuilderForm';
 import { JiraResponse } from '../types/JiraTypes';
 import { Loader } from './Loader';
+import { MM_DD_YYYY } from '../constants/dateFormats';
+import getJiraResponseData from '../utils/getJiraResponseData';
 import mapCriteriaToChartComponent from '../utils/mapCriteriaToChartComponent'
 import React, { Fragment, useEffect, useState } from 'react';
 
 export interface IAppState {
     assignee: string;
     criterias: Array<Criterias>;
-    dateRanges: Array<[string, string]>;
+    dateRanges: Array<[Date, Date]>;
 }
 
 export function App() {
@@ -39,7 +41,7 @@ export function App() {
             const formattedData: ChartData = appState.dateRanges.reduce(
                 (hash: ChartData, dateRange, i): ChartData => {
                     // Not sure why TypeScript doesn't want to accept .reduce without an initial value param.
-                    hash[dateRange[1]] = responseData[i].reduce<JiraResponse>(
+                    hash[format(dateRange[1], MM_DD_YYYY)] = responseData[i].reduce<JiraResponse>(
                         (responseAccumlator, jiraResponse): JiraResponse => {
                             return {
                                 ...responseAccumlator,

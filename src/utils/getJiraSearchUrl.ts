@@ -6,6 +6,8 @@ import {
     jiraApiMaxResults,
     jiraCustomFields
 } from '../init';
+import { format } from 'date-fns';
+import { YYYY_MM_DD } from '../constants/dateFormats';
 
 const CONCATENATED_DONE_STATUSES = doneStatusDefinitions.join(',');
 
@@ -15,12 +17,15 @@ const CUSTOM_FIELD_NAMES = jiraCustomFields
 
 export default function getJiraSearchUrl(
     assignee: string,
-    fromDate: string,
-    endDate: string,
+    fromDate: Date,
+    endDate: Date,
     startAt: number = 0
 ): string {
     const search = encodeURIComponent(
-        `assignee in (${assignee}) and ((status changed to (${CONCATENATED_DONE_STATUSES}) during ("${fromDate}", "${endDate}"))) and status in (${CONCATENATED_DONE_STATUSES})`
+        `assignee in (${assignee}) and ((status changed to (${CONCATENATED_DONE_STATUSES}) during ("${format(
+            fromDate,
+            YYYY_MM_DD
+        )}", "${format(endDate, YYYY_MM_DD)}"))) and status in (${CONCATENATED_DONE_STATUSES})`
     );
 
     return (

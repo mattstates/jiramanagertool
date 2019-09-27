@@ -1,5 +1,5 @@
-import { getFailedStakeHolderCount } from '../src/utils/getFailedStakeholderCount';
-import mockJiraIssue from '../mockData/mockJiraIssue';
+import { getFailedStakeHolderCount } from '../getFailedStakeholderCount';
+import mockJiraIssue from '../../../mockData/mockJiraIssue';
 
 describe('getFailedStakeHolderCount', () => {
     test('Returns Zero', () => {

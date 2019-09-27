@@ -1,5 +1,5 @@
-import groupIssuesByAssignee from '../src/utils/groupIssuesByAssignee';
-import mockJiraIssueFields from '../mockData/mockJiraFields';
+import groupIssuesByAssignee from '../groupIssuesByAssignee';
+import mockJiraIssueFields from '../../../mockData/mockJiraFields';
 
 describe('groupIssuesByAssignee', () => {
     const groupedIssues = groupIssuesByAssignee([mockJiraIssueFields])['Matt States'];

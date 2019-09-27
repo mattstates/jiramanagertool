@@ -53,6 +53,7 @@ try {
 } catch (_error) {
     console.warn('No Private appconfig.json');
 }
+console.log(CONFIG)
 
 
 // TODO: Implement a configuration validator;

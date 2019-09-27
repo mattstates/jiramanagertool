@@ -1,20 +1,19 @@
-import { addDays, addMonths, addQuarters, addWeeks, addYears, format, isBefore } from 'date-fns';
+import { addDays, addMonths, addQuarters, addWeeks, addYears, isBefore } from 'date-fns';
 import { DateRanges } from '../enums/DateRanges';
 
 type DateFunction = (date: string | number | Date, amount: number) => Date;
 
 //TODO: Write helper functions to calculate dates using parameter intervals...
 export const getDateRanges = (
-    fromDate: string,
-    endDate: string,
+    fromDate: Date,
+    endDate: Date,
     interval: DateRanges,
     intervalMultiple: number
-): Array<[string, string]> => {
-    const dateFormat = 'YYYY/MM/DD';
+): Array<[Date, Date]> => {
     const dateAdder = getDateFunction(interval);
-    const dates: Array<[string, string]> = [];
-    const endDateObj = new Date(format(endDate, dateFormat));
-    const fromDateObj = new Date(format(fromDate, dateFormat));
+    const dates: Array<[Date, Date]> = [];
+    const endDateObj = endDate;
+    const fromDateObj = fromDate;
     let dateCounter = endDateObj;
 
     // from... to...
@@ -22,9 +21,9 @@ export const getDateRanges = (
         let firstDate = dateAdder(dateCounter, -1 * intervalMultiple);
 
         if (isBefore(fromDateObj, firstDate)) {
-            dates.push([format(firstDate, dateFormat), format(dateCounter, dateFormat)]);
+            dates.push([firstDate, dateCounter]);
         } else {
-            dates.push([format(fromDateObj, dateFormat), format(dateCounter, dateFormat)]);
+            dates.push([fromDateObj, dateCounter]);
         }
 
         dateCounter = firstDate;

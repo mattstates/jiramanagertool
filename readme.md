@@ -29,6 +29,24 @@ This tool is created to help acquire and visualize data based on the assignees o
 ```
 npm install
 ```
+### Scripts
+```
+# run main dev environment
+npm start
+```
+```
+# run secondary dev environment (for my purposes this allows me to run the app in a Confluence page)
+npm run start-local
+```
+```
+# run unit tests
+npm test
+```
+```
+# run webpack build
+npm run build
+```
+
 ### Core Features:
 * Configurable
 * Assignee autosuggestion

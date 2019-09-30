@@ -53,8 +53,7 @@ try {
 } catch (_error) {
     console.warn('No Private appconfig.json');
 }
-console.log(CONFIG)
-
+console.log(CONFIG);
 
 // TODO: Implement a configuration validator;
 const {
@@ -67,7 +66,12 @@ const {
 const { doneStatusDefinitions, jiraApiMaxResults, options } = CONFIG.jiraApiConfiguration;
 const { jiraCustomFields } = options;
 
-const hostName = DEVMODE === 'true' ? apiHostName : '';
+let hostName: string;
+try {
+    hostName = DEVMODE === 'true' ? apiHostName : '';
+} catch (_error) {
+    hostName = '';
+}
 
 export {
     doneStatusDefinitions,

@@ -3,7 +3,7 @@ import getJiraSearchUrl from './getJiraSearchUrl';
 /**
  * @description Fetches all results in the event that there are more issues than the max results query param allows. Has a dependency on urlBuilder()
  */
-export default async function getJiraResponseData(assignee: string, dateRanges: Array<[Date, Date]>) {
+export default async function getJiraResponseData(assignee: string, dateRanges: Array<[Date, Date]>): Promise<Array<JiraResponse[]>>{
     try {
         const initialPromises = dateRanges.map(async dateRange => {
             const response = await fetch(

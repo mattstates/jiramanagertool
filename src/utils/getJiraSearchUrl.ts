@@ -12,7 +12,9 @@ import { YYYY_MM_DD } from '../constants/dateFormats';
 const CONCATENATED_DONE_STATUSES = doneStatusDefinitions.join(',');
 
 const CUSTOM_FIELD_NAMES = jiraCustomFields
-    .map(jiraCustomField => jiraCustomField.fieldName)
+    .map(jiraCustomField => {
+        return jiraCustomField.hasOwnProperty("fieldName") ? jiraCustomField.fieldName : '';
+    })
     .join(',');
 
 export default function getJiraSearchUrl(

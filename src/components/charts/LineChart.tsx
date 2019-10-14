@@ -9,7 +9,7 @@ import { select } from 'd3-selection';
 import format from 'date-fns/format';
 import React, { useEffect, useRef } from 'react';
 
-interface ILineChartProps {
+export interface ILineChartProps {
     chartId: string;
     chartTitle: string;
     data: ChartDataPoint[];

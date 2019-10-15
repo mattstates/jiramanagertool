@@ -35,42 +35,51 @@ const PROPS: ILineChartProps = {
 };
 
 describe('LineChart', () => {
+    const CIRCLE_TAGNAME = 'circle';
+    const TOOLTIP_CLASSNAME = 'tooltip';
+    const VISIBILITY_DEFINITION = 'opacity: 1';
+    const STYLE_ATTRIBUTE_NAME = 'style';
+
     test('Renders SVG Circle for each data point', () => {
         const { container } = render(<LineChart {...PROPS} />);
         expect(container.getElementsByTagName('circle')).toHaveLength(PROPS.data.length);
     });
 
-    test('Hover Circle toggles .tooltip opacity', () => {
+    test(`Hover <${CIRCLE_TAGNAME}> toggles .${TOOLTIP_CLASSNAME} opacity`, () => {
         const { container } = render(<LineChart {...PROPS} />);
-        const circles = container.getElementsByTagName('circle');
-        const tooltips = container.getElementsByClassName('tooltip');
+        const circles = container.getElementsByTagName(CIRCLE_TAGNAME);
+        const tooltips = container.getElementsByClassName(TOOLTIP_CLASSNAME);
         const TEST_INDEX = 0;
         const circle = circles[TEST_INDEX];
         const tooltip = tooltips[TEST_INDEX];
 
-        expect(tooltip.getAttribute('style')).toBe(null);
+        expect(tooltip.getAttribute(STYLE_ATTRIBUTE_NAME)).toBe(null);
 
         fireEvent.mouseOver(circle);
 
-        expect(tooltip.getAttribute('style').indexOf('opacity: 1') > -1).toBe(true);
+        expect(tooltip.getAttribute(STYLE_ATTRIBUTE_NAME).indexOf(VISIBILITY_DEFINITION) > -1).toBe(
+            true
+        );
         expect(
             Array.from(tooltips).filter(tooltip => {
                 return (
-                    tooltip.getAttribute('style') &&
-                    tooltip.getAttribute('style').indexOf('opacity: 1') > -1
+                    tooltip.getAttribute(STYLE_ATTRIBUTE_NAME) &&
+                    tooltip.getAttribute(STYLE_ATTRIBUTE_NAME).indexOf(VISIBILITY_DEFINITION) > -1
                 );
             })
         ).toHaveLength(1);
 
         fireEvent.mouseLeave(circle);
 
-        expect(tooltip.getAttribute('style').indexOf('opacity: 1') === -1).toBe(true);
+        expect(
+            tooltip.getAttribute(STYLE_ATTRIBUTE_NAME).indexOf(VISIBILITY_DEFINITION) === -1
+        ).toBe(true);
     });
 
-    test('Only one .tooltip can be visible on <circle> hover', () => {
+    test(`Only one .${TOOLTIP_CLASSNAME} can be visible on <${CIRCLE_TAGNAME}> hover`, () => {
         const { container } = render(<LineChart {...PROPS} />);
-        const circles = container.getElementsByTagName('circle');
-        const tooltips = container.getElementsByClassName('tooltip');
+        const circles = container.getElementsByTagName(CIRCLE_TAGNAME);
+        const tooltips = container.getElementsByClassName(TOOLTIP_CLASSNAME);
         const TEST_INDEX = 0;
         const circle = circles[TEST_INDEX];
 
@@ -80,8 +89,8 @@ describe('LineChart', () => {
         expect(
             Array.from(tooltips).filter(tooltip => {
                 return (
-                    tooltip.getAttribute('style') &&
-                    tooltip.getAttribute('style').indexOf('opacity: 1') > -1
+                    tooltip.getAttribute(STYLE_ATTRIBUTE_NAME) &&
+                    tooltip.getAttribute(STYLE_ATTRIBUTE_NAME).indexOf(VISIBILITY_DEFINITION) > -1
                 );
             })
         ).toHaveLength(1);
@@ -92,8 +101,8 @@ describe('LineChart', () => {
         expect(
             Array.from(tooltips).every(tooltip => {
                 return (
-                    tooltip.getAttribute('style') === null ||
-                    tooltip.getAttribute('style').indexOf('opacity: 1') === -1
+                    tooltip.getAttribute(STYLE_ATTRIBUTE_NAME) === null ||
+                    tooltip.getAttribute(STYLE_ATTRIBUTE_NAME).indexOf(VISIBILITY_DEFINITION) === -1
                 );
             })
         ).toBe(true);

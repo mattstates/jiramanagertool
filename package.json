@@ -5,7 +5,8 @@
     "main": "./src/index.js",
     "repository": "https://github.com/mattstates/jiramanagertool.git",
     "scripts": {
-        "test": "jest --verbose",
+        "test": "jest",
+        "test-verbose": "jest --verbose",
         "start": "webpack-dev-server --open --config webpack.dev.js --env.DEVMODE=true",
         "start-local": "webpack-dev-server --open --config webpack.dev.js --env.DEVMODE=false",
         "build": "webpack --config webpack.prod.js"
@@ -13,7 +14,7 @@
     "husky": {
         "hooks": {
             "pre-commit": "npm test",
-            "pre-push": "npm test"
+            "pre-push": "npm run test-verbose"
         }
     },
     "author": "Matt States",

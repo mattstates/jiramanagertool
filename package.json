@@ -5,8 +5,8 @@
     "main": "./src/index.js",
     "repository": "https://github.com/mattstates/jiramanagertool.git",
     "scripts": {
-        "test": "jest",
-        "test-verbose": "jest --verbose",
+        "test": "jest --silent",
+        "test-verbose": "jest --verbose --silent",
         "start": "webpack-dev-server --open --config webpack.dev.js --env.DEVMODE=true",
         "start-local": "webpack-dev-server --open --config webpack.dev.js --env.DEVMODE=false",
         "build": "webpack --config webpack.prod.js"

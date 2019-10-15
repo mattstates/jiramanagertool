@@ -10,6 +10,12 @@
         "start-local": "webpack-dev-server --open --config webpack.dev.js --env.DEVMODE=false",
         "build": "webpack --config webpack.prod.js"
     },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm test",
+            "pre-push": "npm test"
+        }
+    },
     "author": "Matt States",
     "license": "ISC",
     "devDependencies": {
@@ -39,6 +45,7 @@
         "eslint-plugin-react": "^7.14.3",
         "eslint-plugin-react-hooks": "^1.7.0",
         "html-webpack-plugin": "^3.2.0",
+        "husky": "^3.0.9",
         "jest": "^24.9.0",
         "jest-transform-css": "^2.0.0",
         "node-sass": "^4.12.0",

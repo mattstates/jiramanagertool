@@ -8,8 +8,8 @@ import { JiraResponse } from '../types/JiraTypes';
 import { Loader } from './Loader';
 import { MM_DD_YYYY } from '../constants/dateFormats';
 import getJiraResponseData from '../utils/getJiraResponseData';
-import mapCriteriaToChartComponent from '../utils/mapCriteriaToChartComponent'
-import React, { Fragment, useEffect, useState } from 'react';
+import mapCriteriaToChartComponent from '../utils/mapCriteriaToChartComponent';
+import React, { useEffect, useState } from 'react';
 
 export interface IAppState {
     assignee: string;
@@ -38,28 +38,25 @@ export function App() {
                 console.log(error.message);
             }
 
-            const formattedData: ChartData = appState.dateRanges.reduce(
-                (hash: ChartData, dateRange, i): ChartData => {
-                    // Not sure why TypeScript doesn't want to accept .reduce without an initial value param.
-                    hash[format(dateRange[1], MM_DD_YYYY)] = responseData[i].reduce<JiraResponse>(
-                        (responseAccumlator, jiraResponse): JiraResponse => {
-                            return {
-                                ...responseAccumlator,
-                                issues: [...responseAccumlator.issues, ...jiraResponse.issues]
-                            };
-                        },
-                        {
-                            expand: '',
-                            issues: [],
-                            maxResults: 0,
-                            startAt: 0,
-                            total: 0
-                        }
-                    );
-                    return hash;
-                },
-                {}
-            );
+            const formattedData: ChartData = appState.dateRanges.reduce((hash: ChartData, dateRange, i): ChartData => {
+                // Not sure why TypeScript doesn't want to accept .reduce without an initial value param.
+                hash[format(dateRange[1], MM_DD_YYYY)] = responseData[i].reduce<JiraResponse>(
+                    (responseAccumlator, jiraResponse): JiraResponse => {
+                        return {
+                            ...responseAccumlator,
+                            issues: [...responseAccumlator.issues, ...jiraResponse.issues]
+                        };
+                    },
+                    {
+                        expand: '',
+                        issues: [],
+                        maxResults: 0,
+                        startAt: 0,
+                        total: 0
+                    }
+                );
+                return hash;
+            }, {});
 
             updateVizData(formattedData);
             updateLoading(false);
@@ -82,10 +79,10 @@ export function App() {
     }
 
     return (
-        <Fragment>
+        <>
             <h3>Customize Your Search</h3>
             <JiraQueryBuilderForm callback={updateAppState} />
             {loading ? <Loader /> : charts}
-        </Fragment>
+        </>
     );
 }

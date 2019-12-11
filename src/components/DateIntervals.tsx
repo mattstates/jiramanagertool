@@ -43,7 +43,7 @@ export const DateIntervals: React.FC<IDateIntervalsProps> = ({
     );
 
     return (
-        <React.Fragment>
+        <>
             <p className="formLabel">
                 Choose Interval: {<em>{`(Every ${intervalCount} ${interval})`}</em>}
             </p>
@@ -61,6 +61,6 @@ export const DateIntervals: React.FC<IDateIntervalsProps> = ({
                 />
                 {radioInputFields}
             </div>
-        </React.Fragment>
+        </>
     );
 };

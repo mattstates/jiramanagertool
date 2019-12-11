@@ -1,18 +1,19 @@
 import { AverageOriginalEstimate } from '../components/charts/AverageOriginalEstimate';
-import { ChartData } from "../types/ChartTypes";
-import { Criterias } from "../enums/Criterias";
+import { ChartData } from '../types/ChartTypes';
+import { Criterias } from '../enums/Criterias';
 import { EstimationAccuracy } from '../components/charts/EstimationAccuracy';
 import { TaskCountFailedCodeReview } from '../components/charts/TaskCountFailedCodeReview';
 import { TaskCountFailedQA } from '../components/charts/TaskCountFailedQA';
 import { TasksCompleted } from '../components/charts/TasksCompleted';
 import { TaskVelocity } from '../components/charts/TaskVelocity';
 import { TimeLogged } from '../components/charts/TimeLogged';
+import { TimeLoggedUnestimated } from '../components/charts/TimeLoggedUnestimated';
 import { TimeVelocity } from '../components/charts/TimeVelocity';
 import { TotalFailedCodeReview } from '../components/charts/TotalFailedCodeReview';
 import { TotalFailedDeployment } from '../components/charts/TotalFailedDeployment';
 import { TotalFailedQA } from '../components/charts/TotalFailedQA';
 import { TotalTimeOriginalEstimate } from '../components/charts/TotalTimeOriginalEstimate';
-import React from "react";
+import React from 'react';
 
 export default function mapCriteriaToChartComponent({
     criteria,
@@ -48,5 +49,7 @@ export default function mapCriteriaToChartComponent({
             return <TaskVelocity data={data} key={key} />;
         case Criterias.TotalTimeOriginalEstimate:
             return <TotalTimeOriginalEstimate data={data} key={key} />;
+        case Criterias.TimeLoggedUnestimated:
+            return <TimeLoggedUnestimated data={data} key={key} />;
     }
 }

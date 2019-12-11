@@ -33,13 +33,7 @@ const currentDate: Date = new Date();
 
 const initialFormState: IFormState = {
     // Setting the default to have all boxes selected.
-    checkedCriterias: Object.values(Criterias).reduce(
-        (map: CheckedCriteriaMap, criteria: string) => {
-            map[criteria] = true;
-            return map;
-        },
-        {}
-    ),
+    checkedCriterias: setAllCheckBoxesToBoolean(true),
     assignee: '',
     fromDate: addMonths(currentDate, -12)
         .toISOString()
@@ -49,6 +43,13 @@ const initialFormState: IFormState = {
     intervalCount: 1
 };
 
+function setAllCheckBoxesToBoolean(flag: boolean = false) {
+    return Object.values(Criterias).reduce((map: CheckedCriteriaMap, criteria: string) => {
+        map[criteria] = flag;
+        return map;
+    }, {});
+}
+
 function formReducer(state: IFormState, action: IFormAction): IFormState {
     switch (action.type) {
         case FormActionTypes.UpdateCheckBoxes:
@@ -57,6 +58,10 @@ function formReducer(state: IFormState, action: IFormAction): IFormState {
             };
             updatedCheckedCriterias[action.payload.criteria] = action.payload.isChecked;
             return { ...state, checkedCriterias: updatedCheckedCriterias };
+        case FormActionTypes.ClearCheckBoxes:
+            return { ...state, checkedCriterias: setAllCheckBoxesToBoolean(false) };
+        case FormActionTypes.CheckAll:
+            return { ...state, checkedCriterias: setAllCheckBoxesToBoolean(true) };
         case FormActionTypes.UpdateAssignee:
             return { ...state, assignee: action.payload.assignee };
         case FormActionTypes.UpdateFromDate:
@@ -67,8 +72,6 @@ function formReducer(state: IFormState, action: IFormAction): IFormState {
             return { ...state, interval: action.payload.interval };
         case FormActionTypes.UpdateIntervalCount:
             return { ...state, intervalCount: action.payload.intervalCount };
-        default:
-            return { ...state };
     }
 }
 
@@ -106,22 +109,21 @@ export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
         });
     }
 
+    function checkAllHandler(event: React.SyntheticEvent): void {
+        event.preventDefault();
+        dispatch({ type: FormActionTypes.CheckAll, payload: null });
+    }
+    function clearHandler(event: React.SyntheticEvent): void {
+        event.preventDefault();
+        dispatch({ type: FormActionTypes.ClearCheckBoxes, payload: null });
+    }
+
     const checkBoxes = Object.values(Criterias).map(
         (criteria: string, i: number): JSX.Element => {
-            const isChecked = formState.checkedCriterias[criteria]
-                ? formState.checkedCriterias[criteria]
-                : false;
+            const isChecked = formState.checkedCriterias[criteria] ? formState.checkedCriterias[criteria] : false;
 
             const id = `${criteria}${i}`;
-            return (
-                <CheckBox
-                    id={id}
-                    isChecked={isChecked}
-                    key={id}
-                    criteria={criteria}
-                    dispatch={dispatch}
-                />
-            );
+            return <CheckBox id={id} isChecked={isChecked} key={id} criteria={criteria} dispatch={dispatch} />;
         }
     );
 
@@ -131,33 +133,49 @@ export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
 
             <p>Criterias:</p>
             <div className="checkboxes">{checkBoxes}</div>
+            <button className="small" onClick={checkAllHandler}>
+                Check All
+            </button>
+            <button className="small" onClick={clearHandler}>
+                Clear
+            </button>
 
             <div className="dateFields">
                 <DateField
                     dispatch={dispatch}
-                    value={formState.fromDate}
-                    formAction={FormActionTypes.UpdateFromDate}
                     fieldId={'fromDateField'}
                     fieldName={'From Date'}
+                    formAction={FormActionTypes.UpdateFromDate}
+                    value={formState.fromDate}
                 />
 
                 <DateField
                     dispatch={dispatch}
-                    value={formState.endDate}
-                    formAction={FormActionTypes.UpdateEndDate}
                     fieldId={'endDateField'}
                     fieldName={'End Date'}
+                    formAction={FormActionTypes.UpdateEndDate}
+                    value={formState.endDate}
                 />
             </div>
             <DateIntervals
-                name="dateIntervals"
                 dateRanges={Object.values(DateRanges)}
+                dispatch={dispatch}
                 interval={formState.interval}
                 intervalCount={formState.intervalCount}
-                dispatch={dispatch}
+                name="dateIntervals"
             />
 
-            <button type="submit">Submit</button>
+            <button
+                className={
+                    Object.values(formState.checkedCriterias).filter(Boolean).length === 0 ||
+                    formState.assignee?.length < 3
+                        ? 'disabled'
+                        : ''
+                }
+                type="submit"
+            >
+                Submit
+            </button>
         </form>
     );
 };

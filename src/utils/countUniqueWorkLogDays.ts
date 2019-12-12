@@ -13,6 +13,7 @@ export default function countUniqueWorkLogDays(issueCollection: JiraIssueField[]
             }
         });
     });
+
     // The number of unique values in the days array.
     return new Set(days).size;
 }

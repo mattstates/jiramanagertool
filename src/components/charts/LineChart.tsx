@@ -21,9 +21,22 @@ export interface ILineChartProps {
     yMin?: number;
 }
 
+function getBaseChartWidth(percentage: number = 70, lowerThreshold: number = 600, upperThreshold: number = 960) {
+    const dynamicWidth = window.innerWidth * (percentage / 100);
+
+    switch (true) {
+        case dynamicWidth > lowerThreshold && dynamicWidth < upperThreshold:
+            return dynamicWidth;
+        case dynamicWidth < lowerThreshold:
+            return lowerThreshold;
+        case dynamicWidth > upperThreshold:
+            return upperThreshold;
+    }
+}
+
 // Chart Constants
 const margin = { top: 30, right: 20, bottom: 30, left: 50 };
-const width = 600 - margin.left - margin.right;
+const width = getBaseChartWidth() - margin.left - margin.right;
 const height = 270 - margin.top - margin.bottom;
 const lineWidth = 2;
 const circleWidth = 4;
@@ -50,10 +63,13 @@ export const LineChart: React.FC<ILineChartProps> = ({
         const yScale = scaleLinear()
             .domain([
                 yMin,
-                yMax || (()=> {
-                    const max = Math.ceil(Math.max(...data.map((data: ChartDataPoint): number => data.info)) * 1.33)
-                    return max > Y_TICK_THRESHOLD - 1 ? max : Y_TICK_THRESHOLD;
-                })()
+                yMax ||
+                    (() => {
+                        const max = Math.ceil(
+                            Math.max(...data.map((data: ChartDataPoint): number => data.info)) * 1.33
+                        );
+                        return max > Y_TICK_THRESHOLD - 1 ? max : Y_TICK_THRESHOLD;
+                    })()
             ]) // input
             .range([height, 0]); // output
 

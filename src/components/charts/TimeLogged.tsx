@@ -1,7 +1,8 @@
-import { ChartDataPoint, ChartData } from '../../types/ChartTypes';
+import { ChartData, ChartDataPoint } from '../../types/ChartTypes';
 import { Description } from './Description';
-import { JiraResponse, JiraIssueField, JiraIssue, JiraIssueWorklog } from '../../types/JiraTypes';
+import { JiraIssue, JiraIssueField, JiraIssueWorklog, JiraResponse } from '../../types/JiraTypes';
 import { LineChart } from './LineChart';
+import getUniqueAssignees from '../../utils/getUniqueAssignees';
 import React from 'react';
 
 interface ITimeLoggedProps {
@@ -11,18 +12,9 @@ interface ITimeLoggedProps {
 export const TimeLogged: React.FC<ITimeLoggedProps> = ({ data }) => {
     const formattedData = Object.entries(data)
         .reduce((acc: ChartDataPoint[], cur: [string, JiraResponse]): ChartDataPoint[] => {
-            const mappedIssues = cur[1].issues.map(
-                (issue: JiraIssue): JiraIssueField => issue.fields
-            );
+            const mappedIssues = cur[1].issues.map((issue: JiraIssue): JiraIssueField => issue.fields);
 
-            const assignees = Array.from(
-                mappedIssues.reduce((assigneeCollection: Set<string>, issue: JiraIssueField): Set<
-                    string
-                > => {
-                    assigneeCollection.add(issue.assignee.name);
-                    return assigneeCollection;
-                }, new Set())
-            );
+            const assignees = getUniqueAssignees(mappedIssues);
 
             return [
                 ...acc,
@@ -38,15 +30,9 @@ export const TimeLogged: React.FC<ITimeLoggedProps> = ({ data }) => {
                                     .filter((log: JiraIssueWorklog): boolean => {
                                         return assignees.indexOf(log.updateAuthor.name) > -1;
                                     })
-                                    .reduce(
-                                        (
-                                            timeInSeconds: number,
-                                            worklog: JiraIssueWorklog
-                                        ): number => {
-                                            return timeInSeconds + worklog.timeSpentSeconds;
-                                        },
-                                        0
-                                    )
+                                    .reduce((timeInSeconds: number, worklog: JiraIssueWorklog): number => {
+                                        return timeInSeconds + worklog.timeSpentSeconds;
+                                    }, 0)
                             );
                         }, 0) / 3600
                 }

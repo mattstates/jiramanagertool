@@ -8,6 +8,7 @@ import { TasksCompleted } from '../components/charts/TasksCompleted';
 import { TaskVelocity } from '../components/charts/TaskVelocity';
 import { TimeLogged } from '../components/charts/TimeLogged';
 import { TimeLoggedUnestimated } from '../components/charts/TimeLoggedUnestimated';
+import { TimeLoggedUnestimatedPercentage } from '../components/charts/TimeLoggedUnestimatedPercentage';
 import { TimeVelocity } from '../components/charts/TimeVelocity';
 import { TotalFailedCodeReview } from '../components/charts/TotalFailedCodeReview';
 import { TotalFailedDeployment } from '../components/charts/TotalFailedDeployment';
@@ -51,5 +52,7 @@ export default function mapCriteriaToChartComponent({
             return <TotalTimeOriginalEstimate data={data} key={key} />;
         case Criterias.TimeLoggedUnestimated:
             return <TimeLoggedUnestimated data={data} key={key} />;
+        case Criterias.TimeLoggedUnestimatedPercentage:
+            return <TimeLoggedUnestimatedPercentage data={data} key={key} />;
     }
 }

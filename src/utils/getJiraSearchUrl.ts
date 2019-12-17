@@ -13,16 +13,11 @@ const CONCATENATED_DONE_STATUSES = doneStatusDefinitions.join(',');
 
 const CUSTOM_FIELD_NAMES = jiraCustomFields
     .map(jiraCustomField => {
-        return jiraCustomField.hasOwnProperty("fieldName") ? jiraCustomField.fieldName : '';
+        return jiraCustomField.hasOwnProperty('fieldName') ? jiraCustomField.fieldName : '';
     })
     .join(',');
 
-export default function getJiraSearchUrl(
-    assignee: string,
-    fromDate: Date,
-    endDate: Date,
-    startAt: number = 0
-): string {
+export default function getJiraSearchUrl(assignee: string, fromDate: Date, endDate: Date, startAt: number = 0): string {
     const search = encodeURIComponent(
         `assignee in (${assignee}) and ((status changed to (${CONCATENATED_DONE_STATUSES}) during ("${format(
             fromDate,

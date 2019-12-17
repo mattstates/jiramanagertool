@@ -1,5 +1,4 @@
-
-import { JiraIssueField } from "../types/JiraTypes";
+import { JiraIssueField } from '../types/JiraTypes';
 
 /**
  * @param issueCollection {Array<JiraIssueField>}

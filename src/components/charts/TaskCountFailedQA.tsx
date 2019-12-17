@@ -1,4 +1,4 @@
-import { ChartDataPoint, ChartData } from '../../types/ChartTypes';
+import { ChartData, ChartDataPoint } from '../../types/ChartTypes';
 import { Description } from './Description';
 import { JiraIssue, JiraResponse } from '../../types/JiraTypes';
 import { LineChart } from './LineChart';
@@ -41,9 +41,9 @@ export const TaskCountFailedQA: React.FC<ITaskCountFailedQAProps> = ({ data }) =
                 chartTitle={'Failed QA Percentage'}
                 data={formattedData}
                 lineColor={'#0000ff'}
-                yMax={100}
                 tooltipPrecision={2}
                 yLabel={'Percent'}
+                yMax={100}
             />
             <Description
                 description={`

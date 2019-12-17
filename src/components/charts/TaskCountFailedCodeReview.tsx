@@ -42,8 +42,8 @@ export const TaskCountFailedCodeReview: React.FC<ITaskCountFailedCodeReviewProps
                 data={formattedData}
                 lineColor={'#ff0000'}
                 tooltipPrecision={2}
-                yMax={100}
                 yLabel={'Percent'}
+                yMax={100}
             />
             <Description
                 description={`

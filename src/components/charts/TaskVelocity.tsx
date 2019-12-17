@@ -15,9 +15,7 @@ interface ITaskVelocityProps {
 export const TaskVelocity: React.FC<ITaskVelocityProps> = ({ data }) => {
     const formattedData: ChartDataPoint[] = Object.entries(data)
         .reduce((acc: ChartDataPoint[], cur: [string, JiraResponse]) => {
-            const mappedIssues: JiraIssueField[] = cur[1].issues.map(
-                (issue: JiraIssue) => issue.fields
-            );
+            const mappedIssues: JiraIssueField[] = cur[1].issues.map((issue: JiraIssue) => issue.fields);
 
             return [
                 ...acc,
@@ -39,8 +37,8 @@ export const TaskVelocity: React.FC<ITaskVelocityProps> = ({ data }) => {
                 data={formattedData}
                 lineColor={'forestgreen'}
                 tooltipPrecision={2}
-                yMax={getYMaxThreshold({ dataMax, yThreshold: VELOCITY_THRESHOLD })}
                 yLabel={'Tasks Closed per Day'}
+                yMax={getYMaxThreshold({ dataMax, yThreshold: VELOCITY_THRESHOLD })}
             />
             <Description
                 description={`

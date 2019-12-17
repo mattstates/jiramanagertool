@@ -1,4 +1,4 @@
-import { JiraIssueField } from "../types/JiraTypes";
+import { JiraIssueField } from '../types/JiraTypes';
 
 type GroupedIssues = {
     [assignee: string]: JiraIssueField[];

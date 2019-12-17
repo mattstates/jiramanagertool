@@ -7,10 +7,7 @@ import React, { useState, useEffect } from 'react';
 const START_AUTOCOMPLETE_CHAR_THRESHOLD = 2;
 
 const AUTOCOMPLETE_API =
-    hostName +
-    jiraBaseApiEndpoint +
-    jiraApiAutocompleteEndpoint +
-    '?fieldName=assignee&fieldValue=';
+    hostName + jiraBaseApiEndpoint + jiraApiAutocompleteEndpoint + '?fieldName=assignee&fieldValue=';
 
 interface DropdownProps {
     parentRef: React.MutableRefObject<any>;
@@ -30,12 +27,7 @@ function replaceLastItem<T>(collection: T[], item: T): T[] {
 }
 
 // TODO: Refactor
-export const Dropdown: React.FC<DropdownProps> = ({
-    parentRef,
-    searchString,
-    ulRef,
-    updateAssignee
-}) => {
+export const Dropdown: React.FC<DropdownProps> = ({ parentRef, searchString, ulRef, updateAssignee }) => {
     const [activeIndex, udpateActiveIndex] = useState<number>(null);
 
     let searchCollection = convertSearchStringToCollection(searchString);
@@ -43,9 +35,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
     const lowerCaseSearchTerm = searchCollection[searchCollection.length - 1].toLowerCase();
 
     const data = useFetch<AutoCompleteResponseData>(
-        lowerCaseSearchTerm.length > START_AUTOCOMPLETE_CHAR_THRESHOLD
-            ? AUTOCOMPLETE_API + lowerCaseSearchTerm
-            : ''
+        lowerCaseSearchTerm.length > START_AUTOCOMPLETE_CHAR_THRESHOLD ? AUTOCOMPLETE_API + lowerCaseSearchTerm : ''
     );
 
     useEffect(() => {

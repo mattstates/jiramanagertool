@@ -1,7 +1,7 @@
 import './LineChart.scss';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { ChartDataPoint } from '../../types/ChartTypes';
-import { line, curveMonotoneX } from 'd3-shape';
+import { curveMonotoneX, line } from 'd3-shape';
 import { MMM_D_YY } from '../../constants/dateFormats';
 import { predictY } from '../../utils/predictY';
 import { scaleLinear } from 'd3-scale';

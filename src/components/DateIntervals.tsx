@@ -44,9 +44,7 @@ export const DateIntervals: React.FC<IDateIntervalsProps> = ({
 
     return (
         <>
-            <p className="formLabel">
-                Choose Interval: {<em>{`(Every ${intervalCount} ${interval})`}</em>}
-            </p>
+            <p className="formLabel">Choose Interval: {<em>{`(Every ${intervalCount} ${interval})`}</em>}</p>
             <div className="dateInterval">
                 <input
                     type="number"

@@ -56,8 +56,8 @@ export const TimeVelocity: React.FC<ITimeVelocityProps> = ({ data }) => {
                 data={formattedData}
                 lineColor={'green'}
                 tooltipPrecision={2}
-                yMax={getYMaxThreshold({ dataMax, yThreshold: VELOCITY_THRESHOLD })}
                 yLabel={'Hours Logged per Day'}
+                yMax={getYMaxThreshold({ dataMax, yThreshold: VELOCITY_THRESHOLD })}
             />
             <Description
                 description={`

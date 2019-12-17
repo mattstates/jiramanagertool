@@ -1,8 +1,8 @@
-import React from 'react';
-import { LineChart } from './LineChart';
-import { ChartDataPoint, ChartData } from '../../types/ChartTypes';
-import { JiraResponse, JiraIssueField, JiraIssue } from '../../types/JiraTypes';
+import { ChartData, ChartDataPoint } from '../../types/ChartTypes';
 import { Description } from './Description';
+import { JiraIssue, JiraIssueField, JiraResponse } from '../../types/JiraTypes';
+import { LineChart } from './LineChart';
+import React from 'react';
 
 interface IAverageOriginalEstimateProps {
     data: ChartData;
@@ -11,9 +11,8 @@ interface IAverageOriginalEstimateProps {
 export const AverageOriginalEstimate: React.FC<IAverageOriginalEstimateProps> = ({ data }) => {
     const formattedData = Object.entries(data)
         .reduce((acc: ChartDataPoint[], cur: [string, JiraResponse]): ChartDataPoint[] => {
-            const mappedIssues = cur[1].issues.map(
-                (issue: JiraIssue): JiraIssueField => issue.fields
-            );
+            const mappedIssues = cur[1].issues.map((issue: JiraIssue): JiraIssueField => issue.fields);
+
             const total = mappedIssues.reduce((total: number, issue: JiraIssueField) => {
                 // We only want time logged by the assignee counted here, not total time on the task
                 return total + issue.timeoriginalestimate;

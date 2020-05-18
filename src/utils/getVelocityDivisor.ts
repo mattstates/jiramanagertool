@@ -2,7 +2,7 @@ import { JiraIssueField } from '../types/JiraTypes';
 import countUniqueWorkLogDays from './countUniqueWorkLogDays';
 
 type AssignedTasksMap = {
-    [key: string]: object[];
+    [assigneeName: string]: JiraIssueField[];
 };
 
 /**
@@ -19,7 +19,7 @@ export default function getVelocityDivisor(issueFieldsCollection: JiraIssueField
         (accumulator: AssignedTasksMap, issue: JiraIssueField): AssignedTasksMap => {
             let assignee = '';
 
-            if (issue.assignee && issue.assignee.name) {
+            if (issue?.assignee?.name) {
                 assignee = issue.assignee.name;
             } else {
                 return accumulator;
@@ -40,8 +40,8 @@ export default function getVelocityDivisor(issueFieldsCollection: JiraIssueField
     return (
         Object.values(issuesByAssignee)
             .map(countUniqueWorkLogDays)
-            .reduce((total: number, assignee: number): number => {
-                return total + assignee;
+            .reduce((total: number, assigneesUniqueWorkedDays: number): number => {
+                return total + assigneesUniqueWorkedDays;
             }, 0) || 1
     );
 }

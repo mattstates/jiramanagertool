@@ -8,6 +8,7 @@ import { scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
 import format from 'date-fns/format';
 import React, { useEffect, useRef } from 'react';
+import isWeekend from 'date-fns/is_weekend';
 
 export interface ILineChartProps {
     chartId: string;
@@ -54,6 +55,9 @@ export const LineChart: React.FC<ILineChartProps> = ({
     xLabel = 'Interval End Date'
 }) => {
     const container = useRef(null);
+    const weekdayData = data.filter(item => !isWeekend(item.date))
+    const weekdayAvg = weekdayData.reduce((total, item) => {return total + item.info}, 0)/weekdayData.length;
+    console.log(chartId, weekdayData, weekdayAvg)
 
     useEffect(() => {
         const xScale = scaleLinear()
@@ -85,19 +89,19 @@ export const LineChart: React.FC<ILineChartProps> = ({
                 return yScale(d[1]);
             })
             .curve(curveMonotoneX);
-
+            let test: number[] = []
         const trendLine = line()
             .x(function(d: [number, number]) {
                 return xScale(d[0]);
             })
             .y(function(d: [number, number]) {
                 const yPoint = predictY(pathData, d[0]);
+                test.push(yScale(yPoint >= yMin ? yPoint : yMin))
                 return yScale(yPoint >= yMin ? yPoint : yMin);
             })
             .curve(curveMonotoneX);
-
         const svgContainer = select(container.current);
-
+            console.log(test)
         const tooltip = select(`div.${chartId}.tooltip`);
 
         // Main Graph Body
@@ -241,6 +245,7 @@ export const LineChart: React.FC<ILineChartProps> = ({
             <div className={`${chartId} tooltip`} />
             <h2>{chartTitle}</h2>
             <svg ref={container} id={chartId} />
+            {weekdayAvg.toFixed(2)} - Weekday Average => {data[data.length - 1].info.toFixed(2)} - {data[data.length - 1].date}}
         </div>
     );
 };

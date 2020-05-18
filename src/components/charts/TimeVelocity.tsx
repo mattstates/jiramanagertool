@@ -23,24 +23,28 @@ export const TimeVelocity: React.FC<ITimeVelocityProps> = ({ data }) => {
             return [
                 ...acc,
                 {
-                    // { date: string, info: totalTimeInSeconds / (60 * 60)}
                     date: cur[0],
                     info:
                         mappedIssues.reduce((total: number, issueField: JiraIssueField) => {
-                            // Only want time logged by the assignee counted here, not total time on the task
+                            /**
+                             * Only want time logged by the assignees counted here, not total time on the task
+                             * (unless one of the assignees in the result set logged time on one of these tasks as well.)
+                             */
                             return (
                                 total +
                                 issueField.worklog.worklogs
+                                    // Filter the worklogs to only people in the {{assignees}} collection
                                     .filter((log: JiraIssueWorklog) => {
                                         return assignees.indexOf(log.updateAuthor.name) > -1;
                                     })
+                                    // Aggregate the total time logged from the filtered worklogs
                                     .reduce((totalTimeSpentInSeconds: number, worklog: JiraIssueWorklog) => {
                                         return totalTimeSpentInSeconds + worklog.timeSpentSeconds;
                                     }, 0)
                             );
                         }, 0) /
                         getVelocityDivisor(mappedIssues) /
-                        3600
+                        3600 // seconds in an hour
                 }
             ];
         }, [])
@@ -60,10 +64,9 @@ export const TimeVelocity: React.FC<ITimeVelocityProps> = ({ data }) => {
                 yMax={getYMaxThreshold({ dataMax, yThreshold: VELOCITY_THRESHOLD })}
             />
             <Description
-                description={`
-Average amount of time logged per day.`}
-                calculatedBy={`(Total time logged on tasks in the result set / Number of unique days where the assignee logged time on one of the tasks)`}
-                footNote={`*Does not include time logged on the same tasks by someone who is not the assignee.`}
+                description={`Average amount of time logged per day.`}
+                calculatedBy={`(Total time logged on tasks in the result set / Number of unique days where the task's assignee logged time on one of the tasks)`}
+                footNote={`*Does not include time logged on the same tasks by someone who is not the task's assignee, unless the person who logged time is also an assignee for one of the tasks in the result set.`}
             />
         </div>
     );

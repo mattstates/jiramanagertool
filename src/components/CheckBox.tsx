@@ -14,7 +14,9 @@ export const CheckBox: React.FC<CheckBoxProps> = ({ criteria, dispatch, id, isCh
         <div className="checkbox">
             <label htmlFor={id}>{criteria}</label>
             <input
-                onChange={() => dispatch({ type: FormActionTypes.UpdateCheckBoxes, payload: { criteria, isChecked: !isChecked } })}
+                onChange={() =>
+                    dispatch({ type: FormActionTypes.UpdateCheckBoxes, payload: { criteria, isChecked: !isChecked } })
+                }
                 checked={isChecked}
                 type="checkbox"
                 id={id}

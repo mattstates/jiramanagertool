@@ -3,6 +3,7 @@ import { Description } from './Description';
 import { getYMaxThreshold } from '../../utils/getYMaxThreshold';
 import { JiraIssue, JiraIssueField, JiraIssueWorklog, JiraResponse } from '../../types/JiraTypes';
 import { LineChart } from './LineChart';
+import getUniqueAssignees from '../../utils/getUniqueAssignees';
 import getVelocityDivisor from '../../utils/getVelocityDivisor';
 import React from 'react';
 
@@ -15,19 +16,9 @@ interface ITimeVelocityProps {
 export const TimeVelocity: React.FC<ITimeVelocityProps> = ({ data }) => {
     const formattedData: ChartDataPoint[] = Object.entries(data)
         .reduce((acc: ChartDataPoint[], cur: [string, JiraResponse]) => {
-            const mappedIssues: JiraIssueField[] = cur[1].issues.map(
-                (issue: JiraIssue) => issue.fields
-            );
+            const mappedIssues: JiraIssueField[] = cur[1].issues.map((issue: JiraIssue) => issue.fields);
 
-            const assignees: string[] = Array.from(
-                mappedIssues.reduce(
-                    (assigneeCollection: Set<string>, issueField: JiraIssueField) => {
-                        assigneeCollection.add(issueField.assignee.name);
-                        return assigneeCollection;
-                    },
-                    new Set()
-                )
-            );
+            const assignees = getUniqueAssignees(mappedIssues);
 
             return [
                 ...acc,
@@ -43,17 +34,9 @@ export const TimeVelocity: React.FC<ITimeVelocityProps> = ({ data }) => {
                                     .filter((log: JiraIssueWorklog) => {
                                         return assignees.indexOf(log.updateAuthor.name) > -1;
                                     })
-                                    .reduce(
-                                        (
-                                            totalTimeSpentInSeconds: number,
-                                            worklog: JiraIssueWorklog
-                                        ) => {
-                                            return (
-                                                totalTimeSpentInSeconds + worklog.timeSpentSeconds
-                                            );
-                                        },
-                                        0
-                                    )
+                                    .reduce((totalTimeSpentInSeconds: number, worklog: JiraIssueWorklog) => {
+                                        return totalTimeSpentInSeconds + worklog.timeSpentSeconds;
+                                    }, 0)
                             );
                         }, 0) /
                         getVelocityDivisor(mappedIssues) /
@@ -73,8 +56,8 @@ export const TimeVelocity: React.FC<ITimeVelocityProps> = ({ data }) => {
                 data={formattedData}
                 lineColor={'green'}
                 tooltipPrecision={2}
-                yMax={getYMaxThreshold({ dataMax, yThreshold: VELOCITY_THRESHOLD })}
                 yLabel={'Hours Logged per Day'}
+                yMax={getYMaxThreshold({ dataMax, yThreshold: VELOCITY_THRESHOLD })}
             />
             <Description
                 description={`

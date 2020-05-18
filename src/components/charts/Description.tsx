@@ -2,8 +2,8 @@ import './Description.scss';
 import React, { useState } from 'react';
 
 interface IDescriptionProps {
-    description: string;
     calculatedBy: string;
+    description: string;
     footNote?: string;
 }
 
@@ -12,7 +12,8 @@ export const Description: React.FC<IDescriptionProps> = ({ description, calculat
 
     return (
         <div className="description">
-            <button className={isVisible ? 'active' : ''}
+            <button
+                className={isVisible ? 'active' : ''}
                 onClick={e => {
                     e.preventDefault();
                     updateIsVisible(!isVisible);

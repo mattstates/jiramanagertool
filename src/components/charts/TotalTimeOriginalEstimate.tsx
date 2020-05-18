@@ -14,9 +14,7 @@ interface ITotalTimeOriginalEstimateProps {
 export const TotalTimeOriginalEstimate: React.FC<ITotalTimeOriginalEstimateProps> = ({ data }) => {
     const formattedData = Object.entries(data)
         .reduce<ChartDataPoint[]>((acc: ChartDataPoint[], cur: [string, JiraResponse]) => {
-            const mappedIssues = cur[1].issues.map(
-                (issue: JiraIssue): JiraIssueField => issue.fields
-            );
+            const mappedIssues = cur[1].issues.map((issue: JiraIssue): JiraIssueField => issue.fields);
 
             // TODO: See previous TODO item.
             // const assignees = Array.from(

@@ -1,8 +1,9 @@
-import React from 'react';
-import { JiraIssue, JiraIssueField, JiraIssueWorklog, JiraResponse } from '../../types/JiraTypes';
-import { LineChart } from './LineChart';
 import { ChartData, ChartDataPoint } from '../../types/ChartTypes';
 import { Description } from './Description';
+import { JiraIssue, JiraIssueField, JiraIssueWorklog, JiraResponse } from '../../types/JiraTypes';
+import { LineChart } from './LineChart';
+import getUniqueAssignees from '../../utils/getUniqueAssignees';
+import React from 'react';
 
 interface IEstimationAccuracyProps {
     data: ChartData;
@@ -11,36 +12,20 @@ interface IEstimationAccuracyProps {
 export const EstimationAccuracy: React.FC<IEstimationAccuracyProps> = ({ data }) => {
     const formattedData = Object.entries(data)
         .reduce((acc: ChartDataPoint[], cur: [string, JiraResponse]): ChartDataPoint[] => {
-            const mappedIssues: JiraIssueField[] = cur[1].issues.map(
-                (issue: JiraIssue) => issue.fields
-            );
+            const mappedIssues: JiraIssueField[] = cur[1].issues.map((issue: JiraIssue) => issue.fields);
 
-            const assignees: string[] = Array.from(
-                mappedIssues.reduce(
-                    (assigneeCollection: Set<string>, issueField: JiraIssueField) => {
-                        assigneeCollection.add(issueField.assignee.name);
-                        return assigneeCollection;
-                    },
-                    new Set()
-                )
-            );
+            const assignees = getUniqueAssignees(mappedIssues);
 
             const [totalTimeInSeconds, totalTimeEstimated] = mappedIssues
                 .map((issueField: JiraIssueField) => {
                     return [
-                        getTotalSecondsLoggedFromWorklogsByAssignee(
-                            issueField.worklog.worklogs,
-                            assignees
-                        ),
+                        getTotalSecondsLoggedFromWorklogsByAssignee(issueField.worklog.worklogs, assignees),
                         issueField.timeoriginalestimate
                     ];
                 })
                 .reduce(
                     (totals: [number, number], issueTimeLoggedAndEstimate: [number, number]) => {
-                        return [
-                            totals[0] + issueTimeLoggedAndEstimate[0],
-                            totals[1] + issueTimeLoggedAndEstimate[1]
-                        ];
+                        return [totals[0] + issueTimeLoggedAndEstimate[0], totals[1] + issueTimeLoggedAndEstimate[1]];
                     },
                     [0, 0]
                 );
@@ -84,10 +69,7 @@ Negative percentages indicate more liberal estimating and the assignee has overe
     );
 };
 
-function getTotalSecondsLoggedFromWorklogsByAssignee(
-    worklogs: JiraIssueWorklog[],
-    assigneeList: string[]
-): number {
+function getTotalSecondsLoggedFromWorklogsByAssignee(worklogs: JiraIssueWorklog[], assigneeList: string[]): number {
     const filteredWorklogs = worklogs.filter((worklog: JiraIssueWorklog) => {
         return assigneeList.indexOf(worklog.author.name) > -1;
     });

@@ -7,6 +7,9 @@
     },
     "jiraApiConfiguration": {
         "doneStatusDefinitions": [],
-        "jiraApiMaxResults": 300
+        "jiraApiMaxResults": 300,
+        "options": {
+            "jiraCustomFields": []
+        }
     }
 }

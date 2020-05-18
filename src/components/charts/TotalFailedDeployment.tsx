@@ -1,9 +1,9 @@
-import React from 'react';
 import { ChartData, ChartDataPoint } from '../../types/ChartTypes';
+import { Description } from './Description';
+import { getFailedStakeHolderCount } from '../../utils/getFailedStakeholderCount';
 import { JiraResponse } from '../../types/JiraTypes';
 import { LineChart } from './LineChart';
-import { getFailedStakeHolderCount } from '../../utils/getFailedStakeholderCount';
-import { Description } from './Description';
+import React from 'react';
 
 interface ITotalFailedDeploymentProps {
     data: ChartData;

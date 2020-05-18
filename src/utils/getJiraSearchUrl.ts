@@ -12,15 +12,12 @@ import { YYYY_MM_DD } from '../constants/dateFormats';
 const CONCATENATED_DONE_STATUSES = doneStatusDefinitions.join(',');
 
 const CUSTOM_FIELD_NAMES = jiraCustomFields
-    .map(jiraCustomField => jiraCustomField.fieldName)
+    .map(jiraCustomField => {
+        return jiraCustomField.hasOwnProperty('fieldName') ? jiraCustomField.fieldName : '';
+    })
     .join(',');
 
-export default function getJiraSearchUrl(
-    assignee: string,
-    fromDate: Date,
-    endDate: Date,
-    startAt: number = 0
-): string {
+export default function getJiraSearchUrl(assignee: string, fromDate: Date, endDate: Date, startAt: number = 0): string {
     const search = encodeURIComponent(
         `assignee in (${assignee}) and ((status changed to (${CONCATENATED_DONE_STATUSES}) during ("${format(
             fromDate,

@@ -44,12 +44,7 @@ export const SearchInput: React.FC<InputProps> = ({ dispatch, value }) => {
                     }
                 }}
             />
-            <Dropdown
-                searchString={value}
-                updateAssignee={updateAssignee}
-                parentRef={inputRef}
-                ulRef={ulRef}
-            />
+            <Dropdown searchString={value} updateAssignee={updateAssignee} parentRef={inputRef} ulRef={ulRef} />
         </div>
     );
 };

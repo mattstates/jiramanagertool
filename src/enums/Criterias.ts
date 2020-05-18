@@ -9,6 +9,8 @@ export enum Criterias {
     TotalFailedQA = 'Total Failed QA',
 
     TimeLogged = 'Time Logged',
+    TimeLoggedUnestimated = 'Time Logged Unestimated',
+    TimeLoggedUnestimatedPercentage = 'Time Logged Unestimated Percentage',
     TotalTimeOriginalEstimate = 'Total Time Original Estimate',
 
     TimeVelocity = 'Time Velocity',

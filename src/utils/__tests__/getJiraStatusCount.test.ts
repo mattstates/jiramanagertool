@@ -1,4 +1,4 @@
-import mockJiraIssue from '../../../mockData/mockJiraIssue';
+import mockJiraIssue from '../../../__mocks__/mockJiraIssue';
 import { getJiraStatusCount } from '../getJiraStatusCount';
 /*
 const uniqueStatuses: string[] = Array.from(

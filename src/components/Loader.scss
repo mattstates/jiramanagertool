@@ -1,45 +1,56 @@
-#jiraLoader {
-    font-size: 10px;
-    margin: 50px auto!important; //TODO: remove important
-    text-indent: -9999em;
-    width: 11em;
-    height: 11em;
-    border-radius: 50%;
-    background: #3a88fd;
-    background: linear-gradient(to right, #3a88fd 10%, rgba(83, 177, 255, 0) 42%);
+.loader-ellipsis {
+    display: block;
+    height: 80px;
+    margin: 0 auto !important;
     position: relative;
-    animation: jiraLoader 1.4s infinite linear;
-    transform: translateZ(0);
-    &:before {
-        width: 50%;
-        height: 50%;
-        background: #3a88fd;
-        border-radius: 100% 0 0 0;
-        position: absolute;
-        top: 0;
-        left: 0;
-        content: '';
-    }
-    &:after {
-        background: #fff;
-        width: 75%;
-        height: 75%;
-        border-radius: 50%;
-        content: '';
-        margin: auto;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-    }
+    width: 80px;
 }
-
-@keyframes jiraLoader {
+.loader-ellipsis div {
+    position: absolute;
+    top: 33px;
+    width: 13px;
+    height: 13px;
+    border-radius: 5px;
+    background: #0049b0;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.loader-ellipsis div:nth-child(1) {
+    left: 8px;
+    animation: loader-ellipsis1 0.6s infinite;
+}
+.loader-ellipsis div:nth-child(2) {
+    left: 8px;
+    animation: loader-ellipsis2 0.6s infinite;
+}
+.loader-ellipsis div:nth-child(3) {
+    left: 32px;
+    animation: loader-ellipsis2 0.6s infinite;
+}
+.loader-ellipsis div:nth-child(4) {
+    left: 56px;
+    animation: loader-ellipsis3 0.6s infinite;
+}
+@keyframes loader-ellipsis1 {
     0% {
-        transform: rotate(0deg);
+        transform: scale(0);
     }
     100% {
-        transform: rotate(360deg);
+        transform: scale(1);
+    }
+}
+@keyframes loader-ellipsis3 {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
+    }
+}
+@keyframes loader-ellipsis2 {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(24px, 0);
     }
 }

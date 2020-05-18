@@ -1,5 +1,5 @@
 import countUniqueWorkLogDays from "../countUniqueWorkLogDays";
-import mockJiraIssueFields from "../../../mockData/mockJiraFields";
+import mockJiraIssueFields from "../../../__mocks__/mockJiraFields";
 
 describe('countUniqueWorkLogDays', () => {
     test('Returns One', () => {

@@ -15,26 +15,27 @@ export const TimeLogged: React.FC<ITimeLoggedProps> = ({ data }) => {
             const mappedIssues = cur[1].issues.map((issue: JiraIssue): JiraIssueField => issue.fields);
 
             const assignees = getUniqueAssignees(mappedIssues);
-
+            let total = mappedIssues.reduce((total: number, issue: JiraIssueField) => {
+                // We only want time logged by the assignee counted here, not total time on the task
+                return (
+                    total +
+                    issue.worklog.worklogs
+                        .filter((log: JiraIssueWorklog): boolean => {
+                            return assignees.indexOf(log.updateAuthor.name) > -1;
+                        })
+                        .reduce((timeInSeconds: number, worklog: JiraIssueWorklog): number => {
+                            return timeInSeconds + worklog.timeSpentSeconds;
+                        }, 0)
+                );
+            }, 0) 
+            console.log(total, 'Time Logged raw', total / 3600, 'hours')
             return [
                 ...acc,
                 {
                     // { date: string, info: totalTimeInSeconds / (60 * 60)}
                     date: cur[0],
-                    info:
-                        mappedIssues.reduce((total: number, issue: JiraIssueField) => {
-                            // We only want time logged by the assignee counted here, not total time on the task
-                            return (
-                                total +
-                                issue.worklog.worklogs
-                                    .filter((log: JiraIssueWorklog): boolean => {
-                                        return assignees.indexOf(log.updateAuthor.name) > -1;
-                                    })
-                                    .reduce((timeInSeconds: number, worklog: JiraIssueWorklog): number => {
-                                        return timeInSeconds + worklog.timeSpentSeconds;
-                                    }, 0)
-                            );
-                        }, 0) / 3600
+                    info: total / 3600
+                        
                 }
             ];
         }, [])

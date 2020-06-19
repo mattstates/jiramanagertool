@@ -51,7 +51,7 @@ export const LineChart: React.FC<ILineChartProps> = ({
     yMax,
     yMin = 0,
     yLabel,
-    xLabel = 'Interval End Date'
+    xLabel = 'Interval End Date',
 }) => {
     const container = useRef(null);
 
@@ -69,7 +69,7 @@ export const LineChart: React.FC<ILineChartProps> = ({
                             Math.max(...data.map((data: ChartDataPoint): number => data.info)) * 1.33
                         );
                         return max > Y_TICK_THRESHOLD - 1 ? max : Y_TICK_THRESHOLD;
-                    })()
+                    })(),
             ]) // input
             .range([height, 0]); // output
 
@@ -85,7 +85,6 @@ export const LineChart: React.FC<ILineChartProps> = ({
                 return yScale(d[1]);
             })
             .curve(curveMonotoneX);
-
         const trendLine = line()
             .x(function(d: [number, number]) {
                 return xScale(d[0]);
@@ -95,9 +94,7 @@ export const LineChart: React.FC<ILineChartProps> = ({
                 return yScale(yPoint >= yMin ? yPoint : yMin);
             })
             .curve(curveMonotoneX);
-
         const svgContainer = select(container.current);
-
         const tooltip = select(`div.${chartId}.tooltip`);
 
         // Main Graph Body

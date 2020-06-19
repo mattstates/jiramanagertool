@@ -14,6 +14,8 @@ import { TotalFailedCodeReview } from '../components/charts/TotalFailedCodeRevie
 import { TotalFailedDeployment } from '../components/charts/TotalFailedDeployment';
 import { TotalFailedQA } from '../components/charts/TotalFailedQA';
 import { TotalTimeOriginalEstimate } from '../components/charts/TotalTimeOriginalEstimate';
+import { UniqueDaysWorked } from '../components/charts/UniqueDaysWorked';
+
 import React from 'react';
 
 export default function mapCriteriaToChartComponent({
@@ -54,5 +56,7 @@ export default function mapCriteriaToChartComponent({
             return <TimeLoggedUnestimated data={data} key={key} />;
         case Criterias.TimeLoggedUnestimatedPercentage:
             return <TimeLoggedUnestimatedPercentage data={data} key={key} />;
+        case Criterias.UniqueDaysWorked:
+            return <UniqueDaysWorked data={data} key={key} />;
     }
 }

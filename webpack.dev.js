@@ -9,7 +9,7 @@ module.exports = (env) => {
         devServer: {
             contentBase: path.join(__dirname, 'dist'),
             compress: true,
-            port: 1234,
+            port: 1235,
             disableHostCheck: true
         },
         plugins: [

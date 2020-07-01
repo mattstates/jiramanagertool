@@ -36,16 +36,13 @@ export const TimeVelocity: React.FC<ITimeVelocityProps> = ({ data }) => {
                             return totalTimeSpentInSeconds + worklog.timeSpentSeconds;
                         }, 0)
                 );
-            }, 0)
-            console.log(total, 'Time Velocity')
+            }, 0);
+
             return [
                 ...acc,
                 {
                     date: cur[0],
-                    info: total
-                         /
-                        getVelocityDivisor(mappedIssues) /
-                        3600, // seconds in an hour
+                    info: total / getVelocityDivisor(mappedIssues) / 3600, // seconds in an hour
                 },
             ];
         }, [])

@@ -8,6 +8,8 @@ export enum Criterias {
     TaskCountFailedQA = 'Task Count Failed QA',
     TotalFailedQA = 'Total Failed QA',
 
+    AverageCycleTime = 'Average Cycle Time',
+
     TimeLogged = 'Time Logged',
     UniqueDaysWorked = 'Unique Days Worked',
     TimeLoggedUnestimated = 'Time Logged Unestimated',

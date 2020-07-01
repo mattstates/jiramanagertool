@@ -1,5 +1,5 @@
 import './JiraQueryBuilderForm.scss';
-import { addMonths } from 'date-fns';
+import { addMonths, parseISO } from 'date-fns';
 import { CheckBox } from './CheckBox';
 import { Criterias } from '../enums/Criterias';
 import { DateField } from './DateField';
@@ -13,7 +13,7 @@ import { SearchInput } from './SearchInput';
 import React, { Dispatch, SetStateAction, useReducer } from 'react';
 
 interface IFormProps {
-    callback: Dispatch<SetStateAction<IAppState>>;
+    dispatchSetState: Dispatch<SetStateAction<IAppState>>;
 }
 
 interface IFormState {
@@ -75,7 +75,7 @@ function formReducer(state: IFormState, action: IFormAction): IFormState {
     }
 }
 
-export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
+export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ dispatchSetState: setAppState }) => {
     const [formState, dispatch] = useReducer(formReducer, initialFormState);
 
     const formId = 'JiraQueryBuilder';
@@ -96,13 +96,13 @@ export const JiraQueryBuilderForm: React.FC<IFormProps> = ({ callback }) => {
             },
             []
         );
-
-        callback({
+            console.log(formState.fromDate, parseISO(formState.fromDate))
+        setAppState({
             assignee: formState.assignee,
             criterias,
             dateRanges: getDateRanges(
-                new Date(formState.fromDate),
-                new Date(formState.endDate),
+                parseISO(formState.fromDate),
+                parseISO(formState.endDate),
                 formState.interval,
                 formState.intervalCount
             )

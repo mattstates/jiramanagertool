@@ -6,7 +6,7 @@ import { format } from 'date-fns';
 import { JiraQueryBuilderForm } from './JiraQueryBuilderForm';
 import { JiraResponse } from '../types/JiraTypes';
 import { Loader } from './Loader';
-import { MM_DD_YYYY } from '../constants/dateFormats';
+import { YYYY_MM_DD } from '../constants/dateFormats';
 import getJiraResponseData from '../utils/getJiraResponseData';
 import mapCriteriaToChartComponent from '../utils/mapCriteriaToChartComponent';
 import React, { useEffect, useState } from 'react';
@@ -21,7 +21,7 @@ export function App() {
     const [appState, updateAppState] = useState<IAppState>({
         assignee: '',
         criterias: [],
-        dateRanges: []
+        dateRanges: [],
     });
     const [loading, updateLoading] = useState<boolean>(false);
     const [vizualizationData, updateVizData] = useState<ChartData>({});
@@ -40,11 +40,11 @@ export function App() {
 
             const formattedData: ChartData = appState.dateRanges.reduce((hash: ChartData, dateRange, i): ChartData => {
                 // Not sure why TypeScript doesn't want to accept .reduce without an initial value param.
-                hash[format(dateRange[1], MM_DD_YYYY)] = responseData[i].reduce<JiraResponse>(
+                hash[format(dateRange[1], YYYY_MM_DD)] = responseData[i].reduce<JiraResponse>(
                     (responseAccumlator, jiraResponse): JiraResponse => {
                         return {
                             ...responseAccumlator,
-                            issues: [...responseAccumlator.issues, ...jiraResponse.issues]
+                            issues: [...responseAccumlator.issues, ...jiraResponse.issues],
                         };
                     },
                     {
@@ -52,7 +52,7 @@ export function App() {
                         issues: [],
                         maxResults: 0,
                         startAt: 0,
-                        total: 0
+                        total: 0,
                     }
                 );
                 return hash;
@@ -73,7 +73,7 @@ export function App() {
             return mapCriteriaToChartComponent({
                 criteria,
                 data: vizualizationData,
-                key: `${criteria.toString()}${i}`
+                key: `${criteria.toString()}${i}`,
             });
         });
     }
@@ -81,7 +81,7 @@ export function App() {
     return (
         <>
             <h3>Customize Your Search</h3>
-            <JiraQueryBuilderForm callback={updateAppState} />
+            <JiraQueryBuilderForm dispatchSetState={updateAppState} />
             {loading ? <Loader /> : charts}
         </>
     );

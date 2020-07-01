@@ -3,6 +3,7 @@ import { axisBottom, axisLeft } from 'd3-axis';
 import { ChartDataPoint } from '../../types/ChartTypes';
 import { curveMonotoneX, line } from 'd3-shape';
 import { MMM_D_YY } from '../../constants/dateFormats';
+import { parseISO } from 'date-fns';
 import { predictY } from '../../utils/predictY';
 import { scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
@@ -111,7 +112,9 @@ export const LineChart: React.FC<ILineChartProps> = ({
             .call(
                 axisBottom(xScale)
                     .tickValues(data.map((_d: ChartDataPoint, i: number) => i))
-                    .tickFormat((_d, i) => format(data[i].date, MMM_D_YY))
+                    .tickFormat((_d, i) => {
+                        return format(parseISO(data[i].date), MMM_D_YY);
+                    })
             );
 
         // Y Axis Line
@@ -215,7 +218,7 @@ export const LineChart: React.FC<ILineChartProps> = ({
                     .style('left', `${Number(this.getAttribute('cx')) - 30}px`)
                     .html(
                         `
-                    Date: ${format(d.date, MMM_D_YY)}<br/>
+                    Date: ${format(parseISO(d.date), MMM_D_YY)}<br/>
                     Value: ${d.info.toFixed(tooltipPrecision)}
                 `
                     )

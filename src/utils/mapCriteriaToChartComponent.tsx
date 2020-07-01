@@ -1,4 +1,5 @@
 import { AverageOriginalEstimate } from '../components/charts/AverageOriginalEstimate';
+import { AverageCycleTime } from '../components/charts/AverageCycleTime';
 import { ChartData } from '../types/ChartTypes';
 import { Criterias } from '../enums/Criterias';
 import { EstimationAccuracy } from '../components/charts/EstimationAccuracy';
@@ -58,5 +59,7 @@ export default function mapCriteriaToChartComponent({
             return <TimeLoggedUnestimatedPercentage data={data} key={key} />;
         case Criterias.UniqueDaysWorked:
             return <UniqueDaysWorked data={data} key={key} />;
+        case Criterias.AverageCycleTime:
+            return <AverageCycleTime data={data} key={key} />;
     }
 }

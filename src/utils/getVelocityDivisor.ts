@@ -15,7 +15,6 @@ type AssignedTasksMap = {
  * If for some reason there is no assignee, we will exclude that issue.
  */
 export default function getVelocityDivisor(issueFieldsCollection: JiraIssueField[]): number {
-
     const issueToAssigneMap: AssignedTasksMap = issueFieldsCollection.reduce(
         (accumulator: AssignedTasksMap, issue: JiraIssueField): AssignedTasksMap => {
             let assignee = '';
@@ -38,7 +37,7 @@ export default function getVelocityDivisor(issueFieldsCollection: JiraIssueField
     );
 
     // Sum unique days to use as a divisor for estimation.
-    console.log(issueToAssigneMap)
+
     return (
         Object.values(issueToAssigneMap)
             .map(countUniqueWorkLogDays)

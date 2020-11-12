@@ -14,10 +14,15 @@ export type JiraIssueField = {
     timeestimate: number;
     timeoriginalestimate: number;
     timespent: number;
-    worklog: {
-        worklogs: JiraIssueWorklog[];
-    };
+    worklog: JiraWorklogResponse;
 };
+
+export type JiraWorklogResponse = {
+    maxResults: number;
+    startAt: number;
+    total: number;
+    worklogs: JiraIssueWorklog[];
+}
 
 export type JiraIdentity = {
     displayName: string;
@@ -27,9 +32,11 @@ export type JiraIdentity = {
 
 export type JiraIssueWorklog = {
     author: JiraIdentity;
+    comment: string;
     created: string; // EX: "2018-09-06T17:47:00.000-0700"
     id: string;
     issueId: string;
+    self: string;
     started: string; // EX: "2018-09-06T17:47:00.000-0700"
     timeSpent: string; // EX: "2h"
     timeSpentSeconds: number;

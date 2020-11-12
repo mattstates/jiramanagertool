@@ -4,3 +4,4 @@ _appconfig.json
 /dist
 /node_modules
 requirements.md
+*.icloud

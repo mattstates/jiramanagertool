@@ -15,17 +15,18 @@ export const getDateRanges = (
     const endDateObj = endDate;
     const fromDateObj = fromDate;
     let dateCounter = endDateObj;
+    let counter = 1;
 
     // from... to...
     while (isBefore(fromDateObj, dateCounter)) {
-        let firstDate = dateAdder(dateCounter, -1 * intervalMultiple);
+        let firstDate = dateAdder(endDateObj, -(counter) * intervalMultiple);
 
         if (isBefore(fromDateObj, firstDate)) {
             dates.push([firstDate, dateCounter]);
         } else {
             dates.push([fromDateObj, dateCounter]);
         }
-
+        counter++;
         dateCounter = firstDate;
     }
 
